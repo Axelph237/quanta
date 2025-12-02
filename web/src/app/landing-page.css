@@ -1,0 +1,10 @@
+/* base logo styles */
+#logo {
+  transition: transform 300ms ease-out;
+  transform: translateX(0);
+}
+
+/* state when scrolled past threshold */
+#logo.scrolled {
+  transform: translateX(calc(-50vw + 50% + var(--page-padding)));
+}

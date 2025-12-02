@@ -1,0 +1,243 @@
+@import "tailwindcss";
+
+@source "./src/pages/**/*.{js,ts,jsx,tsx,mdx}";
+@source "./src/components/**/*.{js,ts,jsx,tsx,mdx}";
+@source "./src/app/**/*.{js,ts,jsx,tsx,mdx}";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /*
+   * COLOR TOKENS (Material Design 3)
+   * Adapted for Dark Mode support using CSS variables.
+   */
+  /* Primary */
+  --color-primary: var(--color-blue-500);
+  --color-on-primary: #020e3b;
+  --color-primary-container: var(--color-sky-300);
+  --color-on-primary-container: var(--color-on-primary);
+
+  /* Secondary - Unused */
+  --color-secondary: var(--color-purple-400);
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: var(--color-violet-200);
+  --color-on-secondary-container: var(--color-on-secondary);
+
+  /* Tertiary - Unused */
+  --color-tertiary: #000000;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #000000;
+  --color-on-tertiary-container: #ffffff;
+
+  /* Error */
+  --color-error: var(--color-red-500);
+  --color-on-error: #ffffff;
+  --color-error-container: #f9dedc;
+  --color-on-error-container: #410e0b;
+
+  --color-background: #ffffffff;
+  --color-on-background: #000000ff;
+
+  --color-surface: #ffffffff;
+  --color-on-surface: #000000ff;
+  --color-surface-variant: #e7e0ec;
+  --color-on-surface-variant: #49454f;
+
+  --color-outline: #79747e;
+  --color-outline-variant: #cac4d0;
+}
+
+.dark {
+  /* Primary */
+  --color-primary: var(--color-blue-500);
+  --color-on-primary: #020e3b;
+  --color-primary-container: var(--color-sky-300);
+  --color-on-primary-container: var(--color-on-primary);
+
+  /* Secondary - Unused */
+  --color-secondary: var(--color-purple-400);
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: var(--color-violet-200);
+  --color-on-secondary-container: var(--color-on-secondary);
+
+  /* Tertiary - Unused */
+  --color-tertiary: #ffffff;
+  --color-on-tertiary: #000000;
+  --color-tertiary-container: #ffffff;
+  --color-on-tertiary-container: #000000;
+
+  --color-error: #f2b8b5;
+  --color-on-error: #601410;
+  --color-error-container: #8c1d18;
+  --color-on-error-container: #f9dedc;
+
+  --color-background: #000000;
+  --color-on-background: #ffffff;
+
+  --color-surface: #000000;
+  --color-on-surface: #ffffff;
+  --color-surface-variant: #49454f;
+  --color-on-surface-variant: #cac4d0;
+
+  --color-outline: #938f99;
+  --color-outline-variant: #49454f;
+}
+
+@theme {
+  /**
+   * TYPOGRAPHY TOKENS (Material Design 3)
+   *
+   * Tailwind v4 separates font size, line-height, and font-weight
+   * into different theme variable namespaces:
+   *   --text-*         → text-* utilities
+   *   --leading-*      → leading-* utilities
+   *   --font-weight-*  → font-weight-* utilities
+   *
+   * This gives you classes like:
+   *   text-display-large leading-display-large font-weight-display-large
+   */
+
+  /* Display */
+  --text-display-large: 3.5625rem;
+  --leading-display-large: 4rem;
+  --font-weight-display-large: 400;
+
+  --text-display-medium: 2.8125rem;
+  --leading-display-medium: 3.25rem;
+  --font-weight-display-medium: 400;
+
+  --text-display-small: 2.25rem;
+  --leading-display-small: 2.75rem;
+  --font-weight-display-small: 400;
+
+  /* Headline */
+  --text-headline-large: 2rem;
+  --leading-headline-large: 2.5rem;
+  --font-weight-headline-large: 400;
+
+  --text-headline-medium: 1.75rem;
+  --leading-headline-medium: 2.25rem;
+  --font-weight-headline-medium: 400;
+
+  --text-headline-small: 1.5rem;
+  --leading-headline-small: 2rem;
+  --font-weight-headline-small: 400;
+
+  /* Title */
+  --text-title-large: 1.375rem;
+  --leading-title-large: 1.75rem;
+  --font-weight-title-large: 400;
+
+  --text-title-medium: 1rem;
+  --leading-title-medium: 1.5rem;
+  --font-weight-title-medium: 500;
+
+  --text-title-small: 0.875rem;
+  --leading-title-small: 1.25rem;
+  --font-weight-title-small: 500;
+
+  /* Label */
+  --text-label-large: 0.875rem;
+  --leading-label-large: 1.25rem;
+  --font-weight-label-large: 500;
+
+  --text-label-medium: 0.75rem;
+  --leading-label-medium: 1rem;
+  --font-weight-label-medium: 500;
+
+  --text-label-small: 0.6875rem;
+  --leading-label-small: 1rem;
+  --font-weight-label-small: 500;
+
+  /* Body */
+  --text-body-large: 1rem;
+  --leading-body-large: 1.5rem;
+  --font-weight-body-large: 400;
+
+  --text-body-medium: 0.875rem;
+  --leading-body-medium: 1.25rem;
+  --font-weight-body-medium: 400;
+
+  --text-body-small: 0.75rem;
+  --leading-body-small: 1rem;
+  --font-weight-body-small: 400;
+
+  /**
+   * SIZING AND SPACING TOKENS (Material Design 3)
+   *
+   * In v4, spacing is derived from a single base scale:
+   *   --spacing: 0.25rem;
+   *
+   * Then `mt-1` = 0.25rem, `mt-2` = 0.5rem, ... `mt-12` = 3rem, etc.
+   * This matches your old 4px grid exactly.
+   */
+
+  --spacing: 0.25rem; /* 4px base unit */
+
+  /**
+  * ANIMATION TOKENS (Material Design 3)
+  */
+  --animate-gradient: gradient 3s linear infinite;
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  --animate-slide-logo: slide-logo 0.3s ease-out forwards;
+  --animate-slide-logo-back: slide-logo-back 0.3s ease-out forwards;
+  @keyframes slide-logo {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-50vw + 50% + var(--page-padding)));
+    }
+  }
+  @keyframes slide-logo-back {
+    0% {
+      transform: translateX(calc(-50vw + 50% + var(--page-padding)));
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  --animate-shine: shine 5s linear infinite;
+  @keyframes shine {
+    0% {
+      background-position: 100% 50%;
+    }
+    50% {
+      background-position: -100% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  --page-padding: 4rem;
+  @apply p-[var(--page-padding)] antialiased bg-surface text-on-surface min-h-screen flex flex-col;
+}
+
+header {
+  @apply px-[var(--page-padding)] pt-10 fixed gap-0 top-0 left-0 right-0 z-10 h-fit flex items-center justify-between text-on-surface;
+}
+
+.page-nav {
+  @apply text-label-large cursor-pointer hover:underline underline-offset-4 transition-all duration-200;
+}
