@@ -30,6 +30,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/components/BlurText.jsx"  ],
+, "src/components/BlurText.jsx", "src/app/about/page.tsx.disabled"  ],
   "exclude": ["node_modules"]
 }

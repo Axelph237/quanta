@@ -6,17 +6,19 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <h1 className="text-5xl font-bold mb-4 text-on-surface">{children}</h1>
     ),
     h2: ({ children }) => (
-      <h2 className="text-4xl font-semibold mb-3 text-on-surface">
+      <h2 className="text-4xl font-semibold mb-3 text-on-surface/80">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-3xl font-semibold mb-2 text-on-surface">
+      <h3 className="text-3xl font-semibold mb-2 text-on-surface/65">
         {children}
       </h3>
     ),
     h4: ({ children }) => (
-      <h4 className="text-xl font-semibold mb-2 text-on-surface">{children}</h4>
+      <h4 className="text-xl font-semibold mb-2 text-on-surface/55">
+        {children}
+      </h4>
     ),
     p: ({ children }) => (
       <p className="mb-4 text-xl text-on-surface leading-relaxed">{children}</p>
