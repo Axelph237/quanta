@@ -1,3 +1,5 @@
+import Callout from "@/components/formatting/Callout";
+
 # Example Algorithms
 I think it would be silly to talk about quantum computers without giving a couple concrete examples of algorithms that are commonly associated with them. These two are personal favorites of mine, and will likely offer you little in understanding the details of, so I'll more simply share some of the fascination behind these algorithms.
 ## Grover's Algorithm
@@ -9,14 +11,22 @@ I'm going to stray away from diving too deep into the actual math behind Grover'
 ### What *Is* An Unstructured Database
 While this example of a phone book sounds great in concept, it does miss a key feature of Grover's algorithm. A phone book is what we will call an arbitrary database, not an unstructured database. An arbitrary database has seemingly random data. For instance, your email (gamergrind@someemail.com) that you made when you were 13. These kinds of databases aren't easily converted into an *oracle*. You may have noticed I called the database a "search space" earlier in the text, this is because the *oracle* is more accurately models an equation or constraint problem. A trivial example of this could be the rules of sudoku. In a nutshell, the *oracle* represents the constraints of a given sudoku board, and running Grover's algorithm would then present us the desired board state for a successful game.
 
-> **Note:** *If you'd like a deeper look at Grover's algorithm, check out this lovely [wikipedia article](https://en.wikipedia.org/wiki/Grover's_algorithm), or this comprehensive [overview by IBM.](https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms/grover-algorithm/introduction)*
+<Callout title="Note">
+*If you'd like a deeper look at Grover's algorithm, check out this lovely [wikipedia article](https://en.wikipedia.org/wiki/Grover's_algorithm), or this comprehensive [overview by IBM.](https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms/grover-algorithm/introduction)*
+</Callout>
 ## Shor's Algorithm
 It seems that every day more and more people seem to have heard of Shor's algorithm. Otherwise, you've likely heard what Shor's algorithm threatens to *cause*. If you've heard that quantum computers will, "break all modern encryption," then you've come across the tension surrounding Shor's discovery.
 
 All 32 years ago, in 1994, mathematician Peter Shor found a solution to the **prime factoring** problem using quantum algorithms.
 ### The Prime Factoring Problem
-Finding the prime factors of a small integer is a pretty simple problem. For instance, the prime factors of 12 is two, two and three $$12=2\times 2 \times 3$$ However, as the integer gets increasingly big, these numbers become *incredibly* difficult for a computer, much worse a human, to factor. 
+Finding the prime factors of a small integer is a pretty simple problem. For instance, the prime factors of 12 is two, two and three 
+$$
+12=2\times 2 \times 3
+$$
+However, as the integer gets increasingly big, these numbers become *incredibly* difficult for a computer, much worse a human, to factor. 
 ### Security Risk
 Currently, the difficulty of factoring a number with on the order of hundreds of digits is the basis of modern encryption. We won't get into that here, but what is important to understand is that Shor's algorithm shows an extremely fast speedup for finding these factors in comparison to classical computers.
 
-> **Note:** I won't even *begin* to explain Shor's algorithm here due to the amount of background knowledge in quantum computing subroutines (such as Quantum Fourier Transforms). If you would like to explore it more deeply, 
+<Callout title="Note">
+I won't even *begin* to explain Shor's algorithm here due to the amount of background knowledge in quantum computing subroutines (such as Quantum Fourier Transforms). If you would like to explore it more deeply, 
+</Callout>
