@@ -13,7 +13,7 @@ import {
   useSpring,
 } from "framer-motion";
 import NavText from "@/components/NavText";
-import { ComponentProps, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import useComputedCSS from "@/hooks/useComputedCSS";
 import Logo from "@/components/Logo";
 import { GENTLE_EASE } from "../globals";
@@ -30,7 +30,7 @@ import {
   ZGate,
 } from "@/components/Icons";
 
-export default function Home() {
+function HomeContent() {
   const searchParams = useSearchParams();
   const fromLanding = searchParams.get("from") === "landing";
 
@@ -223,6 +223,20 @@ export default function Home() {
         </HomeSection>
       </main>
     </>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen">
+          Loading...
+        </div>
+      }
+    >
+      <HomeContent />
+    </Suspense>
   );
 }
 

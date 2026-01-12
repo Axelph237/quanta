@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion, useAnimate } from "framer-motion";
 import Image from "next/image";
 import { outfit } from "@/app/fonts";
@@ -16,7 +16,7 @@ const unit1 = UNITS[0];
 const unit2 = UNITS[1];
 const unit3 = UNITS[2];
 
-export default function LessonsPage() {
+function LessonsPageContent() {
   const searchParams = useSearchParams();
   const selectedLessonId = searchParams.get("selected");
   const selectedLessonIndex = LESSONS.findIndex(
@@ -223,6 +223,20 @@ export default function LessonsPage() {
         className="absolute bottom-0 left-0 w-[100vw] h-16 pointer-events-none z-1 bg-linear-to-t from-surface to-transparent"
       ></motion.div>
     </>
+  );
+}
+
+export default function LessonsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen">
+          Loading...
+        </div>
+      }
+    >
+      <LessonsPageContent />
+    </Suspense>
   );
 }
 
