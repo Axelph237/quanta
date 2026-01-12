@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { libreBasker, outfit } from "@/app/fonts";
 import Link from "next/link";
-import BlurText from "@/components/BlurText";
+import BlurText from "@/components/react-bits/BlurText";
 import {
   HTMLMotionProps,
   motion,
@@ -75,7 +75,7 @@ export default function Home() {
 
   // Animate header when scrolling
   useMotionValueEvent(smoothedScrollY, "change", (latest) => {
-    const SCROLL_DEADZONE = 10;
+    const SCROLL_DEADZONE = 50;
     setScrolled(latest > SCROLL_DEADZONE);
   });
 
@@ -139,7 +139,7 @@ export default function Home() {
         </motion.span>
       </header>
       <main
-        className="relative flex min-h-screen mt-[var(--page-padding)] flex-col items-center justify-start text-center"
+        className="relative p-[var(--page-padding)] flex min-h-screen mt-[var(--page-padding)] flex-col items-center justify-start text-center"
         ref={mainScope}
       >
         <HomeSection className="flex flex-col items-center justify-start">

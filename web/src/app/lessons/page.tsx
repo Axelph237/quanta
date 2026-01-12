@@ -1,26 +1,33 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  motion,
-  type Transition,
-  AnimatePresence,
-  useAnimate,
-} from "framer-motion";
-import Image, { StaticImageData } from "next/image";
+import { motion, useAnimate } from "framer-motion";
+import Image from "next/image";
 import { outfit } from "@/app/fonts";
-import { redirect } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import Logo from "@/components/Logo";
 import useComputedCSS from "@/hooks/useComputedCSS";
 import { GENTLE_EASE } from "../globals";
-import { Lesson, LESSONS } from "./lessons";
+import { Lesson, LESSONS, UNITS } from "./lessons";
+import GradientText from "@/components/react-bits/GradientText";
 
 const GAP = 64; // gap-16 is 4rem = 64px
+const unit1 = UNITS[0];
+const unit2 = UNITS[1];
+const unit3 = UNITS[2];
 
 export default function LessonsPage() {
+  const searchParams = useSearchParams();
+  const selectedLessonId = searchParams.get("selected");
+  const selectedLessonIndex = LESSONS.findIndex(
+    (l) => l.id === selectedLessonId
+  );
+
   const { cssvar, csstopx } = useComputedCSS();
 
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(
+    selectedLessonIndex !== -1 ? selectedLessonIndex : 0
+  );
   const [lessonOpened, setLessonOpened] = useState(false);
   const [viewportDims, setViewportDims] = useState({ width: 0, height: 0 });
   const [logoShift, setLogoShift] = useState<number>(0);
@@ -75,6 +82,14 @@ export default function LessonsPage() {
     }
   };
 
+  useEffect(() => {
+    if (lessonOpened) {
+      setTimeout(() => {
+        redirect(`/lessons/${LESSONS[activeIndex].id}`);
+      }, 1000);
+    }
+  }, [lessonOpened, activeIndex]);
+
   return (
     <>
       <motion.div
@@ -113,13 +128,51 @@ export default function LessonsPage() {
           }}
           transition={GENTLE_EASE}
         >
-          {LESSONS.map((lesson, index) => (
+          {unit1.lessons.map((lesson, lessonIndex) => (
             <LessonItem
               key={lesson.id}
               lesson={lesson}
-              isActive={index === activeIndex}
-              isOpened={index === activeIndex && lessonOpened}
-              onClick={() => handleLessonClick(index)}
+              displayUnit={lessonIndex === 0 ? unit1.title : false}
+              isActive={lessonIndex === activeIndex}
+              isOpened={lessonIndex === activeIndex && lessonOpened}
+              onClick={() => handleLessonClick(lessonIndex)}
+              viewportDims={viewportDims}
+            />
+          ))}
+          {unit2.lessons.map((lesson, lessonIndex) => (
+            <LessonItem
+              key={lesson.id}
+              lesson={lesson}
+              displayUnit={lessonIndex === 0 ? unit2.title : false}
+              isActive={unit1.lessons.length + lessonIndex === activeIndex}
+              isOpened={
+                unit1.lessons.length + lessonIndex === activeIndex &&
+                lessonOpened
+              }
+              onClick={() =>
+                handleLessonClick(unit1.lessons.length + lessonIndex)
+              }
+              viewportDims={viewportDims}
+            />
+          ))}
+          {unit3.lessons.map((lesson, lessonIndex) => (
+            <LessonItem
+              key={lesson.id}
+              lesson={lesson}
+              displayUnit={lessonIndex === 0 ? unit3.title : false}
+              isActive={
+                unit1.lessons.length + unit2.lessons.length + lessonIndex ===
+                activeIndex
+              }
+              isOpened={
+                unit1.lessons.length + unit2.lessons.length + lessonIndex ===
+                  activeIndex && lessonOpened
+              }
+              onClick={() =>
+                handleLessonClick(
+                  unit1.lessons.length + unit2.lessons.length + lessonIndex
+                )
+              }
               viewportDims={viewportDims}
             />
           ))}
@@ -145,6 +198,23 @@ export default function LessonsPage() {
             </motion.div>
           </AnimatePresence>
         </div> */}
+
+        {/* Lesson Bubbles */}
+        <ol className="absolute flex flex-col items-center top-1/2 right-[var(--page-padding)] -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500">
+          {Array.from({ length: LESSONS.length }).map((_, index) => (
+            <motion.li
+              key={index}
+              className="w-[20px] rounded-lg m-2 bg-primary cursor-pointer"
+              initial={{ opacity: 0 }}
+              animate={{
+                opacity: activeIndex === index ? 1 : 0.5,
+                height: activeIndex === index ? "40px" : "20px",
+              }}
+              transition={GENTLE_EASE}
+              onClick={() => handleLessonClick(index)}
+            ></motion.li>
+          ))}
+        </ol>
       </motion.main>
       <motion.div
         initial={{ opacity: 1 }}
@@ -158,12 +228,14 @@ export default function LessonsPage() {
 
 function LessonItem({
   lesson,
+  displayUnit,
   isActive,
   isOpened,
   onClick,
   viewportDims,
 }: {
   lesson: Lesson;
+  displayUnit: string | false;
   isActive: boolean;
   isOpened: boolean;
   onClick: () => void;
@@ -183,11 +255,12 @@ function LessonItem({
       transition={GENTLE_EASE}
       onClick={onClick}
     >
-      {lesson.img && (
+      {lesson.headerImg && (
         <Image
-          src={lesson.img}
+          src={lesson.headerImg}
           alt={lesson.title}
-          className="w-full h-full cover"
+          fill
+          className="object-cover"
         />
       )}
       <motion.h2
@@ -198,13 +271,38 @@ function LessonItem({
           x: isOpened ? 0 : -viewportDims.width * 0.3,
           filter: isActive ? "blur(0px)" : "blur(20px)",
           width: isOpened ? "100vw" : "30vw",
-          color: isOpened
-            ? "var(--color-on-primary)"
-            : "var(--color-on-surface)",
+          // color: isOpened
+          //   ? "var(--color-on-primary)"
+          //   : "var(--color-on-surface)",
         }}
         transition={GENTLE_EASE}
-        className="absolute flex top-0 h-full text-center justify-center items-center text-4xl"
+        className="absolute flex flex-col top-0 h-full text-center justify-center items-center text-4xl"
       >
+        {displayUnit && (
+          <motion.div
+            className="absolute w-fit text-xl font-bold"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isOpened ? 0 : 0.75 }}
+            transition={GENTLE_EASE}
+            style={{
+              transform:
+                lesson.title.length > 20
+                  ? "translateY(-200%)"
+                  : "translateY(-125%)",
+            }}
+          >
+            <GradientText
+              colors={[
+                "var(--color-primary)",
+                "var(--color-primary-container)",
+                "var(--color-primary)",
+              ]}
+              animationSpeed={3}
+            >
+              {displayUnit}
+            </GradientText>
+          </motion.div>
+        )}
         <span className="w-[30vw]">{lesson.title}</span>
       </motion.h2>
     </motion.div>

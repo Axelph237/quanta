@@ -12,10 +12,10 @@
    * Adapted for Dark Mode support using CSS variables.
    */
   /* Primary */
-  --color-primary: var(--color-blue-500);
-  --color-on-primary: #020e3b;
-  --color-primary-container: var(--color-sky-300);
-  --color-on-primary-container: var(--color-on-primary);
+  --color-primary: #2b7fff;
+  --color-on-primary: oklch(100% 0 0);
+  --color-primary-container: #ff0000;
+  --color-on-primary-container: #ffffff;
 
   /* Secondary - Unused */
   --color-secondary: var(--color-purple-400);
@@ -231,7 +231,7 @@ body {
 
 body {
   --page-padding: 4rem;
-  @apply p-[var(--page-padding)] antialiased bg-surface text-on-surface min-h-screen flex flex-col;
+  @apply antialiased bg-surface text-on-surface min-h-screen flex flex-col;
 }
 
 header {
@@ -240,4 +240,62 @@ header {
 
 .page-nav {
   @apply text-label-large cursor-pointer hover:underline underline-offset-4 transition-all duration-200;
+}
+
+/* Icons */
+.icon-sm {
+  @apply w-6 h-6;
+}
+
+.icon-md {
+  @apply w-8 h-8;
+}
+
+.icon-lg {
+  @apply w-10 h-10;
+}
+
+/* Glass Card */
+.glass-card {
+  background: rgba(43, 127, 255, 0.25);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  border-radius: 20px;
+  border: 1px solid rgba(43, 127, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(43, 127, 255, 0.5),
+    inset 0 -1px 0 rgba(43, 127, 255, 0.1),
+    inset 0 0 38px 19px rgba(43, 127, 255, 1.9);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(43, 127, 255, 0.8),
+    transparent
+  );
+}
+
+.glass-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(43, 127, 255, 0.8),
+    transparent,
+    rgba(43, 127, 255, 0.3)
+  );
 }

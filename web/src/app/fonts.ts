@@ -1,4 +1,4 @@
-import { Libre_Baskerville, Bytesized, Outfit } from "next/font/google";
+import { Libre_Baskerville, Bytesized, Outfit, DM_Mono } from "next/font/google";
 
 export const libreBasker = Libre_Baskerville({
   weight: "400",
@@ -13,4 +13,9 @@ export const bytesized = Bytesized({
 export const outfit = Outfit({
   weight: ["400", "700"],
   variable: "--font-outfit",
+});
+
+export const dmMono = DM_Mono({
+  weight: ["400", "500"],
+  variable: "--font-dm-mono",
 });

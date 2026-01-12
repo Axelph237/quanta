@@ -17,7 +17,7 @@ import { motion, useAnimate } from "framer-motion";
 import { GENTLE_EASE } from "./globals";
 import { redirect } from "next/navigation";
 import Logo from "@/components/Logo";
-import ShinyText from "@/components/ShinyText";
+import ShinyText from "@/components/react-bits/ShinyText";
 
 // All available gate components
 const GATES = [

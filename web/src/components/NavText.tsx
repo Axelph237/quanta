@@ -1,7 +1,7 @@
 "use client";
 
 import { HTMLMotionProps, motion } from "framer-motion";
-import GradientText from "./GradientText";
+import GradientText from "./react-bits/GradientText";
 import { outfit } from "@/app/fonts";
 
 interface NavTextProps extends HTMLMotionProps<"span"> {
