@@ -1,0 +1,54 @@
+
+
+## Compiling Quantum Circuits
+The named gates we talked about in the previous lesson are sometimes called *abstract gates*. They allow us to clearly portray certain mappings and ideas when constructing a circuit. However, these are an idealized set of transformations that are often not easily translatable to actual quantum computing architectures.
+
+First, let's take a high-level look at a mathematical theorem that will allow us to use these idealized named gates in real-world systems.
+### Quantum Gate Universality Theorem
+
+Okay, that's quite a long name so let's break it down into pieces.
+
+**Quantum Gate:** A quantum gate is an individual transformation performed on at least one qubit. These gates are used together to create **quantum circuits**. You can think of them in two ways: 
+1) a mathematical transformation (as a matrix) applied to the state of the system 
+2) a physical transformation (like shooting a laser at an electron) that mirrors the mathematical transformation with some fidelity.
+
+**Universality Theorem:** The theorem states that so long as your computer can perform two specific types of gates, it can run theoretically any quantum circuit. To be more specific, those two kinds of gates are: 1) a single-qubit gate, and 2) an entangling gate (acts on two or more qubits).
+
+So what's the connection here? Think about it this way, what this theorem is stating is that if we have:
+1) an operation that manipulates a single qubit
+2) a second operation that entangles two qubits
+then we are able to map those operations to a circuit of named gates.
+### Native Gates
+From this, we can use what are called *native gates*. Native gates are the mathematical representation of a physical operation performed on a qubit. When a circuit is executed on a quantum computer, all abstract gates must first be compiled and optimized into gates native to the system. This process is called *decomposition*. 
+#### Example: For Those Curious
+Without too much explanation, here is an example decomposition of the CNOT gate into gates native to IonQ's ion-trap quantum computers.
+
+##### Diagram
+```
+----@-----   ----| RY(π/2) |----|         |----| RX(-π/2) |----| RY(-π/2) |-----
+    |      =                    | XX(π/4) |
+----X-----   -------------------|         |----| RX(-π/2) |---------------------
+```
+##### Formulation
+$$CNOT=\begin{bmatrix}
+1 & 0 & 0 & 0\\
+0 & 0 & 0 & 1\\
+0 & 0 & 1 & 0\\
+0 & 1 & 0 & 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+cos(-\frac{\pi}{4}) & -sin(-\frac{\pi}{4}) & 0 & 0 \\ sin(-\frac{\pi}{4}) & cos(-\frac{\pi}{4}) & 0 & 0 \\ 0 &0&1&0\\0&0&0&1
+\end{bmatrix}
+\begin{bmatrix}
+cos(-\frac{\pi}{4}) & -sin(-\frac{\pi}{4}) & 0 & 0 \\ sin(-\frac{\pi}{4}) & cos(-\frac{\pi}{4}) & 0 & 0 \\ 0 &0&cos(-\frac{\pi}{4}) & -sin(-\frac{\pi}{4})\\0&0&sin(-\frac{\pi}{4}) & cos(-\frac{\pi}{4})
+\end{bmatrix}
+\begin{bmatrix}
+cos(\frac{\pi}{8}) & 0 & 0 & -isin(\frac{\pi}{8}) \\
+0 & cos(\frac{\pi}{8}) & -isin(\frac{\pi}{8}) & 0 \\
+0 & -isin(\frac{\pi}{8}) & cos(\frac{\pi}{8}) & 0 \\
+-isin(\frac{\pi}{8}) & 0 & 0 & cos(\frac{\pi}{2})
+\end{bmatrix}
+\begin{bmatrix}
+cos(\frac{\pi}{4}) & -sin(\frac{\pi}{4}) & 0 & 0 \\ sin(\frac{\pi}{4}) & cos(\frac{\pi}{4}) & 0 & 0\\0&0&1&0\\0&0&0&1
+\end{bmatrix}$$

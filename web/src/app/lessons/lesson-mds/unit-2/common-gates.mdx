@@ -1,0 +1,25 @@
+# Common Gates
+
+#### NOT (Pauli-X)
+
+$$X=\begin{bmatrix}0&1\\1&0\end{bmatrix}$$
+
+A NOT gate does pretty much just that! It inverts the state of the qubit. For instance, a state of $$|1\rangle$$ would be transformed into a state of $$|0\rangle$$.
+
+#### Hadamard
+
+$$H=\frac{1}{\sqrt{2}}\begin{bmatrix}1&1\\1&-1\end{bmatrix}$$
+
+The Hadamard gate puts the qubit it acts upon into a superposition of states. For instance, a state of $$|1\rangle$$ would be transformed into a state of $$\frac{1}{\sqrt{2}}|0\rangle+\frac{1}{\sqrt{2}}|1\rangle$$This is quite possibly the most important gate in all of quantum computing; I mean, we almost always have to set the system into a superposition as the first step of a calculation!
+
+#### CNOT
+
+$$CNOT=\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&0&1\\0&0&1&0\end{bmatrix}$$
+
+A Controlled Not gate (C-Not) is an _entangling_ gate that flips the target qubit given that the control qubit was in the $$|1\rangle$$ state. C-Not doesn't always entangle, but its capability of entangling makes it still valid for the Quantum Gate Universality Theorem.
+
+#### RZ
+
+$$R_Z(\theta)=\begin{bmatrix}e^{-i\frac{\theta}{2}}&0\\0&e^{i\frac{\theta}{2}}\end{bmatrix}$$
+
+The Z-Rotation gate (RZ) is a _single-qubit_ gate that applies a phase of $$\frac{\theta}{2}$$ to a qubit. For instance, a qubit in state $$\alpha|0\rangle+\beta|1\rangle$$ undergoing a $$R_Z(\frac{\pi}{2})$$ transformation would result in a state of $$e^{-i\frac{\pi}{4}}\alpha|0\rangle+e^{i\frac{\pi}{4}}\beta|1\rangle$$

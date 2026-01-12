@@ -1,0 +1,16 @@
+# Superposition
+As you throw a pebble into a creek, ripples spread out from the position of impact. Your friend, out with you by the creekside, tosses in another pebble. As the ripples from the two moments of impact overlap, they create an interference of ripples. At any point in this creek, you must take into account two ripples (waves) to find how high or low the water level may be. These two ripples are superimposed, and any point in that creek is in a superposition of the two ripples.
+
+Particle waves are no different. When we think about wave functions, they are also able to be superimposed because of a concept called *linearity*.
+
+## Linearity
+One of the most important features of the wave function that the Schrödinger equation describes is *linearity*. Let's consider a linear operator, common to classical physics, $\hat{H}=(kinetic\ energy)+(potential\ energy)$, or $$\hat{H}=-\frac{\hbar^2}{2m}\frac{\partial^2}{\partial x^2}+U(x,t)$$therefore the Schrödinger equation can be rewritten as:
+$$\hat{H}\Psi (x,t)=i\hbar\frac{\partial \Psi (x,t)}{\partial t}$$ 
+Because $\hat{H}$ is *linear*, this means that $\hat{H}\alpha \Psi_0 + \hat{H}\beta \Psi_1 = \hat{H}(\alpha \Psi_0 + \beta \Psi_1)$ 
+
+## How Does This Relate?
+For us with quantum wave functions, we aren't really worried about ripples in a pond. What this means for us is that a quantum system may behave as multiple separate wave equations simultaneously until measured. Once measured, the system will *collapse* and have a wave function (a.k.a. state) associated with a single wave function.
+
+The probability that a quantum system will have a specific state when measured is determined by that state's probability amplitude: $\alpha$ and $\beta$ in the previous example, where $|\alpha|^2 + |\beta|^2 = 1$. You can then see how, for instance, $|\alpha|^2$ is the decimal likely-hood of a state ($\Psi_0$ in our previous example), occurring when measured.
+
+As you'll see, superposition is what makes quantum computing possible. By creating a superposition of possible states on our computer, we are able to do multiple *parallel* computations across every possible state. Our desire being that once measured, the collapsed state is the one serving the answer to whatever question we were solving for.

@@ -1,0 +1,30 @@
+# Drawing The Line
+Now that we have an understanding a type of problems quantum computers excel at solving, let's draw some lines between classical computing and quantum computing. This way, we'll be able to see why quantum computers are the desired technology for solving these problems.
+## Classical Computing
+## Deterministic
+Most distinctly, classical computers (what you most likely have in your pocket right now) are completely deterministic. Without me getting too excited, *all* modern classical computations are deterministic. Any randomness is what we call *pseudo-random*.
+
+> **Fun Fact:** *any* classical program or computation can be turned into a deterministic piece of logic (DFA), despite it including seemingly random or non-deterministic logic.
+## Discrete
+The bits of a classical computer are *discrete*, meaning they do not have an infinite number of values they can cover. Each bit (as you likely know) can only represent a one or zero at any point in time.
+## Irreversible
+In classical computing, many operations performed on an input are *irreversible*. Meaning that given an output to an operation, we cannot perform any operations to reconstruct the input. A simple example is that both $0 \lor 1 \equiv 1$ and $1 \lor 1 \equiv 1$ (MAKE EASIER TO UNDERSTAND) are logically equivalent. Given an output of $1$, you could not tell me if the input was $(0,1)$, or $(1,1)$.
+## Quantum Computing
+Finally! This is what we are all about. I hope you found the preliminary introduction and thinking interesting, let's get to it.
+### Qubits
+Most quantum computing architectures rely on what is called a *qubit*. Although very similar to a classical bit, they are neither *discrete* or *deterministic*. Instead, a qubit can have a state of any combination of one and zero (given their total probability is one). The two possible measured states of a qubit are referred to by the kets $|0\rangle$ and $|1\rangle$.
+
+> **Fun Fact:** *The term was coined in 1992 by [Benjamin Schumacher](https://en.wikipedia.org/wiki/Benjamin_Schumacher "Benjamin Schumacher") as a joke.*
+
+The actual implementation of a qubit varies drastically by computer architecture. A fairly simple one to explain is the one used in what are called "neutral atom quantum computers", where a qubit is an electron on a neutral atom. The electron exhibits a wave function $\Psi$ that can be measured as either $|0\rangle$ or $|1\rangle$ depending on its energy level at the time of measurement.
+
+> **Fun Fact:** *There are other quantum computing architectures that rely on N-ary possible measured states using qutrits or qudits.*
+### Decoherence
+An extremely important topic when talking about quantum computers are their coherence times. Because quantum computers are *analog* computers, they still have the potential to lose information to their environment. One common cause would be temperature or spontaneous light emissions. The duration that a quantum computer can, on average, keep a qubit in superposition is its coherence time.
+
+At this current point in time, quantum coherence is a massive field of study, with higher coherence times often allowing new QPUs to swiftly declare "quantum supremacy" over previous QPUs.
+### Fidelity
+Similarly, the fidelity of an operation on a qubit is its accuracy to the intended output. In other words, how likely is an operation on a qubit to produce the expected result. For classical computers, this is essentially guaranteed:  $\lnot 1 \equiv 0$ will always be true. 
+We would hope the same for quantum computers, and massive steps are being made in quantum fidelity. However, due to the different quantum architectures and techniques used for quantum gates (which we will talk about more in the next lesson), perfect results are not always guaranteed.
+
+> *As of writing this, Quantinuum's Helios quantum computer has a single-qubit fidelity of 99.9975%*

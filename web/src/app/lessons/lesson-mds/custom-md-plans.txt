@@ -1,0 +1,7 @@
+Vocab Components:
+I want to create a database of defined vocabulary with words and their definitions. Maybe use a sql db?
+A custom mdx syntax will be used to generate a vocab component:
+[phrase]#(keywordid)
+When the mdx is parsed, it will produce a component that highlights the phrase, and when hovered displays the definition of the text.
+
+I could also add the ability for inline insertion of definitions, where the user can send a request for an LLM to generate inline text to insert at the vocab's location. Maybe be a bad idea? Could use a REALLY small LLM model.
