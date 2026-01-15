@@ -18,7 +18,7 @@ export default function LessonPage({
 
   useEffect(() => {
     params.then((resolvedParams) => {
-      console.log("Lesson ID:", resolvedParams.lessonid);
+      // console.log("Lesson ID:", resolvedParams.lessonid);
       setLesson(getLessonById(resolvedParams.lessonid));
     });
   }, [params]);
