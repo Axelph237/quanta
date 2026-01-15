@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
 import { motion, useAnimate } from "framer-motion";
 import { GENTLE_EASE } from "./globals";
-import { redirect } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 import Logo from "@/lib/components/Logo";
 import ShinyText from "@/lib/components/react-bits/ShinyText";
 
@@ -215,7 +215,7 @@ export default function LandingPage() {
         },
         GENTLE_EASE
       );
-      redirect("/home?from=landing");
+      redirect("/home?from=landing", RedirectType.push);
     }, 1200); // Wait for text to unblur
   }, [textAreaClear]);
 

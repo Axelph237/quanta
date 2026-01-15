@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { motion, useAnimate } from "framer-motion";
 import Image from "next/image";
 import { outfit } from "@/app/fonts";
-import { redirect, useSearchParams } from "next/navigation";
+import { redirect, RedirectType, useSearchParams } from "next/navigation";
 import Logo from "@/lib/components/Logo";
 import useComputedCSS from "@/lib/hooks/useComputedCSS";
 import { GENTLE_EASE } from "../globals";
@@ -71,7 +71,7 @@ function LessonsPageContent() {
     setRedirecting(true);
     await animate(scope.current!, { left: "100vw", opacity: 0 }, GENTLE_EASE);
 
-    redirect("/home");
+    redirect("/home", RedirectType.push);
   };
 
   const handleLessonClick = (index: number) => {
@@ -85,7 +85,7 @@ function LessonsPageContent() {
   useEffect(() => {
     if (lessonOpened) {
       setTimeout(() => {
-        redirect(`/lessons/${LESSONS[activeIndex].id}`);
+        redirect(`/lessons/${LESSONS[activeIndex].id}`, RedirectType.push);
       }, 1000);
     }
   }, [lessonOpened, activeIndex]);

@@ -1,6 +1,6 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 import { libreBasker, outfit } from "@/app/fonts";
 import Link from "next/link";
 import BlurText from "@/lib/components/react-bits/BlurText";
@@ -90,7 +90,7 @@ function HomeContent() {
       GENTLE_EASE
     );
 
-    redirect("/lessons");
+    redirect("/lessons", RedirectType.push);
   };
 
   return (
@@ -109,7 +109,7 @@ function HomeContent() {
           <NavText
             id="about-nav"
             text="ABOUT"
-            onClick={() => redirect("/about")}
+            onClick={() => redirect("/about", RedirectType.push)}
           />
         </motion.span>
         {/* Logo */}

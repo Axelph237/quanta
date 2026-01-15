@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getLessonById, Lesson } from "../lessons";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { redirect } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 import { GENTLE_EASE } from "@/app/globals";
 import Logo from "@/lib/components/Logo";
 import { DefineTooltips } from "@/lib/components/DefineTooltip";
@@ -24,7 +24,10 @@ export default function LessonPage({
   }, [params]);
 
   const handleLogoClick = () => {
-    redirect("/lessons" + (lesson ? "?selected=" + lesson.id : ""));
+    redirect(
+      "/lessons" + (lesson ? "?selected=" + lesson.id : ""),
+      RedirectType.push
+    );
   };
 
   return (
