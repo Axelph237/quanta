@@ -19,6 +19,7 @@
 
   /* Secondary - Unused */
   --color-secondary: var(--color-purple-400);
+  --color-secondary-hover: var(--color-purple-500);
   --color-on-secondary: #ffffff;
   --color-secondary-container: var(--color-violet-200);
   --color-on-secondary-container: var(--color-on-secondary);
@@ -234,6 +235,10 @@ body {
   @apply antialiased bg-surface text-on-surface min-h-screen flex flex-col;
 }
 
+main p {
+  @apply indent-10;
+}
+
 header {
   @apply px-[var(--page-padding)] pt-10 fixed gap-0 top-0 left-0 right-0 z-10 h-fit flex items-center justify-between text-on-surface;
 }
@@ -298,4 +303,14 @@ header {
     transparent,
     rgba(43, 127, 255, 0.3)
   );
+}
+
+/* MathJax styling */
+mjx-container {
+  @apply text-xl;
+}
+
+/* Definitions */
+[class*="define-"] {
+  @apply !text-secondary hover:!text-secondary-hover !font-bold !cursor-help;
 }

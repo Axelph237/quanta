@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { redirect } from "next/navigation";
 import { GENTLE_EASE } from "@/app/globals";
 import Logo from "@/lib/components/Logo";
+import { DefineTooltips } from "@/lib/components/DefineTooltip";
 
 export default function LessonPage({
   params,
@@ -28,6 +29,7 @@ export default function LessonPage({
 
   return (
     <>
+      <DefineTooltips />
       <motion.header
         className="w-full block"
         animate={{ left: 0 }}
