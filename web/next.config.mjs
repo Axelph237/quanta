@@ -9,7 +9,7 @@ const nextConfig = {
 const withMDX = createMDX({
   options: {
     remarkPlugins: ['remark-math', 'remark-gfm'],
-    rehypePlugins: [['rehype-katex', {}]],
+    rehypePlugins: [['rehype-mathjax/chtml', {chtml: {fontURL: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2'}}]],
     
   },
 });
