@@ -110,6 +110,7 @@ function wireElement(
 
   el.tabIndex = el.tabIndex >= 0 ? el.tabIndex : 0;
   const vocab = getVocab(el);
+  if (!vocab) return () => {};
 
   const onEnter = () => setState({ open: true, anchor: el, vocab });
   const onLeave = () => setState({ open: false });
@@ -148,7 +149,15 @@ export function DefineTooltips({
     const term = Array.from(el.classList)
       .find((c) => c.startsWith("define-"))
       ?.split("define-")[1];
-    if (!term) return null;
+    if (!term) {
+      console.error(
+        'Failed to find definition for term "' +
+          term +
+          '" while wiring element to handle hover events. Element:',
+        el
+      );
+      return null;
+    }
     return vocab[term];
   };
 
@@ -162,7 +171,6 @@ export function DefineTooltips({
     // Wire up all elements
     const wireAll = (scope: ParentNode) => {
       scope.querySelectorAll<HTMLElement>(selector).forEach((el) => {
-        console.log("Define node found:", el);
         const cleanup = wireElement(el, getVocab, setState);
         cleanupsRef.current.push(cleanup);
       });
