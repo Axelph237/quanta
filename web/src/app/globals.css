@@ -307,7 +307,7 @@ header {
 
 /* MathJax styling */
 mjx-container {
-  @apply text-xl;
+  @apply text-2xl;
 }
 
 /* Definitions */

@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 function MobileWarning() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-background">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-surface">
       <div className="max-w-md w-full">
-        <div className="px-6 py-8 border-2 border-primary rounded-xl bg-primary-container text-on-primary-container">
+        <div className="px-6 py-8 border-2 border-primary bg-primary/10 rounded-xl text-on-surface">
           <div className="flex flex-col items-center text-center space-y-4">
             <svg
               className="w-16 h-16 text-primary"
@@ -23,12 +23,9 @@ function MobileWarning() {
               />
             </svg>
             <h1 className="text-2xl font-bold">Mobile Not Supported</h1>
-            <p className="text-base">
+            <p className="text-on-surface">
               This application is optimized for desktop and tablet devices.
-              Please visit us on a larger screen for the best experience.
-            </p>
-            <p className="text-sm opacity-80">
-              Minimum recommended width: 768px
+              Please visit on a larger screen for the best experience! :D
             </p>
           </div>
         </div>
