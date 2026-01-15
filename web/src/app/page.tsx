@@ -10,14 +10,14 @@ import {
   XGate,
   YGate,
   ZGate,
-} from "@/components/Icons";
+} from "@/lib/components/Icons";
 import { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
 import { motion, useAnimate } from "framer-motion";
 import { GENTLE_EASE } from "./globals";
 import { redirect } from "next/navigation";
-import Logo from "@/components/Logo";
-import ShinyText from "@/components/react-bits/ShinyText";
+import Logo from "@/lib/components/Logo";
+import ShinyText from "@/lib/components/react-bits/ShinyText";
 
 // All available gate components
 const GATES = [

@@ -5,11 +5,11 @@ import { motion, useAnimate } from "framer-motion";
 import Image from "next/image";
 import { outfit } from "@/app/fonts";
 import { redirect, useSearchParams } from "next/navigation";
-import Logo from "@/components/Logo";
-import useComputedCSS from "@/hooks/useComputedCSS";
+import Logo from "@/lib/components/Logo";
+import useComputedCSS from "@/lib/hooks/useComputedCSS";
 import { GENTLE_EASE } from "../globals";
 import { Lesson, LESSONS, UNITS } from "./lessons";
-import GradientText from "@/components/react-bits/GradientText";
+import GradientText from "@/lib/components/react-bits/GradientText";
 
 const GAP = 64; // gap-16 is 4rem = 64px
 const unit1 = UNITS[0];

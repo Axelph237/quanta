@@ -1,6 +1,6 @@
 // components/CircuitView.tsx
 import { Dispatch, FC, SetStateAction } from "react";
-import { Circuit, Gate } from "@/components/circuit/circuit";
+import { Circuit, Gate } from "@/lib/components/circuit/circuit";
 import * as uuid from "uuid";
 
 interface Props {

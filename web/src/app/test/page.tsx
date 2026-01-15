@@ -1,8 +1,8 @@
 "use client";
 
-import { CircuitView } from "@/components/circuit/CircuitView";
-import { GatePalette } from "@/components/circuit/GatePalette";
-import { createEmptyCircuit } from "@/components/circuit/circuit";
+import { CircuitView } from "@/lib/components/circuit/CircuitView";
+import { GatePalette } from "@/lib/components/circuit/GatePalette";
+import { createEmptyCircuit } from "@/lib/components/circuit/circuit";
 import { useState } from "react";
 
 export default function TestPage() {

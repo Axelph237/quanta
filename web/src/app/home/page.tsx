@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { libreBasker, outfit } from "@/app/fonts";
 import Link from "next/link";
-import BlurText from "@/components/react-bits/BlurText";
+import BlurText from "@/lib/components/react-bits/BlurText";
 import {
   HTMLMotionProps,
   motion,
@@ -12,14 +12,14 @@ import {
   useScroll,
   useSpring,
 } from "framer-motion";
-import NavText from "@/components/NavText";
+import NavText from "@/lib/components/NavText";
 import { Suspense, useEffect, useRef, useState } from "react";
-import useComputedCSS from "@/hooks/useComputedCSS";
-import Logo from "@/components/Logo";
+import useComputedCSS from "@/lib/hooks/useComputedCSS";
+import Logo from "@/lib/components/Logo";
 import { GENTLE_EASE } from "../globals";
 import { useSearchParams } from "next/navigation";
 import "./home.css";
-import Draggable from "@/components/Draggable";
+import Draggable from "@/lib/components/Draggable";
 import {
   HGate,
   NotGate,
@@ -28,7 +28,7 @@ import {
   XGate,
   YGate,
   ZGate,
-} from "@/components/Icons";
+} from "@/lib/components/Icons";
 
 function HomeContent() {
   const searchParams = useSearchParams();

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { redirect } from "next/navigation";
 import { GENTLE_EASE } from "@/app/globals";
-import Logo from "@/components/Logo";
+import Logo from "@/lib/components/Logo";
 
 export default function LessonPage({
   params,
