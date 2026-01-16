@@ -15,6 +15,7 @@ export interface Lesson {
   unitId: string;
   title: string;
   description: string;
+  tocId: string;
   headerImg: StaticImageData | undefined;
   pageContent: React.ReactNode;
 }
@@ -25,6 +26,7 @@ const MECHANICS_UNIT_LESSONS: Lesson[] = [
     unitId: "mechanics",
     title: "A BRIEF HISTORY",
     description: "Hiiiiiii",
+    tocId: "1.0",
     headerImg: undefined,
     pageContent: <unit1.history />,
   },
@@ -33,6 +35,7 @@ const MECHANICS_UNIT_LESSONS: Lesson[] = [
     unitId: "mechanics",
     title: "BRA-KET NOTATION",
     description: "Hiiiiiii",
+    tocId: "1.1",
     headerImg: undefined,
     pageContent: <unit1.braKet />,
   },
@@ -41,6 +44,7 @@ const MECHANICS_UNIT_LESSONS: Lesson[] = [
     unitId: "mechanics",
     title: "SUPERPOSITION",
     description: "",
+    tocId: "1.2",
     headerImg: undefined,
     pageContent: <unit1.superposition />,
   },
@@ -49,6 +53,7 @@ const MECHANICS_UNIT_LESSONS: Lesson[] = [
     unitId: "mechanics",
     title: "ENTANGLEMENT",
     description: "",
+    tocId: "1.3",
     headerImg: undefined,
     pageContent: <unit1.entanglement />,
   },
@@ -60,6 +65,7 @@ const COMPUTING_UNIT_LESSONS: Lesson[] = [
     unitId: "computing",
     title: "QUANTUM COMPUTERS",
     description: "",
+    tocId: "2.0",
     headerImg: undefined,
     pageContent: <unit2.quantComp />,
   },
@@ -68,6 +74,7 @@ const COMPUTING_UNIT_LESSONS: Lesson[] = [
     unitId: "computing",
     title: "QUANTUM CIRCUITS",
     description: "",
+    tocId: "2.1",
     headerImg: undefined,
     pageContent: <unit2.quantCirc />,
   },
@@ -76,6 +83,7 @@ const COMPUTING_UNIT_LESSONS: Lesson[] = [
     unitId: "computing",
     title: "COMMON GATES",
     description: "",
+    tocId: "2.2",
     headerImg: undefined,
     pageContent: <unit2.commonGates />,
   },
@@ -84,6 +92,7 @@ const COMPUTING_UNIT_LESSONS: Lesson[] = [
     unitId: "computing",
     title: "CIRCUIT COMPILATION",
     description: "",
+    tocId: "2.3",
     headerImg: undefined,
     pageContent: <unit2.compile />,
   },
@@ -92,6 +101,7 @@ const COMPUTING_UNIT_LESSONS: Lesson[] = [
     unitId: "computing",
     title: "QUBIT MEASUREMENT",
     description: "",
+    tocId: "2.4",
     headerImg: undefined,
     pageContent: <p>TODO</p>,
   },
@@ -103,6 +113,7 @@ const ALGORITHMS_UNIT_LESSONS: Lesson[] = [
     unitId: "algorithms",
     title: "QUERY MODEL OF COMPUTATION",
     description: "",
+    tocId: "3.0",
     headerImg: undefined,
     pageContent: <unit3.query />,
   },
@@ -111,6 +122,7 @@ const ALGORITHMS_UNIT_LESSONS: Lesson[] = [
     unitId: "algorithms",
     title: "EXAMPLE ALGORITHMS",
     description: "",
+    tocId: "3.1",
     headerImg: undefined,
     pageContent: <p>TODO</p>,
   },
@@ -119,6 +131,7 @@ const ALGORITHMS_UNIT_LESSONS: Lesson[] = [
     unitId: "algorithms",
     title: "NISQ-ERA CHALLENGES",
     description: "",
+    tocId: "3.2",
     headerImg: undefined,
     pageContent: <p>TODO</p>,
   },

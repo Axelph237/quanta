@@ -128,54 +128,21 @@ function LessonsPageContent() {
           }}
           transition={GENTLE_EASE}
         >
-          {unit1.lessons.map((lesson, lessonIndex) => (
-            <LessonItem
-              key={lesson.id}
-              lesson={lesson}
-              displayUnit={lessonIndex === 0 ? unit1.title : false}
-              isActive={lessonIndex === activeIndex}
-              isOpened={lessonIndex === activeIndex && lessonOpened}
-              onClick={() => handleLessonClick(lessonIndex)}
-              viewportDims={viewportDims}
-            />
-          ))}
-          {unit2.lessons.map((lesson, lessonIndex) => (
-            <LessonItem
-              key={lesson.id}
-              lesson={lesson}
-              displayUnit={lessonIndex === 0 ? unit2.title : false}
-              isActive={unit1.lessons.length + lessonIndex === activeIndex}
-              isOpened={
-                unit1.lessons.length + lessonIndex === activeIndex &&
-                lessonOpened
-              }
-              onClick={() =>
-                handleLessonClick(unit1.lessons.length + lessonIndex)
-              }
-              viewportDims={viewportDims}
-            />
-          ))}
-          {unit3.lessons.map((lesson, lessonIndex) => (
-            <LessonItem
-              key={lesson.id}
-              lesson={lesson}
-              displayUnit={lessonIndex === 0 ? unit3.title : false}
-              isActive={
-                unit1.lessons.length + unit2.lessons.length + lessonIndex ===
-                activeIndex
-              }
-              isOpened={
-                unit1.lessons.length + unit2.lessons.length + lessonIndex ===
-                  activeIndex && lessonOpened
-              }
-              onClick={() =>
-                handleLessonClick(
-                  unit1.lessons.length + unit2.lessons.length + lessonIndex
-                )
-              }
-              viewportDims={viewportDims}
-            />
-          ))}
+          {LESSONS.map((lesson, index) => {
+            const [unitIdx, lessonIdx] = lesson.tocId.split(".").map(Number);
+
+            return (
+              <LessonItem
+                key={lesson.id}
+                lesson={lesson}
+                displayUnit={lessonIdx === 0 ? UNITS[unitIdx - 1].title : false}
+                isActive={index === activeIndex}
+                isOpened={index === activeIndex && lessonOpened}
+                onClick={() => handleLessonClick(index)}
+                viewportDims={viewportDims}
+              />
+            );
+          })}
         </motion.div>
 
         {/* Fixed Label Container */}
@@ -201,10 +168,14 @@ function LessonsPageContent() {
 
         {/* Lesson Bubbles */}
         <ol className="absolute flex flex-col items-center top-1/2 right-[var(--page-padding)] -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500">
-          {Array.from({ length: LESSONS.length }).map((_, index) => (
+          {LESSONS.map((lesson, index) => (
             <motion.li
               key={index}
-              className="w-[20px] rounded-lg m-2 bg-primary cursor-pointer"
+              className={`w-[20px] rounded-lg m-2 ${
+                lesson.tocId.split(".")[1] === "0"
+                  ? "bg-secondary"
+                  : "bg-primary"
+              } cursor-pointer`}
               initial={{ opacity: 0 }}
               animate={{
                 opacity: activeIndex === index ? 1 : 0.5,
