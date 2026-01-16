@@ -1,12 +1,12 @@
 import history from "./brief-history.mdx";
-import schrodingersEqn from "./schro-eqn.mdx";
 import superposition from "./superpos.mdx";
 import entanglement from "./entangle.mdx";
+import braKet from "./bra-ket.mdx";
 
 const unit1 = {
-    history,
-    schrodingersEqn,
-    superposition,
-    entanglement
-}
+  history,
+  superposition,
+  entanglement,
+  braKet,
+};
 export default unit1;

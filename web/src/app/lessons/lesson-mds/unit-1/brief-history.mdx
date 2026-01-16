@@ -1,6 +1,5 @@
 import PageSection from "@/lib/components/formatting/PageSection";
 import Callout from "@/lib/components/formatting/Callout";
-import Define from "@/lib/components/formatting/Define";
 import { SchrodingersCat } from "@/lib/components/Icons";
 
 {/* <PageSection> */}
@@ -12,10 +11,10 @@ The full history of modern quantum mechanics is beyond the scope of this lesson,
 Volcanic ash fills the air as lava spews down from the side of a volcano. You, a physicist, sit amidst the ash looking at the molten rock and wonder, "Hmm, how can I model the radiation emitted by this magma?" That is exactly what physicists were doing in the late 19th century. Well, maybe not exactly.
 
 ### Ultraviolet Catastrophe
-Prior to 1900, physicists were trying to model something called black body radiation. Lava is a good example of a black body, as light and energy hits its surface, the black hue absorbs most, if not all, of the energy. Black body radiation is the resultant radiation (or light) then emitted by this black body. Black body radiation was a surprisingly difficult thing to model at the time. The best description, called the [Rayleigh-Jeans Law](https://en.wikipedia.org/wiki/Rayleigh%E2%80%93Jeans_law), predicted that the radiation emitted by a black body would increase as the temperature of the black body increased. While this was a good description at large wavelengths of light, at small wavelengths this model predicted an infinite amount of radiation to be emitted (this is often dramatically called the Ultraviolet Catastrophe)!
+Prior to 1900, physicists were trying to model something called <span className="define-black-body">black body</span> radiation. It was a surprisingly difficult thing to model given the current understandings of the time! The best description, called the [Rayleigh-Jeans Law](https://en.wikipedia.org/wiki/Rayleigh%E2%80%93Jeans_law), predicted that the radiation (like heat) emitted by a black body would increase as the temperature of the black body increased. While this was a good description at large wavelengths of light, at small wavelengths this model predicted an infinite amount of radiation to be emitted (this is often dramatically called the Ultraviolet Catastrophe)! I hope we can all see how infinite energy being emitted might (as in will) break the laws of physics.
 
 ### The Silent Killer
-In the year 1900, a discovery was made! Physicist Max Planck proposed the first model successfully able to model black body radiation. He showed that the thermal radiation was in equilibrium with a set of harmonic oscillations (essentially, think of a black body as a bunch of "springs" that absorb and then emit radiation). The shocking detail: these oscillators could *only* ever have an integer (or *discrete*) energy level. To us, this comes naturally now. Things like the Bohr model of an atom only have specific energy levels an electron can be in. But to physicists of this era: this was a silent killer, overturning a century of intuition that the energy of an particle was continuous. Max Planck would go on to call the energy of one of these oscillators *quantized*, and the lower energy level of a particle of light a **quantum**. *Ladies and gentlemen, we've made it!*
+In the year 1900, a discovery was made! Physicist Max Planck proposed the first formulation successfully able to model black body radiation. He showed that thermal radiation was similar to a set of <span className="define-harm-osc">harmonic oscillators</span>. The shocking detail: these oscillators could *only* ever have an integer (or discrete) energy level. To us, this comes naturally now. Things like the Bohr model of an atom only have specific energy levels an electron can be in. But to physicists of this era this was a silent killer, overturning a century of intuition that the energy of an particle was continuous. Max Planck would go on to call the energy of one of these oscillators *quantized*, and the lower energy level of a particle of light a **quantum**. *Ladies and gentlemen, we've made it!*
 
 This wasn't the only amazing thing that came with this discovery, in the *same* paper, Max Planck stated that the energy level $E$ of one of these oscillators was proportional to its frequency $v$ by a factor of $h$, known now as the **Planck constant**.
 
@@ -28,17 +27,12 @@ is now called the **Planck relation**.
 <Callout title="Note" icon={<SchrodingersCat className="icon-sm" />} color="#2b7fff">
 From here, we are going to go a little fast! After Planck made this discovery, some of the most brilliant minds of the time began to take it to greater heights.
 </Callout>
-
 ### Quantization of Light
 Only five years later, in 1905, while studying the [photoelectric effect](https://en.wikipedia.org/wiki/Photoelectric_effect), Albert Einstein would apply this notion of quanta to light, stating it also had discrete levels of energy. A familiar equation was proposed:
 $$
 E=hf
 $$
 Where $f$ is the frequency of a light particle!
-
-### Quantization of Matter
-The year is 1913, and young Neils Bohr would be asked about [Balmer's formula](https://en.wikipedia.org/wiki/Balmer_series) for describing the emission spectrum of an atom. "As soon as I saw Balmer's formula, the whole thing was immediately clear to me." (NEEDS CITATION) Bohr would then go on to create a new model of the atom which had quantized electron orbits, what we previously mentioned, the aptly named Bohr model.
-
 ### Matter Is Waving?
 Well, in 1924, Louis de Broglie would make a stunning breakthrough: just like light, matter also has waving properties. In fact, he came to this hypothesis based off of Einstein's proposal regarding the the [photoelectric effect](https://en.wikipedia.org/wiki/Photoelectric_effect), and his hypothesis that a mass at rest is proportionally equivalent to its energy $E=m_0 c^2$. De Broglie stated that matter in motion thus appears to have a wavelength $\lambda$ inversely proportional to its momentum: 
 $$
@@ -53,7 +47,9 @@ This equation would both explain Bohr's quantization of atomic orbits, and show 
 ### The Unanswered Question
 In comes Erwin Schrödinger, who's name (or cat 🐈‍⬛) you've most certainly heard of. Schrödinger recognized an important next step in De Broglie's research: if matter waved, it should follow some <span className="define-wave-eqn">wave equation</span>.
 
-Only two years after De Broglie's proposal of the waving properties of matter, Erwin Schrödinger would make the discovery central to modern quantum mechanics. I'll break down the importance to us of this equation in the next lesson, but let me leave you off with this amazing equation and a little fun fact:
+Only two years after De Broglie's proposal of the waving properties of matter, Erwin Schrödinger would make the discovery central to modern quantum mechanics. This equation, derived from many of the previously mentioned formulas (and some others we don't have time for!) relates the energy of a quantum particle to its wave equation. 
+
+Now, scientists would be able to derive wave equations for a quantum particle given its energy state! For us, the wave equation is what we will manipulate to perform quantum calculations, so without this equation (and all the discoveries that came before), we would have no possibility of correctly modeling quantum systems!
 
 #### The Time-Dependent Schrödinger Equation
 $$

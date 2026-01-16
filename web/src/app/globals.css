@@ -312,5 +312,5 @@ mjx-container {
 
 /* Definitions */
 [class*="define-"] {
-  @apply !text-secondary hover:!text-secondary-hover !font-bold !cursor-help;
+  @apply !text-secondary hover:!text-secondary-hover !cursor-help;
 }

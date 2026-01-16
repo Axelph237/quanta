@@ -37,6 +37,21 @@ const vocab: { [key: string]: Vocab } = {
     definition:
       "The potential function ($U$) describes the potential energy of a quantum system. Like the drawing force between an electron and a hydrogen nucleus (one proton).",
   },
+  hconjugate: {
+    term: "Hermitian Conjugate",
+    definition:
+      "The Hermitian conjugate is the conjugate ($^*$) and transpose ($^T$) of a matrix $A$ such that $A^{(*)(T)}=A^\\dagger$. i.e. $$\\begin{bmatrix}2+i & 4-2i\\end{bmatrix}^\\dagger=\\begin{bmatrix}2-i \\\\ 4+2i\\end{bmatrix}$$",
+  },
+  "black-body": {
+    term: "Black Body",
+    definition:
+      "A black body is an object that absorbs all incident radiation (hence the color black), also emitting all radiation it absorbs.",
+  },
+  "harm-osc": {
+    term: "Harmonic Oscillator",
+    definition:
+      "A harmonic oscillator is a system that oscillates at a constant frequency $v$.",
+  },
 };
 
 /* The Tooltip component that renders on a user's hover */
@@ -110,7 +125,10 @@ function wireElement(
 
   el.tabIndex = el.tabIndex >= 0 ? el.tabIndex : 0;
   const vocab = getVocab(el);
-  if (!vocab) return () => {};
+  if (!vocab) {
+    console.error("Failed to find definition for element", el);
+    return () => {};
+  }
 
   const onEnter = () => setState({ open: true, anchor: el, vocab });
   const onLeave = () => setState({ open: false });
@@ -149,15 +167,7 @@ export function DefineTooltips({
     const term = Array.from(el.classList)
       .find((c) => c.startsWith("define-"))
       ?.split("define-")[1];
-    if (!term) {
-      console.error(
-        'Failed to find definition for term "' +
-          term +
-          '" while wiring element to handle hover events. Element:',
-        el
-      );
-      return null;
-    }
+    if (!term) return null;
     return vocab[term];
   };
 

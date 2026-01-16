@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "outline.md",
+                "file": "web/src/app/lessons/lesson-mds/unit-1/entangle.mdx",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "outline"
+              "title": "entangle"
             }
           },
           {
@@ -27,28 +27,15 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "web/src/app/lessons/lesson-mds/unit-3/example-alogs.mdx",
+                "file": "web/src/app/lessons/lesson-mds/unit-1/bra-ket.mdx",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "example-alogs"
-            }
-          },
-          {
-            "id": "77b6aeff51c301e4",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.11.4"
-              },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.11.4"
+              "title": "bra-ket"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -210,23 +197,23 @@
       "bases:Create new base": false
     }
   },
-  "active": "77b6aeff51c301e4",
+  "active": "9efb55c7e1199281",
   "lastOpenFiles": [
+    "web/src/app/lessons/lesson-mds/unit-1/superpos.mdx",
+    "web/src/app/lessons/lesson-mds/unit-2/common-gates.mdx",
+    "web/src/app/lessons/lesson-mds/unit-1/entangle.mdx",
+    "web/src/app/lessons/lesson-mds/unit-1/brief-history.mdx",
+    "web/src/app/lessons/lesson-mds/unit-1/bra-ket.mdx",
+    "outline.md",
+    "web/src/app/lessons/lesson-mds/unit-3/example-alogs.mdx",
     "web/src/app/about/template.tsx",
     "web/src/app/about/layout.tsx",
     "web/src/app/about/page.tsx.disabled",
     "web/src/app/about/page.mdx",
     "web/src/app/lessons/definitions.ts",
-    "web/src/app/lessons/definitions.tsx",
-    "web/src/components/formatting/Define.tsx",
-    "web/src/app/lessons/[lessonid]/bad.tsx",
-    "web/src/components/react-bits/GradientText.tsx",
-    "web/src/components/react-bits/StarBorder.tsx",
-    "web/src/components/react-bits/TiltedCard.tsx",
     "web/src/app/icon.svg",
     "web/src/app/logo.svg",
     "web/src/app/cat-logo.svg",
-    "outline.md",
     "web/src/app/lessons/(mds)/unit-2/Untitled.md",
     "web/src/app/lessons/[lessonid]/(mds)/unit-1/schro-eqn.md",
     "README.md"

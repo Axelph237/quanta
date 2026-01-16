@@ -29,12 +29,12 @@ const MECHANICS_UNIT_LESSONS: Lesson[] = [
     pageContent: <unit1.history />,
   },
   {
-    id: "schro-eqn",
+    id: "bra-ket",
     unitId: "mechanics",
-    title: "SCHRÖDINGER'S EQUATION",
-    description: "",
+    title: "BRA-KET NOTATION",
+    description: "Hiiiiiii",
     headerImg: undefined,
-    pageContent: <unit1.schrodingersEqn />,
+    pageContent: <unit1.braKet />,
   },
   {
     id: "superposition",
