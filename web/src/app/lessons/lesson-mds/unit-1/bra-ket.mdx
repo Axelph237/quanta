@@ -1,0 +1,24 @@
+import Callout from "@/lib/components/formatting/Callout";
+import { SchrodingersCat } from "@/lib/components/Icons";
+
+# Bra-Ket Notation
+Often, you will see the quantum wave equation $\Psi$ often shown surrounded by these $|...\rangle$ or these $\langle ... |$ symbols. So what are these? The aptly named "bra" $\langle ...|$ and "ket" $|...\rangle$ in short represent vectors!
+
+
+The **ket** $|...\rangle$ represents a vector $\alpha$ such that $a=|a\rangle$. Essentially, these just represent the vector itself.
+
+The **bra** $\langle ...|$ (although largely unused in our lessons) represents the <span className="define-hconjugate">Hermitian conjugate</span> of our vector $a$ such that $a^\dagger=\langle a|$.
+
+<Callout title="Elephant In The Room"  icon={<SchrodingersCat className="icon-sm" />} color="#2b7fff">
+You may not have noticed it, but there is an elephant in the room. Technically, these definitions for bras and kets are oversimplified. While kets are largely what we described, bras are more mathematically complicated. We decided to skip these details, and instead present only what was necessary to the topics at hand.
+</Callout>
+
+## In Quantum Computing
+For our purposes in quantum computing, bras and kets are used to represent the possible states of a system. Most of the time, we just use kets in our equations (except when taking the measurement of or the inner product of a state). Here's an example state:
+
+$$
+\Psi=\frac{1}{\sqrt{2}}(|0010\rangle+|1100\rangle)
+$$
+where $|\alpha\rangle|\beta\rangle=|\alpha\beta\rangle$.
+
+*We will skip talking more about bras as they do not come up in any of our other lessons :)*
