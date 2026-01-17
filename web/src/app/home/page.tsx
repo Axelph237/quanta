@@ -148,14 +148,14 @@ function HomeContent() {
             delay={75}
             animateBy="letters"
             direction="top"
-            className={`${fromLanding ? "mb-4" : ""} text-[12rem] font-bold ${
-              outfit.className
-            }`}
+            className={`${
+              fromLanding ? "mb-4" : ""
+            } text-center text-[12rem] font-bold ${outfit.className}`}
             onAnimationComplete={() => console.log("Completed anim")}
           />
           {!fromLanding && (
             <motion.p
-              className={`mb-4 text-lg opacity-50 ${outfit.className}`}
+              className={`mb-4 text-center text-lg opacity-50 ${outfit.className}`}
               initial={{
                 opacity: 0,
               }}
