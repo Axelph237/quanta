@@ -60,7 +60,9 @@ export default function LessonPage({
           )}
           {lesson?.title && (
             <motion.h2 className="absolute flex top-0 left-0 w-[100vw] h-[100vh] text-center justify-center items-center">
-              <span className="text-4xl scale-200">{lesson.title}</span>
+              <span className="text-2xl font-bold scale-200 w-[25vw]">
+                {lesson.title}
+              </span>
             </motion.h2>
           )}
         </div>

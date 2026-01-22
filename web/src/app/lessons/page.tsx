@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useRef } from "react";
 import { motion, useAnimate } from "framer-motion";
 import Image from "next/image";
 import { outfit } from "@/app/fonts";
@@ -28,6 +28,7 @@ function LessonsPageContent() {
   const [activeIndex, setActiveIndex] = useState(
     selectedLessonIndex !== -1 ? selectedLessonIndex : 0
   );
+  const [guideOpened, setGuideOpened] = useState(false);
   const [lessonOpened, setLessonOpened] = useState(false);
   const [viewportDims, setViewportDims] = useState({ width: 0, height: 0 });
   const [logoShift, setLogoShift] = useState<number>(0);
@@ -167,11 +168,15 @@ function LessonsPageContent() {
         </div> */}
 
         {/* Lesson Bubbles */}
-        <ol className="absolute flex flex-col items-center top-1/2 right-[var(--page-padding)] -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500">
+        <motion.ol
+          animate={{ translateX: lessonOpened ? "25vw" : 0 }}
+          transition={GENTLE_EASE}
+          className="absolute flex flex-col items-center top-1/2 right-[var(--page-padding)] -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500 whitespace-nowrap min-w-[20px] "
+        >
           {LESSONS.map((lesson, index) => (
             <motion.li
               key={index}
-              className={`w-[20px] rounded-lg m-2 ${
+              className={`w-full rounded-lg my-2 ${
                 lesson.tocId.split(".")[1] === "0"
                   ? "bg-secondary"
                   : "bg-primary"
@@ -185,7 +190,7 @@ function LessonsPageContent() {
               onClick={() => handleLessonClick(index)}
             ></motion.li>
           ))}
-        </ol>
+        </motion.ol>
       </motion.main>
       <motion.div
         initial={{ opacity: 1 }}
@@ -226,6 +231,25 @@ function LessonItem({
   onClick: () => void;
   viewportDims: { height: number; width: number };
 }) {
+  const titleRef = useRef<HTMLDivElement>(null);
+  const unitRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Position unit title about lesson title
+    // Unit title is absolutely positioned, so we need to set the unit title's height manually
+    if (titleRef.current && unitRef.current) {
+      const titleRect = titleRef.current.getBoundingClientRect();
+      const unitRect = unitRef.current.getBoundingClientRect();
+
+      const titleHeight = titleRect.height;
+      const unitHeight = unitRect.height;
+
+      const totalHeight = titleHeight + unitHeight;
+
+      unitRef.current.style.height = `${totalHeight}px`;
+    }
+  }, []);
+
   return (
     <motion.div
       className={`relative lesson-container cursor-pointer shrink-0 bg-primary text-on-surface ${outfit.className}`}
@@ -261,20 +285,15 @@ function LessonItem({
           //   : "var(--color-on-surface)",
         }}
         transition={GENTLE_EASE}
-        className="absolute flex flex-col top-0 h-full text-center justify-center items-center text-4xl"
+        className="absolute flex flex-col top-0 h-full text-center justify-center items-center font-bold text-2xl"
       >
         {displayUnit && (
           <motion.div
-            className="absolute w-fit text-xl font-bold"
+            className="absolute w-fit"
             initial={{ opacity: 0 }}
             animate={{ opacity: isOpened ? 0 : 0.75 }}
             transition={GENTLE_EASE}
-            style={{
-              transform:
-                lesson.title.length > 20
-                  ? "translateY(-200%)"
-                  : "translateY(-125%)",
-            }}
+            ref={unitRef}
           >
             <GradientText
               colors={[
@@ -284,11 +303,13 @@ function LessonItem({
               ]}
               animationSpeed={3}
             >
-              {displayUnit}
+              <span className="font-bold text-lg">{displayUnit}</span>
             </GradientText>
           </motion.div>
         )}
-        <span className="w-[30vw]">{lesson.title}</span>
+        <span ref={titleRef} className="w-[25vw]">
+          {lesson.title}
+        </span>
       </motion.h2>
     </motion.div>
   );
