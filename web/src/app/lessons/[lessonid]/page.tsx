@@ -26,7 +26,7 @@ export default function LessonPage({
   const handleLogoClick = () => {
     redirect(
       "/lessons" + (lesson ? "?selected=" + lesson.id : ""),
-      RedirectType.push
+      RedirectType.push,
     );
   };
 

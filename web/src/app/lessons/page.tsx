@@ -1,14 +1,34 @@
 "use client";
 
-import { useState, useEffect, Suspense, useRef } from "react";
-import { motion, useAnimate } from "framer-motion";
+import {
+  useState,
+  useEffect,
+  Suspense,
+  useRef,
+  RefObject,
+  useLayoutEffect,
+} from "react";
+import {
+  AnimationPlaybackControls,
+  scroll,
+  motion,
+  MotionValue,
+  useAnimate,
+  useInView,
+  useMotionTemplate,
+  useMotionValue,
+  useMotionValueEvent,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import Image from "next/image";
 import { outfit } from "@/app/fonts";
 import { redirect, RedirectType, useSearchParams } from "next/navigation";
 import Logo from "@/lib/components/Logo";
 import useComputedCSS from "@/lib/hooks/useComputedCSS";
 import { GENTLE_EASE } from "../globals";
-import { Lesson, LESSONS, UNITS } from "./lessons";
+import { Lesson, LESSONS, Unit, UNITS } from "./lessons";
 import GradientText from "@/lib/components/react-bits/GradientText";
 
 const GAP = 64; // gap-16 is 4rem = 64px
@@ -20,17 +40,15 @@ function LessonsPageContent() {
   const searchParams = useSearchParams();
   const selectedLessonId = searchParams.get("selected");
   const selectedLessonIndex = LESSONS.findIndex(
-    (l) => l.id === selectedLessonId
+    (l) => l.id === selectedLessonId,
   );
 
   const { cssvar, csstopx } = useComputedCSS();
 
-  const [activeIndex, setActiveIndex] = useState(
-    selectedLessonIndex !== -1 ? selectedLessonIndex : 0
+  const [focusedIndex, setFocusedIndex] = useState(
+    selectedLessonIndex !== -1 ? selectedLessonIndex : 0,
   );
-  const [guideOpened, setGuideOpened] = useState(false);
-  const [lessonOpened, setLessonOpened] = useState(false);
-  const [viewportDims, setViewportDims] = useState({ width: 0, height: 0 });
+  const [lessonOpened, setLessonOpened] = useState<number | false>(false);
   const [logoShift, setLogoShift] = useState<number>(0);
 
   const [redirecting, setRedirecting] = useState(false);
@@ -38,7 +56,6 @@ function LessonsPageContent() {
 
   useEffect(() => {
     const handleResize = () => {
-      setViewportDims({ height: window.innerHeight, width: window.innerWidth });
       const logoWidth = document
         .getElementById("logo")!
         .getBoundingClientRect().width;
@@ -46,27 +63,14 @@ function LessonsPageContent() {
         window.innerWidth * 0.5 -
           logoWidth / 2 -
           Number(csstopx(cssvar("--page-padding", document.body))) -
-          7 // HUH
+          7, // HUH
       );
     };
     handleResize(); // Set initial height
     window.addEventListener("resize", handleResize);
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  // Calculate the y-offset to center the active item.
-  // We want the center of the active item to be at the center of the viewport.
-  // Item height is 50vh (viewportHeight * 0.5)
-  // Gap is fixed at 64px
-  // Item i center is at: i * (itemHeight + GAP) + itemHeight/2
-  // So we need to shift up by that amount.
-  const itemHeight = viewportDims.height * 0.4;
-  const yOffset =
-    -(
-      activeIndex * (itemHeight + GAP) +
-      (lessonOpened ? viewportDims.height : itemHeight) / 2
-    ) +
-    viewportDims.height * 0.5;
 
   const handleHomeRedirect = async () => {
     setRedirecting(true);
@@ -76,26 +80,38 @@ function LessonsPageContent() {
   };
 
   const handleLessonClick = (index: number) => {
-    if (index === activeIndex) {
-      setLessonOpened(!lessonOpened);
-    } else {
-      setActiveIndex(index);
+    setLessonOpened(index);
+    setTimeout(() => {
+      redirect(`/lessons/${LESSONS[index].id}`, RedirectType.push);
+    }, 1000);
+  };
+
+  // When sidebar blob is clicked, scroll to corresponding lesson
+  const handleLessonJump = (lesson: Lesson, index: number) => {
+    if (index !== focusedIndex) {
+      const lessonItem = document.getElementById(
+        `${lesson.id}-card`,
+      ) as HTMLDivElement;
+
+      if (lessonItem) {
+        lessonItem.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
     }
   };
 
-  useEffect(() => {
-    if (lessonOpened) {
-      setTimeout(() => {
-        redirect(`/lessons/${LESSONS[activeIndex].id}`, RedirectType.push);
-      }, 1000);
+  // When a lesson is scrolled into view
+  const handleLessonFocus = (index: number) => {
+    if (index !== focusedIndex) {
+      setFocusedIndex(index);
     }
-  }, [lessonOpened, activeIndex]);
+  };
 
   return (
     <>
+      {/* Top Bar */}
       <motion.div
         initial={{ opacity: 1 }}
-        animate={{ opacity: lessonOpened ? 0 : 1 }}
+        animate={{ opacity: lessonOpened !== false ? 0 : 1 }}
         transition={GENTLE_EASE}
         className="absolute left-0 top-0 w-[100vw] h-16 pointer-events-none z-1 bg-linear-to-b from-surface to-transparent"
       ></motion.div>
@@ -119,16 +135,18 @@ function LessonsPageContent() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         ref={scope}
-        className="fixed inset-0 h-screen w-screen overflow-hidden bg-surface text-on-surface flex items-center"
+        className={`relative inset-0 h-screen w-screen ${lessonOpened ? "overflow-hidden" : "overflow-y-scroll"} bg-surface text-on-surface flex items-center ${lessonOpened ? "" : ""}`}
       >
         {/* Carousel List */}
         <motion.div
-          className="absolute top-1/2 left-0 right-0 flex flex-col gap-16 items-center"
+          id="carousel-list"
+          className="absolute left-0 right-0 flex flex-col gap-18 items-center snap-center"
           animate={{
-            top: yOffset,
+            top: 0,
           }}
           transition={GENTLE_EASE}
         >
+          {/* <div className="shadow-item h-[40vh] w-full"></div> */}
           {LESSONS.map((lesson, index) => {
             const [unitIdx, lessonIdx] = lesson.tocId.split(".").map(Number);
 
@@ -136,42 +154,24 @@ function LessonsPageContent() {
               <LessonItem
                 key={lesson.id}
                 lesson={lesson}
-                displayUnit={lessonIdx === 0 ? UNITS[unitIdx - 1].title : false}
-                isActive={index === activeIndex}
-                isOpened={index === activeIndex && lessonOpened}
+                parentRef={scope}
+                // inViewRef={inViewTargetRef}
+                unit={lessonIdx === 0 ? UNITS[unitIdx - 1] : false}
+                isOpened={lessonOpened === index}
                 onClick={() => handleLessonClick(index)}
-                viewportDims={viewportDims}
+                onFocus={() => handleLessonFocus(index)}
+                // viewportDims={viewportDims}
               />
             );
           })}
+          <div className="shadow-item h-[100vh] w-full"></div>
         </motion.div>
 
-        {/* Fixed Label Container */}
-        {/* <div
-          className={`pointer-events-none fixed top-1/2 left-10 -translate-y-1/2 w-1/2 z-20 ${outfit.className}`}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIndex}
-              id="lesson-label"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="relative flex flex-col gap-4"
-            >
-              <h2 className="text-4xl text-on-surface bg-green-300">
-                {LESSONS[activeIndex].title}
-              </h2>
-            </motion.div>
-          </AnimatePresence>
-        </div> */}
-
-        {/* Lesson Bubbles */}
+        {/* Lesson Blobs */}
         <motion.ol
           animate={{ translateX: lessonOpened ? "25vw" : 0 }}
           transition={GENTLE_EASE}
-          className="absolute flex flex-col items-center top-1/2 right-[var(--page-padding)] -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500 whitespace-nowrap min-w-[20px] "
+          className="fixed flex flex-col items-center top-1/2 right-[var(--page-padding)] -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500 whitespace-nowrap min-w-[20px] "
         >
           {LESSONS.map((lesson, index) => (
             <motion.li
@@ -183,18 +183,18 @@ function LessonsPageContent() {
               } cursor-pointer`}
               initial={{ opacity: 0 }}
               animate={{
-                opacity: activeIndex === index ? 1 : 0.5,
-                height: activeIndex === index ? "40px" : "20px",
+                opacity: focusedIndex === index ? 1 : 0.8,
+                height: focusedIndex === index ? "40px" : "20px",
               }}
-              transition={GENTLE_EASE}
-              onClick={() => handleLessonClick(index)}
+              transition={{ duration: 0.2 }}
+              onClick={() => handleLessonJump(lesson, index)}
             ></motion.li>
           ))}
         </motion.ol>
       </motion.main>
       <motion.div
         initial={{ opacity: 1 }}
-        animate={{ opacity: lessonOpened ? 0 : 1 }}
+        animate={{ opacity: lessonOpened !== false ? 0 : 1 }}
         transition={GENTLE_EASE}
         className="absolute bottom-0 left-0 w-[100vw] h-16 pointer-events-none z-1 bg-linear-to-t from-surface to-transparent"
       ></motion.div>
@@ -216,25 +216,62 @@ export default function LessonsPage() {
   );
 }
 
+const SENSITIVITY = 0.15;
+const SPRING_CONFIG = { stiffness: 100, damping: 20 };
 function LessonItem({
   lesson,
-  displayUnit,
-  isActive,
+  unit,
+  parentRef,
   isOpened,
+  onFocus,
   onClick,
-  viewportDims,
 }: {
   lesson: Lesson;
-  displayUnit: string | false;
-  isActive: boolean;
+  unit: Unit | false;
+  parentRef: RefObject<HTMLDivElement | null>;
   isOpened: boolean;
+  onFocus: () => void;
   onClick: () => void;
-  viewportDims: { height: number; width: number };
+  // viewportDims: { height: number; width: number };
 }) {
-  const titleRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLSpanElement>(null);
   const unitRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const { scrollYProgress } = useScroll({
+    container: parentRef,
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const cardOpacityRaw = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [0.6, 1, 0.6],
+  );
+  const cardOpacity = useSpring(cardOpacityRaw, SPRING_CONFIG);
+
+  const scaleRaw = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
+  const scale = useSpring(scaleRaw, SPRING_CONFIG);
+
+  const detailOpacityRaw = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [0, 1, 0],
+  );
+  const detailOpacity = useSpring(detailOpacityRaw, SPRING_CONFIG);
+
+  const detailBlurRaw = useTransform(scrollYProgress, [0, 0.5, 1], [4, 0, 4]);
+  const detailBlur = useSpring(detailBlurRaw, SPRING_CONFIG);
+  const detailBlurTemplate = useMotionTemplate`blur(${detailBlur}px)`;
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest < 0.5 + SENSITIVITY && latest > 0.5 - SENSITIVITY) {
+      onFocus();
+    }
+  });
+
+  useLayoutEffect(() => {
     // Position unit title about lesson title
     // Unit title is absolutely positioned, so we need to set the unit title's height manually
     if (titleRef.current && unitRef.current) {
@@ -246,23 +283,36 @@ function LessonItem({
 
       const totalHeight = titleHeight + unitHeight;
 
-      unitRef.current.style.height = `${totalHeight}px`;
+      unitRef.current.style.height = `${totalHeight + 20}px`;
     }
-  }, []);
+  }, [titleRef, unitRef]);
+
+  useEffect(() => {
+    if (isOpened) {
+      const lessonItem = document.getElementById(
+        `${lesson.id}-card`,
+      ) as HTMLDivElement;
+      lessonItem.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [isOpened]);
 
   return (
     <motion.div
+      id={`${lesson.id}-card`}
       className={`relative lesson-container cursor-pointer shrink-0 bg-primary text-on-surface ${outfit.className}`}
       initial={{ width: "40vw", height: "40vh" }}
       animate={{
-        scale: isActive ? 1 : 0.8,
-        opacity: isActive ? 1 : 0.6,
+        top: isOpened ? "0" : "30vh",
         width: isOpened ? "100vw" : "40vw",
         height: isOpened ? "100vh" : "40vh",
       }}
-      style={{ pointerEvents: "auto" }}
+      style={{
+        opacity: !isOpened ? cardOpacity : 1,
+        scale: !isOpened ? scale : 1,
+      }}
       transition={GENTLE_EASE}
       onClick={onClick}
+      ref={containerRef}
     >
       {lesson.headerImg && (
         <Image
@@ -273,27 +323,25 @@ function LessonItem({
         />
       )}
       <motion.h2
-        initial={{ opacity: 0, x: viewportDims.width * 0.3, width: "30vw" }}
+        initial={{ x: "-30vw", width: "30vw" }}
         animate={{
-          opacity: isActive ? 1 : 0,
-          scale: isOpened ? 2 : 1,
-          x: isOpened ? 0 : -viewportDims.width * 0.3,
-          filter: isActive ? "blur(0px)" : "blur(20px)",
+          x: isOpened ? 0 : "-30vw",
           width: isOpened ? "100vw" : "30vw",
-          // color: isOpened
-          //   ? "var(--color-on-primary)"
-          //   : "var(--color-on-surface)",
+        }}
+        style={{
+          opacity: !isOpened ? detailOpacity : 1,
+          filter: !isOpened ? detailBlurTemplate : "blur(0)",
         }}
         transition={GENTLE_EASE}
         className="absolute flex flex-col top-0 h-full text-center justify-center items-center font-bold text-2xl"
       >
-        {displayUnit && (
+        {unit && (
           <motion.div
-            className="absolute w-fit"
+            ref={unitRef}
+            className="lesson-unit-title absolute w-fit"
             initial={{ opacity: 0 }}
             animate={{ opacity: isOpened ? 0 : 0.75 }}
             transition={GENTLE_EASE}
-            ref={unitRef}
           >
             <GradientText
               colors={[
@@ -303,13 +351,19 @@ function LessonItem({
               ]}
               animationSpeed={3}
             >
-              <span className="font-bold text-lg">{displayUnit}</span>
+              <span className="font-bold text-lg">{unit.title}</span>
             </GradientText>
           </motion.div>
         )}
-        <span ref={titleRef} className="w-[25vw]">
+        <motion.span
+          initial={{ scale: 1 }}
+          animate={{ scale: isOpened ? 2 : 1 }}
+          transition={GENTLE_EASE}
+          ref={titleRef}
+          className="lesson-title w-[25vw]"
+        >
           {lesson.title}
-        </span>
+        </motion.span>
       </motion.h2>
     </motion.div>
   );
