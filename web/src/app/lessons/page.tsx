@@ -9,14 +9,9 @@ import {
   useLayoutEffect,
 } from "react";
 import {
-  AnimationPlaybackControls,
-  scroll,
   motion,
-  MotionValue,
   useAnimate,
-  useInView,
   useMotionTemplate,
-  useMotionValue,
   useMotionValueEvent,
   useScroll,
   useSpring,
@@ -30,11 +25,6 @@ import useComputedCSS from "@/lib/hooks/useComputedCSS";
 import { GENTLE_EASE } from "../globals";
 import { Lesson, LESSONS, Unit, UNITS } from "./lessons";
 import GradientText from "@/lib/components/react-bits/GradientText";
-
-const GAP = 64; // gap-16 is 4rem = 64px
-const unit1 = UNITS[0];
-const unit2 = UNITS[1];
-const unit3 = UNITS[2];
 
 function LessonsPageContent() {
   const searchParams = useSearchParams();
@@ -294,7 +284,7 @@ function LessonItem({
       ) as HTMLDivElement;
       lessonItem.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-  }, [isOpened]);
+  }, [isOpened, lesson]);
 
   return (
     <motion.div
