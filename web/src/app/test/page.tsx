@@ -9,8 +9,11 @@ export default function TestPage() {
   const [circuit, setCircuit] = useState(createEmptyCircuit(4, 6));
 
   return (
-    <div className="w-[100vw] h-[100vh] flex flex-col items-center justify-center">
-      <div className="h-fit w-fit flex flex-row gap-4">
+    <div className="w-[100vw] h-[100vh] flex flex-col gap-20 items-center justify-center">
+      {/* Game Components */}
+      <div>hello</div>
+      {/* Circuit Builder */}
+      <div className="w-full h-fit flex flex-row items-center justify-center">
         <GatePalette />
         <CircuitView circuit={circuit} setCircuit={setCircuit} />
       </div>

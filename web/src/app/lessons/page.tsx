@@ -25,6 +25,8 @@ import useComputedCSS from "@/lib/hooks/useComputedCSS";
 import { GENTLE_EASE } from "../globals";
 import { Lesson, LESSONS, Unit, UNITS } from "./lessons";
 import GradientText from "@/lib/components/react-bits/GradientText";
+import ShinyText from "@/lib/components/react-bits/ShinyText";
+import * as icons from "@/lib/components/Icons";
 
 function LessonsPageContent() {
   const searchParams = useSearchParams();
@@ -59,7 +61,9 @@ function LessonsPageContent() {
     handleResize(); // Set initial height
     window.addEventListener("resize", handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const handleHomeRedirect = async () => {
@@ -107,7 +111,7 @@ function LessonsPageContent() {
       ></motion.div>
 
       <motion.header
-        className="w-fit"
+        className="w-fit gap-0 flex flex-col"
         animate={{ left: redirecting ? logoShift : 0 }}
         transition={GENTLE_EASE}
       >
@@ -115,8 +119,19 @@ function LessonsPageContent() {
           id="logo"
           textVisible={redirecting}
           onClick={handleHomeRedirect}
-          className="cursor-pointer"
+          className="cursor-pointer w-fit"
         />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: redirecting || focusedIndex !== 0 ? 0 : 1,
+          }}
+          transition={{ duration: 0.2 }}
+          className="flex place-self-start text-surface-variant gap-2"
+        >
+          <icons.Click className="icon-sm" />
+          <ShinyText text="Click to return Home" />
+        </motion.div>
       </motion.header>
 
       {/* Main Container: Fixed and hidden overflow to act as the viewport for the carousel */}

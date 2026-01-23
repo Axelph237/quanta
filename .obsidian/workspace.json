@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "web/src/app/lessons/lesson-mds/unit-1/entangle.mdx",
+                "file": "web/src/app/lessons/lesson-mds/unit-1/brief-history.mdx",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "entangle"
+              "title": "brief-history"
             }
           },
           {
@@ -199,9 +199,9 @@
   },
   "active": "9efb55c7e1199281",
   "lastOpenFiles": [
+    "web/src/app/lessons/lesson-mds/unit-1/entangle.mdx",
     "web/src/app/lessons/lesson-mds/unit-1/superpos.mdx",
     "web/src/app/lessons/lesson-mds/unit-2/common-gates.mdx",
-    "web/src/app/lessons/lesson-mds/unit-1/entangle.mdx",
     "web/src/app/lessons/lesson-mds/unit-1/brief-history.mdx",
     "web/src/app/lessons/lesson-mds/unit-1/bra-ket.mdx",
     "outline.md",

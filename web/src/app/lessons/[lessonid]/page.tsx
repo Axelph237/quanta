@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import { getLessonById, Lesson } from "../lessons";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { redirect, RedirectType } from "next/navigation";
 import { GENTLE_EASE } from "@/app/globals";
 import Logo from "@/lib/components/Logo";
 import { DefineTooltips } from "@/lib/components/DefineTooltip";
+import ShinyText from "@/lib/components/react-bits/ShinyText";
+import * as icons from "@/lib/components/Icons";
 
 export default function LessonPage({
   params,
@@ -15,6 +17,8 @@ export default function LessonPage({
   params: Promise<{ lessonid: string }>;
 }) {
   const [lesson, setLesson] = useState<Lesson | undefined>(undefined);
+  const { scrollYProgress } = useScroll();
+  const breadcrumbOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   useEffect(() => {
     params.then((resolvedParams) => {
@@ -38,12 +42,23 @@ export default function LessonPage({
         animate={{ left: 0 }}
         transition={GENTLE_EASE}
       >
-        <Logo
-          id="logo"
-          textVisible={false}
-          onClick={handleLogoClick}
-          className="cursor-pointer"
-        />
+        <div className="flex flex-col items-center">
+          <Logo
+            id="logo"
+            textVisible={false}
+            onClick={handleLogoClick}
+            className="cursor-pointer"
+          />
+
+          <motion.div
+            style={{ opacity: breadcrumbOpacity }}
+            transition={GENTLE_EASE}
+            className="flex place-self-start text-white gap-2"
+          >
+            <icons.Click className="icon-sm" />
+            Click to return to Lessons
+          </motion.div>
+        </div>
       </motion.header>
       <motion.main className="block flex flex-col items-center justify-start">
         <div className="relative top-0 left-0 w-[100vw] h-[100vh]">

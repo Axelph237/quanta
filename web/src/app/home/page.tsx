@@ -62,7 +62,7 @@ function HomeContent() {
         -(window.innerWidth * 0.5) +
           Number(csstopx(cssvar("--page-padding", document.body))) +
           logoWidth / 2 +
-          7 // I have 0 idea where this comes from but apparently it works? There is a 7 px diff between
+          7, // I have 0 idea where this comes from but apparently it works? There is a 7 px diff between
         // the left edge of the logo on this page, and the left edge of the logo on the lessons page
       );
     };
@@ -87,7 +87,7 @@ function HomeContent() {
         x: "-100%",
         opacity: 0,
       },
-      GENTLE_EASE
+      GENTLE_EASE,
     );
 
     redirect("/lessons", RedirectType.push);
@@ -302,7 +302,7 @@ function ToyGates({
         angle: Math.random() * 360,
         speed: (Math.random() - 0.5) * 10 + 15,
         gate: gateComps[Math.floor(Math.random() * gateComps.length)],
-      }))
+      })),
     );
   }, [count]);
 
