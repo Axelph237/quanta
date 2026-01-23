@@ -15,7 +15,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <h4 className="text-xl font-semibold mb-2">{children}</h4>
     ),
     p: ({ children }) => (
-      <p className="mb-4 text-xl leading-relaxed">{children}</p>
+      <p className="mb-8 text-xl leading-relaxed">{children}</p>
     ),
     a: ({ href, children }) => (
       <a href={href} className="text-primary hover:underline">
