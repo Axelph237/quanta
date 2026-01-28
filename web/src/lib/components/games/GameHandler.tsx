@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { cloneElement, useEffect, useRef, useState } from "react";
 import Iridescence from "../react-bits/Iridescence";
 import { COLORS } from "@/app/globals";
-import { Eye, EyeOff } from "../Icons";
+import { Eye, EyeOff } from "../ui/Icons";
 
 const SUCCESS_MESSAGES = [
   "NICE!",

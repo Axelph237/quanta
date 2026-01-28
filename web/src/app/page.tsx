@@ -10,13 +10,13 @@ import {
   XGate,
   YGate,
   ZGate,
-} from "@/lib/components/Icons";
+} from "@/lib/components/ui/Icons";
 import { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
 import { motion, useAnimate } from "framer-motion";
 import { GENTLE_EASE } from "./globals";
 import { redirect, RedirectType } from "next/navigation";
-import Logo from "@/lib/components/Logo";
+import Logo from "@/lib/components/ui/Logo";
 import ShinyText from "@/lib/components/react-bits/ShinyText";
 
 // All available gate components
@@ -136,7 +136,7 @@ export default function LandingPage() {
           category: 0x0002, // Different category from draggable bodies
           mask: 0x0001, // Can still detect collisions with gates
         },
-      }
+      },
     );
     textSensorRef.current = textSensor;
     Composite.add(engine.world, textSensor);
@@ -213,7 +213,7 @@ export default function LandingPage() {
         {
           opacity: [1, 0],
         },
-        GENTLE_EASE
+        GENTLE_EASE,
       );
       redirect("/home?from=landing", RedirectType.push);
     }, 1200); // Wait for text to unblur

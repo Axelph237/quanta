@@ -12,14 +12,13 @@ import {
   useScroll,
   useSpring,
 } from "framer-motion";
-import NavText from "@/lib/components/NavText";
+import NavText from "@/lib/components/ui/NavText";
 import { Suspense, useEffect, useRef, useState } from "react";
 import useComputedCSS from "@/lib/hooks/useComputedCSS";
-import Logo from "@/lib/components/Logo";
+import Logo from "@/lib/components/ui/Logo";
 import { GENTLE_EASE } from "../globals";
 import { useSearchParams } from "next/navigation";
-import "./home.css";
-import Draggable from "@/lib/components/Draggable";
+import Draggable from "@/lib/components/ui/Draggable";
 import {
   HGate,
   NotGate,
@@ -28,7 +27,7 @@ import {
   XGate,
   YGate,
   ZGate,
-} from "@/lib/components/Icons";
+} from "@/lib/components/ui/Icons";
 
 function HomeContent() {
   const searchParams = useSearchParams();

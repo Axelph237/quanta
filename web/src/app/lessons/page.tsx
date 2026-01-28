@@ -20,13 +20,13 @@ import {
 import Image from "next/image";
 import { outfit } from "@/app/fonts";
 import { redirect, RedirectType, useSearchParams } from "next/navigation";
-import Logo from "@/lib/components/Logo";
+import Logo from "@/lib/components/ui/Logo";
 import useComputedCSS from "@/lib/hooks/useComputedCSS";
 import { GENTLE_EASE } from "../globals";
 import { Lesson, LESSONS, Unit, UNITS } from "./lessons";
 import GradientText from "@/lib/components/react-bits/GradientText";
 import ShinyText from "@/lib/components/react-bits/ShinyText";
-import * as icons from "@/lib/components/Icons";
+import * as icons from "@/lib/components/ui/Icons";
 
 function LessonsPageContent() {
   const searchParams = useSearchParams();

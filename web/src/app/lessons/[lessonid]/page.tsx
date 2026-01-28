@@ -6,10 +6,9 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { redirect, RedirectType } from "next/navigation";
 import { GENTLE_EASE } from "@/app/globals";
-import Logo from "@/lib/components/Logo";
-import { DefineTooltips } from "@/lib/components/DefineTooltip";
-import ShinyText from "@/lib/components/react-bits/ShinyText";
-import * as icons from "@/lib/components/Icons";
+import Logo from "@/lib/components/ui/Logo";
+import { DefineTooltips } from "@/lib/components/ui/DefineTooltip";
+import * as icons from "@/lib/components/ui/Icons";
 
 export default function LessonPage({
   params,
