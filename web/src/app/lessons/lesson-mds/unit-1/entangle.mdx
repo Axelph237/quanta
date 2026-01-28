@@ -1,3 +1,6 @@
+import GameHandler from "@/lib/components/games/GameHandler";
+import { DiceLevel } from "@/lib/components/games/DiceLevel";
+
 # Quantum Entanglement
 In essence, quantum entanglement is the ability for two quantum particles in a system to have wave functions that are inseparable. This is integral for quantum computing because it allows us to perform logical operations between multiple qubits. Let's build an intuition about quantum entanglement.
 ## Quantum Casino
@@ -20,3 +23,34 @@ $$
 \Psi=\frac{1}{\sqrt{2}}(|01\rangle+|00\rangle)
 $$
 it looks almost identical, with one key difference. Since both possible states contain $|0\rangle$ in the first particle, it can be factored into $$\Psi=|0\rangle \otimes \frac{1}{\sqrt{2}}(|1\rangle+|0\rangle)$$meaning this system is *not* entangled.
+
+<GameHandler
+        name="DICE"
+        description="Guess if the hidden dice are entangled or not based on the total dice sum."
+        levels={[
+          <DiceLevel
+            key={1}
+            numVisDice={2}
+            hidDice={[1, 3]}
+            autoReset={true}
+          />,
+          <DiceLevel
+            key={2}
+            numVisDice={2}
+            hidDice={[1, 1]}
+            autoReset={true}
+          />,
+          <DiceLevel
+            key={2}
+            numVisDice={3}
+            hidDice={[1, 1, 3]}
+            autoReset={true}
+          />,
+          <DiceLevel
+            key={2}
+            numVisDice={1}
+            hidDice={[1, 1, 1, 2]}
+            autoReset={true}
+          />,
+        ]}>
+</GameHandler>

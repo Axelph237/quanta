@@ -30,6 +30,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/components/BlurText.jsx", "src/app/about/page.tsx.disabled"  ],
+, "src/components/BlurText.jsx", "src/app/about/page.tsx.disabled", "src/lib/components/react-bits/Confetti.jsx"  ],
   "exclude": ["node_modules"]
 }

@@ -47,13 +47,13 @@ export default function LessonPage({
             id="logo"
             textVisible={false}
             onClick={handleLogoClick}
-            className="cursor-pointer"
+            className="cursor-pointer place-self-start"
           />
 
           <motion.div
             style={{ opacity: breadcrumbOpacity }}
             transition={GENTLE_EASE}
-            className="flex place-self-start text-white gap-2"
+            className=" flex place-self-start text-white gap-2"
           >
             <icons.Click className="icon-sm" />
             Click to return to Lessons

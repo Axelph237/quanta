@@ -1,4 +1,5 @@
 import type { MDXComponents } from "mdx/types";
+import Image from "next/image";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -43,6 +44,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <blockquote className="border-l-4 border-primary pl-4 italic my-4">
         {children}
       </blockquote>
+    ),
+    img: ({ src, alt }) => (
+      <Image src={src} alt={alt} className="w-full h-auto rounded-lg my-4" />
     ),
     ...components,
   };

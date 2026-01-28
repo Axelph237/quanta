@@ -199,6 +199,8 @@
   },
   "active": "9efb55c7e1199281",
   "lastOpenFiles": [
+    "web/src/lib/components/games/Dice.css",
+    "web/src/lib/components/games/Dice.tsx",
     "web/src/lib/components/games/DiceGame.tsx",
     "web/src/lib/components/games/GameHandler.tsx",
     "web/src/app/lessons/lesson-mds/unit-1/entangle.mdx",
@@ -209,8 +211,6 @@
     "outline.md",
     "web/src/app/lessons/lesson-mds/unit-3/example-alogs.mdx",
     "web/src/app/about/template.tsx",
-    "web/src/app/about/layout.tsx",
-    "web/src/app/about/page.tsx.disabled",
     "web/src/app/icon.svg",
     "web/src/app/logo.svg",
     "web/src/app/cat-logo.svg",
