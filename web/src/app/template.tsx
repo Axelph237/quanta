@@ -1,6 +1,9 @@
 "use client";
 
+import { AnalyticsProvider } from "@/lib/components/providers/AnalyticsProvider";
 import { useEffect, useState } from "react";
+
+const MOBILE_SIZE = 768;
 
 function MobileWarning() {
   return (
@@ -39,30 +42,27 @@ export default function RootTemplate({
 }: {
   children: React.ReactNode;
 }) {
-  const [isMobile, setIsMobile] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
-    setMounted(true);
+    const mql = window.matchMedia(`(max-width: ${MOBILE_SIZE - 1}px)`);
 
-    // Check if device is phone-sized (less than 768px width)
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const onChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsMobile(e.matches);
     };
+    onChange(mql); // initial call
 
-    // Initial check
-    checkMobile();
-
-    // Listen for resize events
-    window.addEventListener("resize", checkMobile);
-
-    return () => window.removeEventListener("resize", checkMobile);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
   }, []);
 
-  // Prevent hydration mismatch by not rendering until client-side
-  if (!mounted) {
+  if (isMobile === undefined) {
     return null;
   }
 
-  return isMobile ? <MobileWarning /> : <>{children}</>;
+  return isMobile ? (
+    <MobileWarning />
+  ) : (
+    <AnalyticsProvider>{children}</AnalyticsProvider>
+  );
 }
