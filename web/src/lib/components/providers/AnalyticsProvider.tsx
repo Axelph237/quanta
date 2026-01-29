@@ -1,9 +1,10 @@
 "use client";
 
+import AnalyticsEvent from "@/lib/types/analytics";
 import { createContext, useContext } from "react";
 
 interface AnalyticsContextType {
-  recordEvent: (event: string, data?: Record<string, unknown>) => void;
+  recordEvent: (event: AnalyticsEvent) => void;
 }
 
 // Creates the context for the AnalyticsProvider
@@ -29,8 +30,28 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("deviceId", deviceId);
   }
 
-  const recordEvent = (event: string, data?: Record<string, unknown>) => {
-    console.log("Event recorded:", event, data);
+  const recordEvent = (event: AnalyticsEvent) => {
+    console.log("Event recorded:", event);
+
+    // Event types:
+    // lesson_viewed
+    // lesson_closed
+    // game_started
+    // game_completed
+    // game_response
+
+    switch (event.type) {
+      case "lesson_viewed": // When a lesson is opened
+        break;
+      case "lesson_closed": // When a lesson is closed
+        break;
+      case "game_started": // When a game is started
+        break;
+      case "game_completed": // When a game is completed
+        break;
+      case "game_action": // When a user answers a question in a game
+        break;
+    }
   };
 
   return (
