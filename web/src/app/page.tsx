@@ -240,7 +240,7 @@ export default function LandingPage() {
             textAreaClear ? "" : "blur-md"
           }`}
         >
-          DEMYSTIFYING
+          QUANTA
         </motion.h1>
 
         <span
