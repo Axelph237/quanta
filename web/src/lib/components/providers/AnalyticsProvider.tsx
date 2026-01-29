@@ -1,11 +1,13 @@
 "use client";
 
-import AnalyticsEvent from "@/lib/types/analytics";
+import {
+  AnalyticsEvent,
+  AnalyticsContextType,
+  AnalyticsEventDocument,
+} from "@/lib/types/analytics";
 import { createContext, useContext } from "react";
 
-interface AnalyticsContextType {
-  recordEvent: (event: AnalyticsEvent) => void;
-}
+/* CONTEXT & HOOKS */
 
 // Creates the context for the AnalyticsProvider
 export const AnalyticsContext = createContext<AnalyticsContextType | null>(
@@ -20,37 +22,60 @@ export function useAnalytics() {
   }
   return context;
 }
-
 // Provider component for handling analytic data
 // Exposes recordEvent() for child components to record important events
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
+  // RETRIEVE OR GENERATE DEVICE ID
   let deviceId = localStorage.getItem("deviceId");
   if (!deviceId) {
     deviceId = crypto.randomUUID();
     localStorage.setItem("deviceId", deviceId);
   }
 
-  const recordEvent = (event: AnalyticsEvent) => {
-    console.log("Event recorded:", event);
-
-    // Event types:
-    // lesson_viewed
-    // lesson_closed
-    // game_started
-    // game_completed
-    // game_response
-
+  // FUNCTION EXPOSED IN CONTEXT
+  const recordEvent = async (event: AnalyticsEvent) => {
+    // Create a dedupe key to prevent duplicate events from being recorded
+    let eventId: string = `${deviceId}:${event.type}:`;
+    const timeBucket = Math.floor(Date.now() / 10_000); // 10 second time bucket
     switch (event.type) {
-      case "lesson_viewed": // When a lesson is opened
+      case "lesson_viewed":
+        eventId += `${event.lessonId}/${timeBucket}`;
         break;
-      case "lesson_closed": // When a lesson is closed
+      case "lesson_closed":
+        eventId += `${event.lessonId}/${timeBucket}`;
         break;
-      case "game_started": // When a game is started
+      case "game_started":
+        eventId += `${event.gameId}`;
         break;
-      case "game_completed": // When a game is completed
+      case "game_completed":
+        eventId += `${event.gameId}`;
         break;
-      case "game_action": // When a user answers a question in a game
+      case "game_action":
+        eventId += `${event.gameId}:${event.action}`;
         break;
+      case "question_answered":
+        eventId += `${event.gameId}:${event.questionId}`;
+        break;
+    }
+
+    const data: AnalyticsEventDocument = {
+      event,
+      deviceId,
+      eventId,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Forward data to server for storage
+    try {
+      await fetch("/api/analytic-events", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    } catch (err) {
+      console.error("Failed to record event:", err);
     }
   };
 

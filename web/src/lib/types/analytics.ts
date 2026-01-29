@@ -1,5 +1,11 @@
 import { Serializable } from "child_process";
 
+
+interface AnalyticsContextType {
+  recordEvent: (event: AnalyticsEvent) => void;
+}
+
+
 interface LessonViewedEvent {
     type: "lesson_viewed";
     lessonId: string;
@@ -34,6 +40,13 @@ interface QuestionAnsweredEvent {
     correct: boolean;
 }
 
+interface AnalyticsEventDocument {
+    eventId: string,
+    deviceId: string,
+    timestamp: string,
+    event: AnalyticsEvent,
+}
+
 type AnalyticsEvent = LessonViewedEvent | LessonClosedEvent | GameStartedEvent | GameCompletedEvent | GameActionEvent | QuestionAnsweredEvent;
 
-export default AnalyticsEvent;
+export type { AnalyticsEvent, AnalyticsContextType, AnalyticsEventDocument };

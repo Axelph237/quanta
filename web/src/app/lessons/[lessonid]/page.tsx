@@ -9,12 +9,14 @@ import { GENTLE_EASE } from "@/app/globals";
 import Logo from "@/lib/components/ui/Logo";
 import { DefineTooltips } from "@/lib/components/ui/DefineTooltip";
 import * as icons from "@/lib/components/ui/Icons";
+import { useAnalytics } from "@/lib/components/providers/AnalyticsProvider";
 
 export default function LessonPage({
   params,
 }: {
   params: Promise<{ lessonid: string }>;
 }) {
+  const { recordEvent } = useAnalytics();
   const [lesson, setLesson] = useState<Lesson | undefined>(undefined);
   const { scrollYProgress } = useScroll();
   const breadcrumbOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
@@ -23,8 +25,9 @@ export default function LessonPage({
     params.then((resolvedParams) => {
       // console.log("Lesson ID:", resolvedParams.lessonid);
       setLesson(getLessonById(resolvedParams.lessonid));
+      recordEvent({ type: "lesson_viewed", lessonId: resolvedParams.lessonid });
     });
-  }, [params]);
+  }, []);
 
   const handleLogoClick = () => {
     redirect(
