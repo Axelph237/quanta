@@ -143,16 +143,16 @@ function HomeContent() {
       >
         <HomeSection className="flex flex-col items-center justify-start">
           <BlurText
-            text="QUANTUM"
+            text="QUANTUM MADE EASY"
             delay={75}
-            animateBy="letters"
+            animateBy="words"
             direction="top"
             className={`${
               fromLanding ? "mb-4" : ""
-            } text-center text-[12rem] font-bold ${outfit.className}`}
+            } text-center text-[5rem] lg:text-[10rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
             onAnimationComplete={() => console.log("Completed anim")}
           />
-          {!fromLanding && (
+          {/* {!fromLanding && (
             <motion.p
               className={`mb-4 text-center text-lg opacity-50 ${outfit.className}`}
               initial={{
@@ -165,7 +165,7 @@ function HomeContent() {
             >
               made easy
             </motion.p>
-          )}
+          )} */}
           <div
             id="hero-img-container"
             className="flex overflow-hidden self-stretch pb-[var(--page-padding)]"
