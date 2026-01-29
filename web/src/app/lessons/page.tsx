@@ -302,74 +302,77 @@ function LessonItem({
   }, [isOpened, lesson]);
 
   return (
-    <motion.div
-      id={`${lesson.id}-card`}
-      className={`relative lesson-container cursor-pointer shrink-0 bg-primary text-on-surface ${outfit.className}`}
-      initial={{ width: "40vw", height: "40vh" }}
-      animate={{
-        top: isOpened ? "0" : "30vh",
-        width: isOpened ? "100vw" : "40vw",
-        height: isOpened ? "100vh" : "40vh",
-      }}
-      style={{
-        opacity: !isOpened ? cardOpacity : 1,
-        scale: !isOpened ? scale : 1,
-      }}
-      transition={GENTLE_EASE}
-      onClick={onClick}
-      ref={containerRef}
-    >
-      {lesson.headerImg && (
-        <Image
-          src={lesson.headerImg}
-          alt={lesson.title}
-          fill
-          className="object-cover"
-        />
-      )}
-      <motion.h2
-        initial={{ x: "-30vw", width: "30vw" }}
+    <>
+      <motion.div
+        id={`${lesson.id}-card`}
+        className={`relative lesson-container cursor-pointer shrink-0 bg-primary text-on-surface ${outfit.className}`}
+        initial={{ width: "40vw", height: "40vh" }}
         animate={{
-          x: isOpened ? 0 : "-30vw",
-          width: isOpened ? "100vw" : "30vw",
+          top: isOpened ? "0" : "30vh",
+          width: isOpened ? "100vw" : "40vw",
+          height: isOpened ? "100vh" : "40vh",
         }}
         style={{
-          opacity: !isOpened ? detailOpacity : 1,
-          filter: !isOpened ? detailBlurTemplate : "blur(0)",
+          opacity: !isOpened ? cardOpacity : 1,
+          scale: !isOpened ? scale : 1,
         }}
         transition={GENTLE_EASE}
-        className="absolute flex flex-col top-0 h-full text-center justify-center items-center font-bold text-2xl"
+        onClick={onClick}
+        ref={containerRef}
       >
-        {unit && (
-          <motion.div
-            ref={unitRef}
-            className="lesson-unit-title absolute w-fit"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isOpened ? 0 : 0.75 }}
-            transition={GENTLE_EASE}
-          >
-            <GradientText
-              colors={[
-                "var(--color-primary)",
-                "var(--color-primary-container)",
-                "var(--color-primary)",
-              ]}
-              animationSpeed={3}
-            >
-              <span className="font-bold text-lg">{unit.title}</span>
-            </GradientText>
-          </motion.div>
+        {lesson.headerImg && (
+          <Image
+            src={lesson.headerImg}
+            alt={lesson.title}
+            fill
+            className="object-cover"
+          />
         )}
-        <motion.span
-          initial={{ scale: 1 }}
-          animate={{ scale: isOpened ? 2 : 1 }}
+        <motion.h2
+          initial={{ x: "-30vw", width: "30vw" }}
+          animate={{
+            x: isOpened ? 0 : "-30vw",
+            width: isOpened ? "100vw" : "30vw",
+          }}
+          style={{
+            opacity: !isOpened ? detailOpacity : 1,
+            filter: !isOpened ? detailBlurTemplate : "blur(0)",
+          }}
           transition={GENTLE_EASE}
-          ref={titleRef}
-          className="lesson-title w-[25vw]"
+          className="absolute flex flex-col top-0 h-full text-center justify-center items-center font-bold text-2xl"
         >
-          {lesson.title}
-        </motion.span>
-      </motion.h2>
-    </motion.div>
+          {unit && (
+            <motion.div
+              ref={unitRef}
+              className="lesson-unit-title absolute w-fit"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isOpened ? 0 : 0.75 }}
+              transition={GENTLE_EASE}
+            >
+              <GradientText
+                colors={[
+                  "var(--color-primary)",
+                  "var(--color-primary-container)",
+                  "var(--color-primary)",
+                ]}
+                animationSpeed={3}
+              >
+                <span className="font-bold text-lg">{unit.title}</span>
+              </GradientText>
+            </motion.div>
+          )}
+          <motion.span
+            initial={{ scale: 1 }}
+            animate={{ scale: isOpened ? 2 : 1 }}
+            transition={GENTLE_EASE}
+            ref={titleRef}
+            className="lesson-title w-[25vw]"
+          >
+            {lesson.title}
+          </motion.span>
+        </motion.h2>
+      </motion.div>
+      {/* {isOpened && lesson.pageContent} */}
+    </>
   );
 }
