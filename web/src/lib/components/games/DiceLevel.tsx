@@ -43,15 +43,16 @@ enum SceneState {
 export function DiceLevel({
   numVisDice = 2,
   hidDice = [1, 3], // Dice values are not random. This is so that the game is semi-deterministic,
+  levelAPI,
   ...props
 }: {
   numVisDice: number;
   hidDice: number[];
-  autoReset?: boolean;
 } & GameComponentProps) {
   const [visRollValues, setVisRollValues] = useState<number[]>([]);
 
   const [sceneState, setSceneState] = useState<SceneState>(SceneState.READY);
+  const [guessStartTime, setGuessStartTime] = useState<number | null>(null);
 
   const entangledBtn = useRef<HTMLButtonElement>(null);
   const unentangledBtn = useRef<HTMLButtonElement>(null);
@@ -75,7 +76,7 @@ export function DiceLevel({
   };
 
   const handleRoll = () => {
-    props.playing?.();
+    levelAPI.playing?.();
     setSceneState(SceneState.ROLLING);
   };
 
@@ -87,29 +88,34 @@ export function DiceLevel({
   // Evaluate the user's guess
   const evaluateGuess = (guess: string) => {
     const hidTotal = hidDice.reduce((a, b) => a + b, 0);
-    if (
+
+    const answer =
       hidDice.length === 1 ||
       hidTotal === hidDice.length ||
       hidTotal === hidDice.length * 6 ||
       hidTotal === hidDice.length * 6 - 1 ||
       hidTotal === hidDice.length + 1
-    ) {
-      // Is entangled
-      if (guess === "entangled") {
-        fireConfetti(entangledBtn);
-        setSceneState(SceneState.WIN);
-      } else {
-        setSceneState(SceneState.LOSE);
-      }
+        ? "entangled"
+        : "unentangled";
+
+    if (guess === answer) {
+      fireConfetti(answer === "entangled" ? entangledBtn : unentangledBtn);
+      setSceneState(SceneState.WIN);
     } else {
-      // Is unentangled
-      if (guess === "unentangled") {
-        fireConfetti(unentangledBtn);
-        setSceneState(SceneState.WIN);
-      } else {
-        setSceneState(SceneState.LOSE);
-      }
+      setSceneState(SceneState.LOSE);
     }
+
+    // Record the action
+    levelAPI.recordAction?.("dice_level_guess", {
+      guess,
+      answer,
+      guessTime: guessStartTime ? Date.now() - guessStartTime : undefined,
+      correct: guess === answer,
+      dice: {
+        visible: visRollValues,
+        hidden: hidDice,
+      },
+    });
   };
 
   // Async callback for handling visible dice landing
@@ -118,7 +124,7 @@ export function DiceLevel({
   };
 
   useEffect(() => {
-    props.ready?.();
+    levelAPI.ready?.();
   }, []);
 
   useEffect(() => {
@@ -129,14 +135,15 @@ export function DiceLevel({
   }, [props.startTrigger]);
 
   useEffect(() => {
-    if (sceneState === SceneState.WIN || sceneState === SceneState.LOSE) {
-      if (sceneState === SceneState.WIN) {
-        console.log("You win!");
-        props.end?.({ result: "win" });
-      } else {
-        console.log("You lose!");
-        props.end?.({ result: "lose" });
-      }
+    if (sceneState === SceneState.GUESSING) {
+      setGuessStartTime(Date.now());
+    } else if (
+      sceneState === SceneState.WIN ||
+      sceneState === SceneState.LOSE
+    ) {
+      levelAPI.end?.({
+        result: sceneState === SceneState.WIN ? "win" : "lose",
+      });
     }
   }, [sceneState]);
 

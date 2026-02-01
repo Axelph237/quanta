@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getLessonById, Lesson } from "../lessons";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -20,16 +20,18 @@ export default function LessonPage({
   const [lesson, setLesson] = useState<Lesson | undefined>(undefined);
   const { scrollYProgress } = useScroll();
   const breadcrumbOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const [lessonId, setLessonId] = useState<string | undefined>(undefined);
 
-  useEffect(() => {
-    params.then((resolvedParams) => {
-      // console.log("Lesson ID:", resolvedParams.lessonid);
-      setLesson(getLessonById(resolvedParams.lessonid));
-      recordEvent({ type: "lesson_viewed", lessonId: resolvedParams.lessonid });
-    });
-  }, []);
+  params.then((resolvedParams) => {
+    setLesson(getLessonById(resolvedParams.lessonid));
+    setLessonId(resolvedParams.lessonid);
+    recordEvent({ type: "lesson_viewed", lessonId: resolvedParams.lessonid });
+  });
 
   const handleLogoClick = () => {
+    if (lessonId) {
+      recordEvent({ type: "lesson_closed", lessonId: lessonId });
+    }
     redirect(
       "/lessons" + (lesson ? "?selected=" + lesson.id : ""),
       RedirectType.push,

@@ -2,7 +2,7 @@ import { Serializable } from "child_process";
 
 
 interface AnalyticsContextType {
-  recordEvent: (event: AnalyticsEvent) => void;
+  recordEvent: (event: AnalyticsEvent, timeBucket?: number) => void;
 }
 
 
@@ -33,6 +33,7 @@ interface GameActionEvent {
     details?: Serializable; // added details if action requires
 }
 
+// Last things to implement
 interface QuestionAnsweredEvent {
     type: "question_answered";
     gameId: string;

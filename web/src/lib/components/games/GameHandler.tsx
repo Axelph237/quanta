@@ -4,6 +4,8 @@ import { cloneElement, useEffect, useRef, useState } from "react";
 import Iridescence from "../react-bits/Iridescence";
 import { COLORS } from "@/app/globals";
 import { Eye, EyeOff } from "../ui/Icons";
+import { useAnalytics } from "../providers/AnalyticsProvider";
+import { Serializable } from "child_process";
 
 const SUCCESS_MESSAGES = [
   "NICE!",
@@ -30,9 +32,12 @@ enum GameState {
 }
 
 export interface GameComponentProps {
-  ready?: () => void;
-  playing?: () => void;
-  end?: ({ result }: { result: "win" | "lose" }) => void;
+  levelAPI: {
+    ready?: () => void;
+    playing?: () => void;
+    end?: ({ result }: { result: "win" | "lose" }) => void;
+    recordAction?: (action: string, details: Serializable) => void;
+  };
   startTrigger?: boolean;
 }
 
@@ -41,14 +46,17 @@ export interface GameComponentProps {
  * @returns
  */
 export default function GameHandler({
+  id,
   name,
   description,
   levels,
 }: {
+  id: string;
   name: string;
   description?: string;
   levels: Array<React.ReactElement<GameComponentProps>>;
 }) {
+  const { recordEvent } = useAnalytics();
   const [bgVisible, setBgVisible] = useState<boolean>(true);
   const [activeGame, setActiveGame] = useState<number>(0);
   const [activeState, setActiveState] = useState<GameState | null>(null);
@@ -56,6 +64,7 @@ export default function GameHandler({
   const [displayMessage, setDisplayMessage] = useState<string>("");
 
   const getRandomMessage = (messages: string[]) => {
+    // eslint-disable-next-line react-hooks/purity
     return messages[Math.floor(Math.random() * messages.length)];
   };
 
@@ -85,6 +94,41 @@ export default function GameHandler({
     setStartTrigger(false);
   };
 
+  const onAction = (action: string, details: Serializable) => {
+    recordEvent(
+      {
+        type: "game_action",
+        gameId: id,
+        action,
+        details: {
+          level: activeGame,
+          ...(typeof details === "object" ? details : { value: details }),
+        },
+      },
+      500, // 500ms time bucket
+    );
+  };
+
+  // Record analytics events
+  useEffect(() => {
+    if (activeState === GameState.PLAYING && activeGame === 0) {
+      // Record start of game
+      recordEvent({
+        type: "game_started",
+        gameId: id,
+      });
+    } else if (
+      activeState === GameState.END &&
+      activeGame === levels.length - 1
+    ) {
+      // Record end of game
+      recordEvent({
+        type: "game_completed",
+        gameId: id,
+      });
+    }
+  }, [activeState, activeGame, id, levels.length, recordEvent]);
+
   // Clone the game element and inject the event handlers
   let renderedLevel;
   if (activeGame >= levels.length) {
@@ -92,9 +136,12 @@ export default function GameHandler({
   } else {
     const level = levels[activeGame];
     renderedLevel = cloneElement(level, {
-      ready: onReady,
-      playing: onPlaying,
-      end: onEnd,
+      levelAPI: {
+        ready: onReady,
+        playing: onPlaying,
+        end: onEnd,
+        recordAction: onAction,
+      },
       startTrigger, // Boolean signal to start the internal game
     });
   }
@@ -207,7 +254,7 @@ function VictoryScreen() {
     const duration = 1000;
     const animationEnd = Date.now() + duration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-    const rect = ref.current?.getBoundingClientRect();
+    //const rect = ref.current?.getBoundingClientRect();
 
     const randomInRange = (min: number, max: number) =>
       Math.random() * (max - min) + min;
@@ -264,6 +311,7 @@ function DisplayMessage({ message }: { message: string }) {
   const [tilt, setTilt] = useState<number>(0);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTilt(Math.random() * 10 - 5);
   }, []);
 

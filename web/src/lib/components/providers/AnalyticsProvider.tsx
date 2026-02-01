@@ -33,16 +33,19 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   }
 
   // FUNCTION EXPOSED IN CONTEXT
-  const recordEvent = async (event: AnalyticsEvent) => {
+  const recordEvent = async (
+    event: AnalyticsEvent,
+    timeBucket: number = 10_000, // default 10 second time bucket
+  ) => {
     // Create a dedupe key to prevent duplicate events from being recorded
     let eventId: string = `${deviceId}:${event.type}:`;
-    const timeBucket = Math.floor(Date.now() / 10_000); // 10 second time bucket
+    const currentTimeBucket = Math.floor(Date.now() / timeBucket);
     switch (event.type) {
       case "lesson_viewed":
-        eventId += `${event.lessonId}/${timeBucket}`;
+        eventId += `${event.lessonId}`;
         break;
       case "lesson_closed":
-        eventId += `${event.lessonId}/${timeBucket}`;
+        eventId += `${event.lessonId}`;
         break;
       case "game_started":
         eventId += `${event.gameId}`;
@@ -57,6 +60,7 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
         eventId += `${event.gameId}:${event.questionId}`;
         break;
     }
+    eventId += `/${currentTimeBucket}`;
 
     const data: AnalyticsEventDocument = {
       event,
