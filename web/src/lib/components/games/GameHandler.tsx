@@ -32,11 +32,11 @@ enum GameState {
 }
 
 export interface GameComponentProps {
-  levelAPI: {
-    ready?: () => void;
-    playing?: () => void;
-    end?: ({ result }: { result: "win" | "lose" }) => void;
-    recordAction?: (action: string, details: Serializable) => void;
+  levelAPI?: {
+    ready: () => void;
+    playing: () => void;
+    end: ({ result }: { result: "win" | "lose" }) => void;
+    recordAction: (action: string, details: Serializable) => void;
   };
   startTrigger?: boolean;
 }
@@ -50,12 +50,21 @@ export default function GameHandler({
   name,
   description,
   levels,
+  bg,
 }: {
   id: string;
   name: string;
   description?: string;
   levels: Array<React.ReactElement<GameComponentProps>>;
+  bg?: React.ReactNode;
 }) {
+  const background = bg || (
+    <Iridescence
+      color={
+        COLORS.secondary.rgb.map((c) => c / 255) as [number, number, number]
+      }
+    />
+  );
   const { recordEvent } = useAnalytics();
   const [bgVisible, setBgVisible] = useState<boolean>(true);
   const [activeGame, setActiveGame] = useState<number>(0);
@@ -156,7 +165,10 @@ export default function GameHandler({
     startTrigger === false; // The game has not been started
 
   return (
-    <div className="relative rounded-lg border-2 border-on-surface p-10 overflow-hidden w-full h-1/2 min-h-fit">
+    <div
+      id={id}
+      className="relative rounded-lg border-2 border-on-surface p-10 overflow-hidden w-full h-1/2 min-h-fit"
+    >
       {/* First game has a "Play!" button, each sequential game has a "Ready?" button */}
       <AnimatePresence>
         {gameReady && (
@@ -172,14 +184,14 @@ export default function GameHandler({
             </h1>
             {activeGame === 0 ? (
               <button
-                className="cursor-pointer bg-on-surface text-surface rounded-full"
+                className="button-primary cursor-pointer bg-on-surface text-surface rounded-full"
                 onClick={handleClick}
               >
                 Play!
               </button>
             ) : (
               <button
-                className="cursor-pointer bg-on-surface text-surface rounded-full"
+                className="button-primary cursor-pointer bg-on-surface text-surface rounded-full"
                 onClick={handleClick}
               >
                 Ready?
@@ -227,14 +239,10 @@ export default function GameHandler({
         animate={{ opacity: bgVisible ? 1 : 0 }}
         className="absolute top-0 left-0 w-full h-full z-[-1] opacity-75"
       >
-        <Iridescence
-          color={
-            COLORS.secondary.rgb.map((c) => c / 255) as [number, number, number]
-          }
-        />
+        {background}
       </motion.div>
       <button
-        className="absolute !p-0 m-2 bottom-0 flex w-8 aspect-square items-center justify-center text-surface left-0 bg-on-surface z-10"
+        className="button-primary absolute !p-0 m-2 bottom-0 flex w-8 aspect-square items-center justify-center text-surface left-0 bg-on-surface z-10"
         onClick={() => setBgVisible(!bgVisible)}
       >
         {bgVisible ? (

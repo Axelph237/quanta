@@ -33,11 +33,10 @@ interface GameActionEvent {
     details?: Serializable; // added details if action requires
 }
 
-// Last things to implement
 interface QuestionAnsweredEvent {
     type: "question_answered";
     gameId: string;
-    questionId: string;
+    answer: string;
     correct: boolean;
 }
 

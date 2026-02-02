@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getLessonById, Lesson } from "../lessons";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -22,11 +22,13 @@ export default function LessonPage({
   const breadcrumbOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const [lessonId, setLessonId] = useState<string | undefined>(undefined);
 
-  params.then((resolvedParams) => {
-    setLesson(getLessonById(resolvedParams.lessonid));
-    setLessonId(resolvedParams.lessonid);
-    recordEvent({ type: "lesson_viewed", lessonId: resolvedParams.lessonid });
-  });
+  useEffect(() => {
+    params.then((resolvedParams) => {
+      setLesson(getLessonById(resolvedParams.lessonid));
+      setLessonId(resolvedParams.lessonid);
+      recordEvent({ type: "lesson_viewed", lessonId: resolvedParams.lessonid });
+    });
+  }, []);
 
   const handleLogoClick = () => {
     if (lessonId) {

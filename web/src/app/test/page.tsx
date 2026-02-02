@@ -5,7 +5,10 @@ import { GatePalette } from "@/lib/components/circuit/GatePalette";
 import { createEmptyCircuit } from "@/lib/components/circuit/circuit";
 import { DiceLevel } from "@/lib/components/games/DiceLevel";
 import GameHandler from "@/lib/components/games/GameHandler";
+import QuestionLevel from "@/lib/components/games/QuestionLevel";
+import Aurora from "@/lib/components/react-bits/Aurora";
 import { useState } from "react";
+import { text } from "stream/consumers";
 
 export default function TestPage() {
   const [circuit, setCircuit] = useState(createEmptyCircuit(4, 6));
@@ -14,32 +17,73 @@ export default function TestPage() {
     <div className="w-[100vw] h-[100vh] flex flex-col gap-20 items-center justify-center">
       {/* Game Components */}
       <GameHandler
-        name="DICE"
-        description="Guess if the hidden dice are entangled or not based on the total dice sum."
+        id="test-quiz"
+        name="QUIZ"
+        description="A fun little quiz!"
+        bg={<Aurora />}
         levels={[
-          <DiceLevel
+          <QuestionLevel
             key={1}
-            numVisDice={2}
-            hidDice={[1, 3]}
-            autoReset={true}
+            question={{
+              type: "choice",
+              question: "What is the capital of France?",
+              answers: [
+                { text: "Paris", correct: true },
+                { text: "London", correct: false },
+                { text: "Berlin", correct: false },
+                { text: "Madrid", correct: false },
+              ],
+            }}
           />,
-          <DiceLevel
-            key={2}
-            numVisDice={2}
-            hidDice={[1, 1]}
-            autoReset={true}
+          <QuestionLevel
+            key={1}
+            question={{
+              type: "input",
+              question: "What is the capital of France?",
+              answer: "Paris",
+            }}
           />,
-          <DiceLevel
-            key={2}
-            numVisDice={3}
-            hidDice={[1, 1, 3]}
-            autoReset={true}
+          <QuestionLevel
+            key={1}
+            question={{
+              type: "choice",
+              question: "What is the capital of Germany?",
+              answers: [
+                { text: "Paris", correct: false },
+                { text: "London", correct: false },
+                { text: "Berlin", correct: true },
+                { text: "Madrid", correct: false },
+              ],
+            }}
           />,
-          <DiceLevel
-            key={2}
-            numVisDice={1}
-            hidDice={[1, 1, 1, 2]}
-            autoReset={true}
+          <QuestionLevel
+            key={1}
+            question={{
+              type: "input",
+              question: "What is the capital of Germany?",
+              answer: "Berlin",
+            }}
+          />,
+          <QuestionLevel
+            key={1}
+            question={{
+              type: "choice",
+              question: "What is the capital of Spain?",
+              answers: [
+                { text: "Paris", correct: false },
+                { text: "London", correct: false },
+                { text: "Berlin", correct: false },
+                { text: "Madrid", correct: true },
+              ],
+            }}
+          />,
+          <QuestionLevel
+            key={1}
+            question={{
+              type: "input",
+              question: "What is the capital of Spain?",
+              answer: "Madrid",
+            }}
           />,
         ]}
       />

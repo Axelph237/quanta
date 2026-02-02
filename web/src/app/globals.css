@@ -239,8 +239,12 @@ header {
   @apply px-[var(--page-padding)] pt-10 fixed gap-0 top-0 left-0 right-0 z-10 h-fit flex items-center justify-between text-on-surface;
 }
 
-button {
+.button-primary {
   @apply rounded-full py-2 px-6 cursor-pointer hover:scale-105 transition-all duration-200;
+}
+
+.input-no-border {
+  @apply outline-none ring-0 focus:ring-0 focus:outline-none;
 }
 
 .page-nav {
