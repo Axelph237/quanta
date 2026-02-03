@@ -158,7 +158,7 @@ export function DiceLevel({
         {/* Hidden Dice Box */}
         {hidDice.length > 0 && (
           <div className="flex flex-col items-start justify-center text-lg">
-            <h2>HIDDEN DICE</h2>
+            <h2>DEALER&apos;S DICE</h2>
             <div
               id="hidden-dice-container"
               className="dice-container border-on-surface bg-on-surface/10"
@@ -183,7 +183,7 @@ export function DiceLevel({
         )}
         {/* Dice Tray */}
         <div className="flex flex-col items-start justify-center text-lg">
-          <h2>VISIBLE DICE</h2>
+          <h2>YOUR DICE</h2>
           <div
             id="visible-dice-container"
             className="dice-container border-on-surface/50"

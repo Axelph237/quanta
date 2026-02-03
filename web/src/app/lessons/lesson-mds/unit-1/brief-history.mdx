@@ -1,19 +1,29 @@
 import PageSection from "@/lib/components/ui/PageSection";
 import Callout from "@/lib/components/ui/Callout";
 import { SchrodingersCat } from "@/lib/components/ui/Icons";
+import DoubleSlitFigure from "@/lib/components/ui/figures/DoubleSlit";
 
 {/* <PageSection> */}
+
 # Quantum: A Brief History
 The full history of modern quantum mechanics is beyond the scope of this lesson, but I still think it's important to share some key milestones. Hopefully these will help give you a better understanding of the terminology used in this course!
 {/* </PageSection> */}
 
 ## Creating Quantum Theory
+
 ### Setting the Scene: Wave or Particle?
+
 Since the late 17th century, physicists have been debating whether light is a wave or a particle. The particle theory would describe photos as individual particles that move, bounce around, and eventually are observed or seen. On the other side, the wave theory would describe light like a three-dimensional ripple in a pond, moving out from a source and interfering with other ripples.
+{/* <figure className="float-left"> <DoubleSlitFigure /> <span>Light as a wave</span> </figure> */}
+<div className="float-left">
+    <DoubleSlitFigure />
+    <span>Light as a wave</span>
+</div>
 
 Without diving into too much detail, there are important experiments have demonstrated both of these models. So, then, which one was it? Wave or particle? Well, instead what was found is a middle ground: the *wave-particle duality*. The premise is that light particles behave much like a wave until an observer (something that directly interacts with the light) would measure it. Think of measuring a light particle like us looking at the light, or the light hitting an object (although this is a non-exhaustive list). This essentially means that light can be in two places at once, until some phenomena requires it to determine its location, at which point it becomes a particle.
 
 It is important not to think too hard about this at this point. Although this may seem foreign, this model has been shown time and time again to be a trustworthy model for light. However, it would be the application of this model onto matter itself that would prove most important for quantum computing...
+
 
 ### Ultraviolet Catastrophe
 Volcanic ash fills the air as lava spews down from the side of a volcano. You, a physicist, sit amidst the ash looking at the molten rock and wonder, "Hmm, how can I model the radiation emitted by this magma?" That is exactly what physicists were doing in the late 19th century. Well, maybe not exactly.

@@ -3,18 +3,31 @@
 import { CircuitView } from "@/lib/components/circuit/CircuitView";
 import { GatePalette } from "@/lib/components/circuit/GatePalette";
 import { createEmptyCircuit } from "@/lib/components/circuit/circuit";
-import { DiceLevel } from "@/lib/components/games/DiceLevel";
 import GameHandler from "@/lib/components/games/GameHandler";
 import QuestionLevel from "@/lib/components/games/QuestionLevel";
 import Aurora from "@/lib/components/react-bits/Aurora";
+import LineChart from "@/lib/components/ui/LineChart";
 import { useState } from "react";
-import { text } from "stream/consumers";
+
+const a0 = 5.29177210903e-11;
+
+const hydro1s = (r: number) =>
+  2 * (1 / (Math.sqrt(Math.PI) * a0)) ** (3 / 2) * Math.exp(-r / a0);
 
 export default function TestPage() {
   const [circuit, setCircuit] = useState(createEmptyCircuit(4, 6));
 
   return (
     <div className="w-[100vw] h-[100vh] flex flex-col gap-20 items-center justify-center">
+      <LineChart
+        functions={[
+          { fn: (r) => 4 * Math.PI * r ** 2 * hydro1s(r) ** 2, label: "1s" },
+        ]}
+        xMin={0}
+        xMax={20 * a0}
+        numPoints={100}
+        title="Mathematical Functions"
+      />
       {/* Game Components */}
       <GameHandler
         id="test-quiz"
@@ -41,48 +54,6 @@ export default function TestPage() {
               type: "input",
               question: "What is the capital of France?",
               answer: "Paris",
-            }}
-          />,
-          <QuestionLevel
-            key={1}
-            question={{
-              type: "choice",
-              question: "What is the capital of Germany?",
-              answers: [
-                { text: "Paris", correct: false },
-                { text: "London", correct: false },
-                { text: "Berlin", correct: true },
-                { text: "Madrid", correct: false },
-              ],
-            }}
-          />,
-          <QuestionLevel
-            key={1}
-            question={{
-              type: "input",
-              question: "What is the capital of Germany?",
-              answer: "Berlin",
-            }}
-          />,
-          <QuestionLevel
-            key={1}
-            question={{
-              type: "choice",
-              question: "What is the capital of Spain?",
-              answers: [
-                { text: "Paris", correct: false },
-                { text: "London", correct: false },
-                { text: "Berlin", correct: false },
-                { text: "Madrid", correct: true },
-              ],
-            }}
-          />,
-          <QuestionLevel
-            key={1}
-            question={{
-              type: "input",
-              question: "What is the capital of Spain?",
-              answer: "Madrid",
             }}
           />,
         ]}

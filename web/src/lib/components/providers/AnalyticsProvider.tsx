@@ -56,8 +56,8 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
       case "game_action":
         eventId += `${event.gameId}:${event.action}`;
         break;
-      case "question_answered":
-        eventId += `${event.gameId}:${event.questionId}`;
+        // case "question_answered":
+        //   eventId += `${event.gameId}:${event.questionId}`;
         break;
     }
     eventId += `/${currentTimeBucket}`;
