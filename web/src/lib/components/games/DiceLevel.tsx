@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { motion } from "framer-motion";
 import "./Dice.css";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as icons from "@/lib/components/ui/Icons";
 import { LoadingRing } from "../ui/LoadingRing";
-import confetti from "canvas-confetti";
 import { GameComponentProps } from "./GameHandler";
 import { fireConfettiCannon } from "../react-bits/Confetti";
 
