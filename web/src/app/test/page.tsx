@@ -6,6 +6,7 @@ import { createEmptyCircuit } from "@/lib/components/circuit/circuit";
 import FnChart from "@/lib/components/ui/figures/FnChart";
 import { useState } from "react";
 import { COLORS } from "../globals";
+import CoinFlipAnim from "@/lib/components/ui/figures/CoinFlipAnim";
 
 const a0 = 5.29177210903e-11;
 
@@ -26,43 +27,8 @@ export default function TestPage() {
 
   return (
     <div className="w-[100vw] h-[100vh] flex flex-col gap-20 items-center justify-center">
-      <FnChart
-        chart={{
-          view: {
-            axes: {
-              x: {
-                min: 0,
-                max: 15,
-                label: "r",
-                unit: {
-                  scale: a0,
-                  name: "a0",
-                },
-              },
-              y: {
-                min: 0,
-                max: 2,
-                label: "P(a0)",
-                unit: {
-                  scale: P(R1s)(a0),
-                },
-              },
-            },
-            axesColor: "#ffffff",
-            font: "Outfit",
-          },
-          plots: [
-            {
-              fn: (r: number) => P(R1s)(r),
-              options: {
-                color: COLORS.primary.hex,
-              },
-              fidelity: 0.1,
-            },
-          ],
-        }}
-      />
-      <FnChart
+      <CoinFlipAnim />
+      {/* <FnChart
         chart={{
           view: {
             axes: {
@@ -88,7 +54,7 @@ export default function TestPage() {
             },
           ],
         }}
-      />
+      /> */}
       {/* Game Components */}
       {/* Circuit Builder */}
       <div className="w-full h-fit flex flex-row items-center justify-center">
