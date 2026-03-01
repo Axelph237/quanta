@@ -7,8 +7,49 @@ In essence, quantum entanglement is the ability for two quantum particles in a s
 Imagine you walk into the world's first "Quantum Casino". Inside you go to a green, carpeted table with a croupier sitting at the other end. The game? Die Match. The game is simple: the croupier secretly rolls a number of dice and seals a random amount of them in two separate boxes. They hand you one box for you to look in, and keep the other. Your get one chance to tell the croupier what faces are on all the dice. All you know is this: the sum of all the dice, and the total number of dice rolled. Do you think you'd win?
 ### Game One: Two Dice
 You think so, so you sit down and place your first bet. The croupier rolls two dice and passes you a box. Only one die peaks up at you, its face showing a four. You are told the sum is seven. Easy! You think. The other dice must be a three!
+
 ### Game Two: Four Dice
 You decide to stay for another game. Rolling four dice this time, the croupier passes you a box of two and tells you the sum is 18. Looking into your box, you see the numbers four and five. Think for a moment about what numbers could be in the other box. You know that they must total nine, but there are two dice! The first could be a three and the second a six, or maybe another set of four and five. It's impossible for you to fully know what faces the dice must have.
+
+<GameHandler
+        id="entanglement-game-2"
+        name="DICE"
+        description="Guess if the hidden dice are entangled or not based on the total dice sum."
+        levels={[
+          <DiceLevel
+            key={1}
+            numVisDice={1}
+            hidDice={[3]}
+            autoReset={true}
+          />,
+          <DiceLevel
+            key={1}
+            numVisDice={2}
+            hidDice={[4, 5]}
+            autoReset={true}
+          />,
+          <DiceLevel
+            key={1}
+            numVisDice={1}
+            hidDice={[5]}
+            autoReset={true}
+          />,
+          <DiceLevel
+            key={1}
+            numVisDice={2}
+            hidDice={[5, 6]}
+            autoReset={true}
+          />,
+          <DiceLevel
+            key={1}
+            numVisDice={2}
+            hidDice={[2, 2]}
+            autoReset={true}
+          />,
+        ]}>
+</GameHandler>
+<br></br>
+
 ## Quit the Gambling
 So how does this relate to entanglement? Let's look at the two games: in the first the dice are entangled, but the same can't be said for the second game. Why is that? In the first game, the total state (the sum) allowed us to infer the second dice on measuring the first. This is the same with entanglement. When the state of two quantum particles are entangled, it means that the measuring of one particle tells us *precisely* the value of the other particle, **no matter their distance**. 
 ### The Math
@@ -25,6 +66,7 @@ $$
 it looks almost identical, with one key difference. Since both possible states contain $|0\rangle$ in the first particle, it can be factored into $$\Psi=|0\rangle \otimes \frac{1}{\sqrt{2}}(|1\rangle+|0\rangle)$$meaning this system is *not* entangled.
 
 <GameHandler
+        id="entanglement-game-final"
         name="DICE"
         description="Guess if the hidden dice are entangled or not based on the total dice sum."
         levels={[

@@ -1,6 +1,12 @@
 import confetti from "canvas-confetti";
 import { AnimatePresence, motion } from "framer-motion";
-import { cloneElement, useEffect, useRef, useState } from "react";
+import {
+  cloneElement,
+  ComponentProps,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Iridescence from "../react-bits/Iridescence";
 import { COLORS } from "@/app/globals";
 import { Eye, EyeOff } from "../ui/Icons";
@@ -51,13 +57,25 @@ export default function GameHandler({
   description,
   levels,
   bg,
+  hideBg,
+  successMessages,
+  failureMessages,
+  onGameStart,
+  onGameEnd,
+  className,
+  ...rest
 }: {
   id: string;
   name: string;
   description?: string;
   levels: Array<React.ReactElement<GameComponentProps>>;
   bg?: React.ReactNode;
-}) {
+  hideBg?: boolean;
+  successMessages?: string[];
+  failureMessages?: string[];
+  onGameStart?: () => void;
+  onGameEnd?: () => void;
+} & ComponentProps<"div">) {
   const background = bg || (
     <Iridescence
       color={
@@ -66,7 +84,7 @@ export default function GameHandler({
     />
   );
   const { recordEvent } = useAnalytics();
-  const [bgVisible, setBgVisible] = useState<boolean>(true);
+  const [bgVisible, setBgVisible] = useState<boolean>(hideBg ? false : true);
   const [activeGame, setActiveGame] = useState<number>(0);
   const [activeState, setActiveState] = useState<GameState | null>(null);
   const [startTrigger, setStartTrigger] = useState<boolean>(false); // Trigger to start the internal game
@@ -92,12 +110,12 @@ export default function GameHandler({
   const onEnd = ({ result }: { result: "win" | "lose" }) => {
     setActiveState(GameState.END);
     if (result === "win") {
-      setDisplayMessage(getRandomMessage(SUCCESS_MESSAGES));
+      setDisplayMessage(getRandomMessage(successMessages || SUCCESS_MESSAGES));
       setTimeout(() => {
         setActiveGame(activeGame + 1);
       }, 500);
     } else {
-      setDisplayMessage(getRandomMessage(FAILURE_MESSAGES));
+      setDisplayMessage(getRandomMessage(failureMessages || FAILURE_MESSAGES));
       setActiveState(GameState.READY);
     }
     setStartTrigger(false);
@@ -126,17 +144,16 @@ export default function GameHandler({
         type: "game_started",
         gameId: id,
       });
-    } else if (
-      activeState === GameState.END &&
-      activeGame === levels.length - 1
-    ) {
+      onGameStart?.();
+    } else if (activeState === GameState.END && activeGame === levels.length) {
       // Record end of game
       recordEvent({
         type: "game_completed",
         gameId: id,
       });
+      onGameEnd?.();
     }
-  }, [activeState, activeGame, id, levels.length, recordEvent]);
+  }, [activeState, activeGame, id, levels.length, recordEvent, onGameEnd]);
 
   // Clone the game element and inject the event handlers
   let renderedLevel;
@@ -167,7 +184,8 @@ export default function GameHandler({
   return (
     <div
       id={id}
-      className="relative rounded-lg border-2 border-quanta-on-surface p-10 overflow-hidden w-full h-1/2 min-h-fit"
+      className={`${className} relative rounded-lg border-2 border-quanta-on-surface p-10 overflow-hidden w-full h-1/2 min-h-fit ${className}`}
+      {...rest}
     >
       {/* First game has a "Play!" button, each sequential game has a "Ready?" button */}
       <AnimatePresence>
@@ -176,7 +194,7 @@ export default function GameHandler({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, filter: "blur(10px)" }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute top-0 right-0 w-full h-full flex flex-col gap-2 items-center justify-center z-10"
+            className="absolute bg-quanta-surface/50 top-0 right-0 w-full h-full flex flex-col gap-2 items-center justify-center z-10"
           >
             <h1 className="text-4xl font-bold">{name}</h1>
             <h1 className="text-xl w-1/2 text-center opacity-85">
@@ -236,21 +254,23 @@ export default function GameHandler({
       </AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: bgVisible ? 1 : 0 }}
-        className="absolute top-0 left-0 w-full h-full z-[-1] opacity-75"
+        animate={{ opacity: bgVisible ? 0.75 : 0 }}
+        className="absolute top-0 left-0 w-full h-full z-[-1]"
       >
         {background}
       </motion.div>
-      <button
-        className="button-primary absolute !p-0 m-2 bottom-0 flex w-8 aspect-square items-center justify-center text-quanta-surface left-0 bg-quanta-on-surface z-10"
-        onClick={() => setBgVisible(!bgVisible)}
-      >
-        {bgVisible ? (
-          <Eye className="w-4 h-4" />
-        ) : (
-          <EyeOff className="w-4 h-4" />
-        )}
-      </button>
+      {!hideBg && (
+        <button
+          className="button-primary absolute !p-0 m-2 bottom-0 flex w-8 aspect-square items-center justify-center text-quanta-surface left-0 bg-quanta-on-surface z-10"
+          onClick={() => setBgVisible(!bgVisible)}
+        >
+          {bgVisible ? (
+            <Eye className="w-4 h-4" />
+          ) : (
+            <EyeOff className="w-4 h-4" />
+          )}
+        </button>
+      )}
     </div>
   );
 }

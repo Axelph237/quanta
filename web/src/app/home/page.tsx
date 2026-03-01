@@ -20,14 +20,18 @@ import { GENTLE_EASE } from "../globals";
 import { useSearchParams } from "next/navigation";
 import Draggable from "@/lib/components/ui/Draggable";
 import {
+  HandReaching,
   HGate,
   NotGate,
   SGate,
+  TerriblyInnacurateQubit,
   TGate,
   XGate,
   YGate,
   ZGate,
 } from "@/lib/components/ui/Icons";
+
+import AboutContent from "./about.mdx";
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -43,6 +47,8 @@ function HomeContent() {
 
   const { cssvar, csstopx } = useComputedCSS();
   const [logoShift, setLogoShift] = useState<number>(0);
+
+  const aboutRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Set height of hero image to fill remaining viewport space
@@ -108,7 +114,12 @@ function HomeContent() {
           <NavText
             id="about-nav"
             text="ABOUT"
-            onClick={() => redirect("/about", RedirectType.push)}
+            onClick={() =>
+              window.scrollTo({
+                top: aboutRef.current?.offsetTop,
+                behavior: "smooth",
+              })
+            }
           />
         </motion.span>
         {/* Logo */}
@@ -143,7 +154,7 @@ function HomeContent() {
       >
         <HomeSection className="flex flex-col items-center justify-start">
           <BlurText
-            text="READY TO LEARN?"
+            text="BRIDGE THE GAP"
             delay={75}
             animateBy="words"
             direction="top"
@@ -173,11 +184,50 @@ function HomeContent() {
           >
             {/* Content that should fill the remaining vertical space goes here */}
             <motion.div
-              className="w-full bg-quanta-primary"
+              id="hero-img"
+              className="relative w-full bg-quanta-primary"
               initial={{ height: 0 }}
               animate={{ height: "100%" }}
               transition={GENTLE_EASE}
-            ></motion.div>
+            >
+              <motion.div
+                id="hero-img-content"
+                initial={{ opacity: 0, filter: "blur(10px)" }}
+                animate={{ opacity: 1, filter: "blur(0px)" }}
+                transition={{
+                  ...GENTLE_EASE,
+                  delay: GENTLE_EASE.duration,
+                }}
+                className="relative w-full h-full flex flex-row place-content-between"
+              >
+                <motion.span
+                  initial={{ left: "-50%", scale: 0.8 }}
+                  animate={{ left: "0%", scale: 1 }}
+                  transition={{
+                    ...GENTLE_EASE,
+                    duration: GENTLE_EASE.duration! * 2,
+                    delay: GENTLE_EASE.duration,
+                  }}
+                  className="relative"
+                >
+                  <HandReaching className="text-quanta-surface h-1/2 flex-1 relative top-1/2 -translate-y-1/2 aspect-auto" />
+                </motion.span>
+                <motion.span
+                  animate={{ rotate: [0, 180] }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 250,
+                    damping: 20,
+                    mass: 2,
+                    repeat: Infinity,
+                    repeatDelay: 1,
+                  }}
+                  className="flex-1 flex items-center justify-center"
+                >
+                  <TerriblyInnacurateQubit className="text-quanta-surface h-1/3 relative aspect-auto" />
+                </motion.span>
+              </motion.div>
+            </motion.div>
           </div>
         </HomeSection>
 
@@ -220,6 +270,14 @@ function HomeContent() {
             </span>
           </p>
         </HomeSection>
+
+        <div
+          id="about-content"
+          ref={aboutRef}
+          className="size-full flex flex-col items-center justify-center"
+        >
+          <AboutContent />
+        </div>
       </main>
     </>
   );

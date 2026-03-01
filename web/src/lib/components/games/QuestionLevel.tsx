@@ -12,7 +12,7 @@ interface ChoiceQuestion {
 interface InputQuestion {
   type: "input";
   question: string;
-  answer: string;
+  answer?: string;
 }
 
 type QuizQuestion = ChoiceQuestion | InputQuestion;
@@ -100,8 +100,9 @@ export default function QuizQuestion({
                   {
                     text: inputRef.current?.value || "",
                     correct:
+                      question.answer === undefined ||
                       inputRef.current?.value.toLowerCase() ===
-                      question.answer.toLowerCase(),
+                        question.answer.toLowerCase(),
                   },
                   e,
                 )

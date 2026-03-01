@@ -27,12 +27,19 @@ import { Lesson, LESSONS, Unit, UNITS } from "@/lib/lessons";
 import GradientText from "@/lib/components/react-bits/GradientText";
 import ShinyText from "@/lib/components/react-bits/ShinyText";
 import * as icons from "@/lib/components/ui/Icons";
+import GameHandler from "@/lib/components/games/GameHandler";
+import QuestionLevel from "@/lib/components/games/QuestionLevel";
+import BlurText from "@/lib/components/react-bits/BlurText";
+import Iridescence from "@/lib/components/react-bits/Iridescence";
 
 function LessonsPageContent() {
   const searchParams = useSearchParams();
   const selectedLessonId = searchParams.get("selected");
   const selectedLessonIndex = LESSONS.findIndex(
     (l) => l.id === selectedLessonId,
+  );
+  const [onboardingComplete, setOnboardingComplete] = useState<boolean>(
+    !!localStorage.getItem("onboarded"),
   );
 
   const { cssvar, csstopx } = useComputedCSS();
@@ -80,6 +87,11 @@ function LessonsPageContent() {
     }, 1000);
   };
 
+  const handleOnboardingComplete = () => {
+    localStorage.setItem("onboarded", "true");
+    setOnboardingComplete(true);
+  };
+
   // When sidebar blob is clicked, scroll to corresponding lesson
   const handleLessonJump = (lesson: Lesson, index: number) => {
     if (index !== focusedIndex) {
@@ -104,6 +116,7 @@ function LessonsPageContent() {
     <>
       {/* Top Bar */}
       <motion.div
+        id="upper-fade"
         initial={{ opacity: 1 }}
         animate={{ opacity: lessonOpened !== false ? 0 : 1 }}
         transition={GENTLE_EASE}
@@ -111,6 +124,7 @@ function LessonsPageContent() {
       ></motion.div>
 
       <motion.header
+        id="lessons-page-header"
         className="w-fit gap-0 flex flex-col"
         animate={{ left: redirecting ? logoShift : 0 }}
         transition={GENTLE_EASE}
@@ -134,7 +148,6 @@ function LessonsPageContent() {
         </motion.div>
       </motion.header>
 
-      {/* Main Container: Fixed and hidden overflow to act as the viewport for the carousel */}
       <motion.main
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -142,62 +155,71 @@ function LessonsPageContent() {
         ref={scope}
         className={`relative inset-0 h-screen w-screen ${lessonOpened ? "overflow-hidden" : "overflow-y-scroll"} bg-quanta-surface text-quanta-on-surface flex items-center ${lessonOpened ? "" : ""}`}
       >
-        {/* Carousel List */}
-        <motion.div
-          id="carousel-list"
-          className="absolute left-0 right-0 flex flex-col gap-18 items-center snap-center"
-          animate={{
-            top: 0,
-          }}
-          transition={GENTLE_EASE}
-        >
-          {/* <div className="shadow-item h-[40vh] w-full"></div> */}
-          {LESSONS.map((lesson, index) => {
-            const [unitIdx, lessonIdx] = lesson.tocId.split(".").map(Number);
-
-            return (
-              <LessonItem
-                key={lesson.id}
-                lesson={lesson}
-                parentRef={scope}
-                // inViewRef={inViewTargetRef}
-                unit={lessonIdx === 0 ? UNITS[unitIdx - 1] : false}
-                isOpened={lessonOpened === index}
-                onClick={() => handleLessonClick(index)}
-                onFocus={() => handleLessonFocus(index)}
-                // viewportDims={viewportDims}
-              />
-            );
-          })}
-          <div className="shadow-item h-[100vh] w-full"></div>
-        </motion.div>
-
-        {/* Lesson Blobs */}
-        <motion.ol
-          animate={{ translateX: lessonOpened ? "25vw" : 0 }}
-          transition={GENTLE_EASE}
-          className="fixed flex flex-col items-center top-1/2 right-[var(--page-padding)] -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500 whitespace-nowrap min-w-[20px] "
-        >
-          {LESSONS.map((lesson, index) => (
-            <motion.li
-              key={index}
-              className={`w-full rounded-lg my-2 ${
-                lesson.tocId.split(".")[1] === "0"
-                  ? "bg-quanta-secondary"
-                  : "bg-quanta-primary"
-              } cursor-pointer`}
-              initial={{ opacity: 0 }}
+        {onboardingComplete ? (
+          <>
+            {/* Main Container: Fixed and hidden overflow to act as the viewport for the carousel */}
+            {/* Carouse list */}
+            <motion.div
+              id="carousel-list"
+              className="absolute left-0 right-0 flex flex-col gap-18 items-center snap-center"
               animate={{
-                opacity: focusedIndex === index ? 1 : 0.8,
-                height: focusedIndex === index ? "40px" : "20px",
+                top: 0,
               }}
-              transition={{ duration: 0.2 }}
-              onClick={() => handleLessonJump(lesson, index)}
-            ></motion.li>
-          ))}
-        </motion.ol>
+              transition={GENTLE_EASE}
+            >
+              {/* <div className="shadow-item h-[40vh] w-full"></div> */}
+              {LESSONS.map((lesson, index) => {
+                const [unitIdx, lessonIdx] = lesson.tocId
+                  .split(".")
+                  .map(Number);
+
+                return (
+                  <LessonItem
+                    key={lesson.id}
+                    lesson={lesson}
+                    parentRef={scope}
+                    // inViewRef={inViewTargetRef}
+                    unit={lessonIdx === 0 ? UNITS[unitIdx - 1] : false}
+                    isOpened={lessonOpened === index}
+                    onClick={() => handleLessonClick(index)}
+                    onFocus={() => handleLessonFocus(index)}
+                    // viewportDims={viewportDims}
+                  />
+                );
+              })}
+              <div className="shadow-item h-[100vh] w-full"></div>
+            </motion.div>
+            {/* Lesson Blobs */}
+            <motion.ol
+              animate={{ translateX: lessonOpened ? "25vw" : 0 }}
+              transition={GENTLE_EASE}
+              className="fixed flex flex-col items-center top-1/2 right-[var(--page-padding)] -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500 whitespace-nowrap min-w-[20px] "
+            >
+              {LESSONS.map((lesson, index) => (
+                <motion.li
+                  key={index}
+                  className={`w-full rounded-lg my-2 ${
+                    lesson.tocId.split(".")[1] === "0"
+                      ? "bg-quanta-secondary"
+                      : "bg-quanta-primary"
+                  } cursor-pointer`}
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: focusedIndex === index ? 1 : 0.8,
+                    height: focusedIndex === index ? "40px" : "20px",
+                  }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => handleLessonJump(lesson, index)}
+                ></motion.li>
+              ))}
+            </motion.ol>
+          </>
+        ) : (
+          <Onboarding onComplete={handleOnboardingComplete} />
+        )}
       </motion.main>
       <motion.div
+        id="bottom-fade"
         initial={{ opacity: 1 }}
         animate={{ opacity: lessonOpened !== false ? 0 : 1 }}
         transition={GENTLE_EASE}
@@ -310,6 +332,7 @@ function LessonItem({
             className="object-cover"
           />
         )}
+
         <motion.h2
           initial={{ x: "-30vw", width: "30vw" }}
           animate={{
@@ -352,7 +375,136 @@ function LessonItem({
           </motion.span>
         </motion.h2>
       </motion.div>
-      {/* {isOpened && lesson.pageContent} */}
     </>
+  );
+}
+
+// Get some basic info about the user
+function Onboarding({ onComplete }: { onComplete: () => void }) {
+  const [step, setStep] = useState(0);
+  const [fadeOutHeader, setFadeOutHeader] = useState(false);
+
+  const [scope, animate] = useAnimate();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStep((prevStep) => prevStep + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const onEnd = () => {
+    setTimeout(() => {
+      animate(
+        scope.current,
+        {
+          top: "100vh",
+        },
+        GENTLE_EASE,
+      );
+
+      setTimeout(onComplete, 2000);
+    }, 1000);
+  };
+
+  return (
+    <motion.div
+      className="relative flex flex-col items-center justify-center h-full w-full p-12"
+      ref={scope}
+    >
+      <motion.h1
+        className={`text-[3rem] lg:text-[5rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: fadeOutHeader ? 0 : 1 }}
+        transition={GENTLE_EASE}
+      >
+        Hey there!{" "}
+        <motion.span
+          initial={{ rotate: 0 }}
+          animate={{ rotate: [0, 15, -15, 15, -15, 15, 0] }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+        >
+          <icons.SchrodingersCat className="w-20 h-20 m-4" />
+        </motion.span>
+      </motion.h1>
+      <motion.h2
+        className={`text-[2rem] lg:text-[3rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: step >= 1 && !fadeOutHeader ? 1 : 0 }}
+        transition={GENTLE_EASE}
+      >
+        What&apos;s your background?
+      </motion.h2>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: step >= 2 ? 1 : 0 }}
+        transition={GENTLE_EASE}
+        className="w-3/4 h-1/2 p-6"
+      >
+        <GameHandler
+          id="onboarding-quiz"
+          name="A little about you!"
+          hideBg
+          className="h-full w-full border-0!"
+          successMessages={[
+            "Wow!",
+            "That's awesome!",
+            "That's amazing!",
+            "That's incredible!",
+          ]}
+          onGameStart={() => setFadeOutHeader(true)}
+          onGameEnd={onEnd}
+          levels={[
+            <QuestionLevel
+              key={1}
+              question={{
+                type: "choice",
+                question: "What's your major?",
+                answers: [
+                  { text: "Physics", correct: true },
+                  { text: "Engineering", correct: true },
+                  { text: "Math", correct: true },
+                  { text: "Chemistry", correct: true },
+                  { text: "Biology", correct: true },
+                  { text: "Computer Science", correct: true },
+                  { text: "Non-STEM", correct: true },
+                  { text: "Other", correct: true },
+                  { text: "Not a student", correct: true },
+                ],
+              }}
+            />,
+            <QuestionLevel
+              key={1}
+              question={{
+                type: "choice",
+                question: "How comfortable are you with physics?",
+                answers: [
+                  { text: "Not at all", correct: true },
+                  { text: "A little", correct: true },
+                  { text: "Comfortable", correct: true },
+                  { text: "Very comfortable", correct: true },
+                  { text: "I've studied modern physics", correct: true },
+                ],
+              }}
+            />,
+            <QuestionLevel
+              key={1}
+              question={{
+                type: "choice",
+                question: "How comfortable are you with math?",
+                answers: [
+                  { text: "Not at all", correct: true },
+                  { text: "A little", correct: true },
+                  { text: "Comfortable", correct: true },
+                  { text: "Very comfortable", correct: true },
+                  { text: "I've studied linear algebra", correct: true },
+                ],
+              }}
+            />,
+          ]}
+        />
+      </motion.div>
+    </motion.div>
   );
 }
