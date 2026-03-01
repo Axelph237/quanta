@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "web/src/lib/lessons/mdx/unit-2/common-gates.mdx",
+                "file": "web/src/lib/lessons/mdx/unit-1/entangle.mdx",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "common-gates"
+              "title": "entangle"
             }
           }
         ],
@@ -200,12 +200,12 @@
   },
   "active": "c645554c1fcc7649",
   "lastOpenFiles": [
+    "web/src/lib/lessons/mdx/unit-1/bra-ket.mdx",
+    "web/src/lib/lessons/mdx/unit-2/common-gates.mdx",
     "web/src/lib/lessons/mdx/unit-2/quant-comp.mdx",
     "web/src/lib/lessons/mdx/unit-2/quant-circ.mdx",
-    "web/src/lib/lessons/mdx/unit-2/common-gates.mdx",
     "web/src/lib/lessons/mdx/unit-1/entangle.mdx",
     "web/src/lib/lessons/mdx/unit-1/superpos.mdx",
-    "web/src/lib/lessons/mdx/unit-1/bra-ket.mdx",
     "web/src/lib/lessons/index.tsx",
     "web/src/lib/lessons/mdx/advanced/index.ts",
     "web/src/lib/lessons/mdx/unit-2/index.ts",

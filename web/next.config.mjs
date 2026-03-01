@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactCompiler: true,
+  reactStrictMode: false,
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
 };
 

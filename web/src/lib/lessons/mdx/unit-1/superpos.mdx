@@ -1,0 +1,39 @@
+# Superposition
+Imagine you flip a coin in the air. For the brief moment that small coin is suspended, you don't know whether it will land as heads, or as tails. In classical probability, we might call this something like 
+
+$$P(C)=P(T)+P(H)$$
+Or, the totally probability of the coin is equal to the probability of its possible states: heads or tails. For a coin, we usually chalk this up to a 50% chance of heads or tails. We could oversimplify and say that the suspended coin is in **superposition**. But what is superposition, really?
+
+## Breaking The Stereotypes
+There are a couple glaring issues with calling the coin flipping example "superposition". However, pointing out these issues may help us gleam more of an understanding about true superposition.
+### 1. Coins Aren't Random
+Although we often use coins for randomness, the outcome of a coin can be determined at any point. Take a snapshot of the coin and its physical system, and I am sure that you could calculate (although it would take awhile) what face it would land on. This is not the case for quantum mechanics.
+
+In quantum mechanics, there is a phenomena called the *Heisenberg Uncertainty Principle*. We will skip the details (which can be found [here](https://en.wikipedia.org/wiki/Uncertainty_principle)), but for our case we can look at one particular piece of it: if we know the location of a particle, we *cannot* know its momentum (or the related energy state). Drawing back to the coin, imagine that if when you tossed the coin, because we knew where it was, we had no idea how fast it was spinning or moving. Now try calculating if it lands on heads or tails: you can't.
+
+### 2. Not Probabilities, Amplitudes
+With the coin probability, we said that there was a 50% chance of heads or tails occurring. In quantum mechanics, we don't have classical probabilities like this. Since the wave equation is... well... a wave, we deal with **probability amplitudes**. Unlike classical probabilities, probability amplitudes can be both *complex* and *negative*. Here's an example using the heads and tails from before:
+$$P(C) = 50\%(\text{heads}) + 50\%(\text{tails})$$
+Would be similarly represented in a quantum system by:
+$$\Psi_C = \frac{1}{\sqrt{2}}|0\rangle + \frac{1}{\sqrt{2}}|1\rangle$$
+There are *far* more examples I could dive into here, but just know that a probability amplitude is not *directly* correlated to a classical probability. It is a vector (or arrow of sorts) with a magnitude that represents a potential physical outcome ($\frac{1}{\sqrt2}$ in our example above).
+## How Does This Relate?
+By creating a superposition of possible states on our computer, we are able to do multiple *parallel* computations across every possible state. We don't individually calculate every possibility, instead we can manipulate our computer to represent *all* possibilities, and then coerce the desired outcome to be the state with the highest amplitude, even if we don't know what state that is! That way, once we measure our state (like letting the coin land), we will have the answer we were looking for all along.
+
+<span className="hidden">
+As you throw a pebble into a creek, ripples spread out from the position of impact. Your friend, out with you by the creekside, tosses in another pebble. As the ripples from the two moments of impact overlap, they create an interference of ripples. At any point in this creek, you must take into account two ripples (waves) to find how high or low the water level may be. These two ripples are superimposed, and any point in that creek is in a superposition of the two ripples.
+
+Particle waves are no different. When we think about wave functions, they are also able to be superimposed because of a concept called *linearity*.
+
+## Linearity
+One of the most important features of the wave function that the Schrödinger equation describes is *linearity*. Let's consider a linear operator, common to classical physics, $\hat{H}=(kinetic\ energy)+(potential\ energy)$, or 
+$$
+\hat{H}=-\frac{\hbar^2}{2m}\frac{\partial^2}{\partial x^2}+U(x,t)
+$$
+therefore the Schrödinger equation can be rewritten as:
+$$
+\hat{H}\Psi (x,t)=i\hbar\frac{\partial \Psi (x,t)}{\partial t}
+$$ 
+Because $\hat{H}$ is *linear*, this means that $\hat{H}\alpha |0\rangle + \hat{H}\beta |1\rangle = \hat{H}(\alpha |0\rangle + \beta |1\rangle)$ 
+
+</span>
