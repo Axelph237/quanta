@@ -300,7 +300,7 @@ function HomeContent() {
       </main>
       {/* BEAUTIFUL */}
       <motion.div
-        className="fixed"
+        className="fixed pointer-events-none"
         initial={{ opacity: 0 }}
         animate={{ opacity: clickCounter >= 10 ? [1, 0] : 0 }}
         transition={{ duration: 0.75 }}
