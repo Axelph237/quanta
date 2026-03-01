@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { redirect, RedirectType } from "next/navigation";
 import { libreBasker, outfit } from "@/app/fonts";
 import Link from "next/link";
@@ -30,6 +31,7 @@ import {
   YGate,
   ZGate,
 } from "@/lib/components/ui/Icons";
+import CatSideEye from "@public/assets/cat_side_eye.jpg";
 
 import AboutContent from "./about.mdx";
 
@@ -47,6 +49,8 @@ function HomeContent() {
 
   const { cssvar, csstopx } = useComputedCSS();
   const [logoShift, setLogoShift] = useState<number>(0);
+
+  const [clickCounter, setClickCounter] = useState<number>(0);
 
   const aboutRef = useRef<HTMLDivElement>(null);
 
@@ -77,6 +81,19 @@ function HomeContent() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (clickCounter === 10) {
+      const sfx = new Audio("/assets/thud_sfx.mp3");
+      sfx.play();
+    }
+
+    const timer = setTimeout(() => {
+      setClickCounter(0);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [clickCounter]);
 
   // Animate header when scrolling
   useMotionValueEvent(smoothedScrollY, "change", (latest) => {
@@ -131,6 +148,7 @@ function HomeContent() {
             }}
             transition={GENTLE_EASE}
             textVisible={!(scrolled || redirecting)}
+            onClick={() => setClickCounter(clickCounter + 1)}
           />
         </Link>
         {/* Lessons Nav */}
@@ -255,7 +273,8 @@ function HomeContent() {
           <p className={"w-3/4 text-4xl"}>
             <span className="opacity-100">Quanta</span>{" "}
             <span className="opacity-65">
-              is a platform for learning about quantum computing
+              is a platform for learning a few interesting topics in quantum
+              computing
               {fromLanding && ", made easy"}. I&apos;ve created a range of{" "}
             </span>
             <span className="opacity-100">interactive lessons</span>
@@ -279,6 +298,19 @@ function HomeContent() {
           <AboutContent />
         </div>
       </main>
+      {/* BEAUTIFUL */}
+      <motion.div
+        className="fixed"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: clickCounter >= 10 ? [1, 0] : 0 }}
+        transition={{ duration: 0.75 }}
+      >
+        <Image
+          src={CatSideEye}
+          alt="sideeye"
+          style={{ width: "100vw", height: "100vh", zIndex: 9999 }}
+        />
+      </motion.div>
     </>
   );
 }

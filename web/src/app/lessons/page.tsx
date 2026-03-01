@@ -162,6 +162,7 @@ function LessonsPageContent() {
             <motion.div
               id="carousel-list"
               className="absolute left-0 right-0 flex flex-col gap-18 items-center snap-center"
+              initial={{ top: "100vh" }}
               animate={{
                 top: 0,
               }}
