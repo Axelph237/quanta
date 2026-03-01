@@ -160,7 +160,7 @@ export function DiceLevel({
             <h2>DEALER&apos;S DICE</h2>
             <div
               id="hidden-dice-container"
-              className="dice-container border-on-surface bg-on-surface/10"
+              className="dice-container border-quanta-on-surface bg-quanta-on-surface/10"
             >
               {Array.from({ length: hidDice.length }).map((_, i) => (
                 <BlankDice
@@ -174,7 +174,7 @@ export function DiceLevel({
                   }
                 />
               ))}
-              <span className="absolute top-0 left-0 text-on-surface">
+              <span className="absolute top-0 left-0 text-quanta-on-surface">
                 <icons.Box className="icon-sm opacity-50 m-1" />
               </span>
             </div>
@@ -185,7 +185,7 @@ export function DiceLevel({
           <h2>YOUR DICE</h2>
           <div
             id="visible-dice-container"
-            className="dice-container border-on-surface/50"
+            className="dice-container border-quanta-on-surface/50"
           >
             {Array.from({ length: numVisDice }).map((_, i) => (
               <Dice
@@ -217,7 +217,7 @@ export function DiceLevel({
           <button
             ref={entangledBtn}
             onClick={() => handleGuess("entangled")}
-            className="button-primary bg-primary hover:bg-primary/80-full h-fit w-full hover:scale-105 transition-all duration-300"
+            className="button-primary bg-quanta-primary hover:bg-quanta-primary/80-full h-fit w-full hover:scale-105 transition-all duration-300"
           >
             Entangled
           </button>
@@ -226,7 +226,7 @@ export function DiceLevel({
           <button
             ref={unentangledBtn}
             onClick={() => handleGuess("unentangled")}
-            className="button-primary bg-primary hover:bg-primary/80 h-fit w-full hover:scale-105 transition-all duration-300"
+            className="button-primary bg-quanta-primary hover:bg-quanta-primary/80 h-fit w-full hover:scale-105 transition-all duration-300"
           >
             Unentangled
           </button>
@@ -240,7 +240,7 @@ export function DiceLevel({
             strokeWidth={5}
             onComplete={() => setSceneState(SceneState.GUESSING)}
             durationMs={ROLL_TIME_MS}
-            className="text-primary"
+            className="text-quanta-primary"
           />
         )}
         {/* Roll Button */}

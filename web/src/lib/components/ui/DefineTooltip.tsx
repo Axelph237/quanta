@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
-import { renderSnippet } from "../../mdx/render-snippet";
+import { renderSnippet } from "../../markdown/render-snippet";
 
 type TooltipState =
   | { open: false }
@@ -82,7 +82,7 @@ function Tooltip({ state }: { state: TooltipState }) {
   return createPortal(
     <motion.div
       className={
-        "pointer-events-none absolute z-1000 w-fit h-fit border-2 border-secondary/50 backdrop-blur-xs bg-surface/75 text-white text-base p-2 rounded-lg"
+        "pointer-events-none absolute z-1000 w-fit h-fit border-2 border-quanta-secondary/50 backdrop-blur-xs bg-quanta-surface/75 text-white text-base p-2 rounded-lg"
       }
       initial={{ opacity: 0 }}
       animate={{ opacity: state.open && state.vocab ? 1 : 0 }}
@@ -94,7 +94,7 @@ function Tooltip({ state }: { state: TooltipState }) {
       transition={{ duration: 0.2 }}
     >
       <b
-        className="text-secondary"
+        className="text-quanta-secondary"
         dangerouslySetInnerHTML={{ __html: renderSnippet(vocab?.term || "") }}
       ></b>
       <span

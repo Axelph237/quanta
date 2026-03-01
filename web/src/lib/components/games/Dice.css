@@ -49,32 +49,32 @@
   width: var(--face-width);
   height: var(--face-width);
   font: bold 2em/1 sans-serif;
-  border: 1px solid var(--color-primary-container);
+  border: 1px solid var(--color-quanta-primary-container);
 }
 
 .cube__face--front {
   transform: rotateY(0deg) translateZ(var(--face-center));
-  background-color: var(--color-primary);
+  background-color: var(--color-quanta-primary);
 }
 .cube__face--right {
   transform: rotateY(90deg) translateZ(var(--face-center));
-  background-color: var(--color-primary);
+  background-color: var(--color-quanta-primary);
 }
 .cube__face--back {
   transform: rotateY(180deg) translateZ(var(--face-center));
-  background-color: var(--color-primary);
+  background-color: var(--color-quanta-primary);
 }
 .cube__face--left {
   transform: rotateY(-90deg) translateZ(var(--face-center));
-  background-color: var(--color-primary);
+  background-color: var(--color-quanta-primary);
 }
 .cube__face--top {
   transform: rotateX(90deg) translateZ(var(--face-center));
-  background-color: var(--color-primary);
+  background-color: var(--color-quanta-primary);
 }
 .cube__face--bottom {
   transform: rotateX(-90deg) translateZ(var(--face-center));
-  background-color: var(--color-primary);
+  background-color: var(--color-quanta-primary);
 }
 
 /* Box Scene */

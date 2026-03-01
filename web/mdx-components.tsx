@@ -19,17 +19,17 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <p className="mb-8 text-xl leading-relaxed">{children}</p>
     ),
     a: ({ href, children }) => (
-      <a href={href} className="text-primary hover:underline">
+      <a href={href} className="text-quanta-primary hover:underline">
         {children}
       </a>
     ),
     code: ({ children }) => (
-      <code className="bg-surface-variant px-2 py-1 rounded text-sm font-mono">
+      <code className="bg-quanta-surface-variant px-2 py-1 rounded text-sm font-mono">
         {children}
       </code>
     ),
     pre: ({ children }) => (
-      <pre className="bg-surface-variant p-4 rounded-lg overflow-x-auto mb-4">
+      <pre className="bg-quanta-surface-variant p-4 rounded-lg overflow-x-auto mb-4">
         {children}
       </pre>
     ),
@@ -41,7 +41,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     li: ({ children }) => <li className="mb-2">{children}</li>,
     blockquote: ({ children }) => (
-      <blockquote className="border-l-4 border-primary pl-4 italic my-4">
+      <blockquote className="border-l-4 border-quanta-primary pl-4 italic my-4">
         {children}
       </blockquote>
     ),

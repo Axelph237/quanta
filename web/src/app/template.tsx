@@ -7,12 +7,12 @@ const MOBILE_SIZE = 768;
 
 function MobileWarning() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-surface">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-quanta-surface">
       <div className="max-w-md w-full">
-        <div className="px-6 py-8 border-2 border-primary bg-primary/10 rounded-xl text-on-surface">
+        <div className="px-6 py-8 border-2 border-quanta-primary bg-quanta-primary/10 rounded-xl text-quanta-on-surface">
           <div className="flex flex-col items-center text-center space-y-4">
             <svg
-              className="w-16 h-16 text-primary"
+              className="w-16 h-16 text-quanta-primary"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -26,7 +26,7 @@ function MobileWarning() {
               />
             </svg>
             <h1 className="text-2xl font-bold">Mobile Not Supported</h1>
-            <p className="text-on-surface">
+            <p className="text-quanta-on-surface">
               This application is optimized for desktop and tablet devices.
               Please visit on a larger screen for the best experience! :D
             </p>

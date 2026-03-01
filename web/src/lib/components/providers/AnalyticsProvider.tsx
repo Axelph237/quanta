@@ -135,7 +135,7 @@ function ConsentPopup({
     >
       <div
         id="consent-form-container"
-        className="border-2 border-primary rounded-2xl shadow-2xl shadow-primary p-12 max-w-2xl max-h-[80vh] bg-surface overflow-y-scroll flex flex-col items-center gap-4"
+        className="border-2 border-quanta-primary rounded-2xl shadow-2xl shadow-quanta-primary p-12 max-w-2xl max-h-[80vh] bg-quanta-surface overflow-y-scroll flex flex-col items-center gap-4"
       >
         <h1
           id="consent-form-title"
@@ -147,7 +147,7 @@ function ConsentPopup({
           {showFullText ? (
             <motion.div
               id="consent-form-text"
-              className="overflow-y-auto rounded-lg border-2 border-on-surface/15 p-4"
+              className="overflow-y-auto rounded-lg border-2 border-quanta-on-surface/15 p-4"
             >
               <ConsentText />
             </motion.div>
@@ -176,20 +176,20 @@ function ConsentPopup({
           )}
         </AnimatePresence>
         <button
-          className="cursor-pointer text-on-surface/50 hover:text-on-surface transition-colors duration-300"
+          className="cursor-pointer text-quanta-on-surface/50 hover:text-quanta-on-surface transition-colors duration-300"
           onClick={() => setShowFullText(!showFullText)}
         >
           {showFullText ? "Show Less" : "Show Details"}
         </button>
         <div id="consent-form-buttons" className="flex flex-col gap-4 relative">
           <button
-            className="button-primary bg-primary"
+            className="button-primary bg-quanta-primary"
             onClick={() => updatePerms(true)}
           >
             Accept
           </button>
           <button
-            className="text-primary text-sm cursor-pointer"
+            className="text-quanta-primary text-sm cursor-pointer"
             onClick={() => updatePerms(false)}
           >
             Do Not Participate
@@ -211,12 +211,12 @@ export function ConsentCheckbox() {
 
   return (
     <button
-      className="flex flex-row items-center bg-primary/25 border-primary border p-4 rounded-lg"
+      className="flex flex-row items-center bg-quanta-primary/25 border-quanta-primary border p-4 rounded-lg"
       onClick={handleClick}
     >
       <div
         id="usage-permission-checkbox"
-        className={` cursor-pointer w-6 h-6 rounded-md border border-primary flex items-center justify-center ${checked ? "bg-primary" : ""}`}
+        className={` cursor-pointer w-6 h-6 rounded-md border border-quanta-primary flex items-center justify-center ${checked ? "bg-quanta-primary" : ""}`}
       >
         {checked && (
           <motion.span

@@ -23,7 +23,7 @@ import { redirect, RedirectType, useSearchParams } from "next/navigation";
 import Logo from "@/lib/components/ui/Logo";
 import useComputedCSS from "@/lib/hooks/useComputedCSS";
 import { GENTLE_EASE } from "../globals";
-import { Lesson, LESSONS, Unit, UNITS } from "./lessons";
+import { Lesson, LESSONS, Unit, UNITS } from "@/lib/lessons";
 import GradientText from "@/lib/components/react-bits/GradientText";
 import ShinyText from "@/lib/components/react-bits/ShinyText";
 import * as icons from "@/lib/components/ui/Icons";
@@ -107,7 +107,7 @@ function LessonsPageContent() {
         initial={{ opacity: 1 }}
         animate={{ opacity: lessonOpened !== false ? 0 : 1 }}
         transition={GENTLE_EASE}
-        className="absolute left-0 top-0 w-[100vw] h-16 pointer-events-none z-1 bg-linear-to-b from-surface to-transparent"
+        className="absolute left-0 top-0 w-[100vw] h-16 pointer-events-none z-1 bg-linear-to-b from-quanta-surface to-transparent"
       ></motion.div>
 
       <motion.header
@@ -127,7 +127,7 @@ function LessonsPageContent() {
             opacity: redirecting || focusedIndex !== 0 ? 0 : 1,
           }}
           transition={{ duration: 0.2 }}
-          className="flex place-self-start text-surface-variant gap-2"
+          className="flex place-self-start text-quanta-surface-variant gap-2"
         >
           <icons.Click className="icon-sm" />
           <ShinyText text="Click to return Home" />
@@ -140,7 +140,7 @@ function LessonsPageContent() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         ref={scope}
-        className={`relative inset-0 h-screen w-screen ${lessonOpened ? "overflow-hidden" : "overflow-y-scroll"} bg-surface text-on-surface flex items-center ${lessonOpened ? "" : ""}`}
+        className={`relative inset-0 h-screen w-screen ${lessonOpened ? "overflow-hidden" : "overflow-y-scroll"} bg-quanta-surface text-quanta-on-surface flex items-center ${lessonOpened ? "" : ""}`}
       >
         {/* Carousel List */}
         <motion.div
@@ -183,8 +183,8 @@ function LessonsPageContent() {
               key={index}
               className={`w-full rounded-lg my-2 ${
                 lesson.tocId.split(".")[1] === "0"
-                  ? "bg-secondary"
-                  : "bg-primary"
+                  ? "bg-quanta-secondary"
+                  : "bg-quanta-primary"
               } cursor-pointer`}
               initial={{ opacity: 0 }}
               animate={{
@@ -201,7 +201,7 @@ function LessonsPageContent() {
         initial={{ opacity: 1 }}
         animate={{ opacity: lessonOpened !== false ? 0 : 1 }}
         transition={GENTLE_EASE}
-        className="absolute bottom-0 left-0 w-[100vw] h-16 pointer-events-none z-1 bg-linear-to-t from-surface to-transparent"
+        className="absolute bottom-0 left-0 w-[100vw] h-16 pointer-events-none z-1 bg-linear-to-t from-quanta-surface to-transparent"
       ></motion.div>
     </>
   );
@@ -240,8 +240,6 @@ function LessonItem({
   // viewportDims: { height: number; width: number };
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLSpanElement>(null);
-  const unitRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     container: parentRef,
@@ -276,22 +274,6 @@ function LessonItem({
     }
   });
 
-  useLayoutEffect(() => {
-    // Position unit title about lesson title
-    // Unit title is absolutely positioned, so we need to set the unit title's height manually
-    if (titleRef.current && unitRef.current) {
-      const titleRect = titleRef.current.getBoundingClientRect();
-      const unitRect = unitRef.current.getBoundingClientRect();
-
-      const titleHeight = titleRect.height;
-      const unitHeight = unitRect.height;
-
-      const totalHeight = titleHeight + unitHeight;
-
-      unitRef.current.style.height = `${totalHeight + 20}px`;
-    }
-  }, [titleRef, unitRef]);
-
   useEffect(() => {
     if (isOpened) {
       const lessonItem = document.getElementById(
@@ -305,7 +287,7 @@ function LessonItem({
     <>
       <motion.div
         id={`${lesson.id}-card`}
-        className={`relative lesson-container cursor-pointer shrink-0 bg-primary text-on-surface ${outfit.className}`}
+        className={`relative lesson-container cursor-pointer shrink-0 bg-quanta-primary text-quanta-on-surface ${outfit.className}`}
         initial={{ width: "40vw", height: "40vh" }}
         animate={{
           top: isOpened ? "0" : "30vh",
@@ -341,34 +323,32 @@ function LessonItem({
           transition={GENTLE_EASE}
           className="absolute flex flex-col top-0 h-full text-center justify-center items-center font-bold text-2xl"
         >
-          {unit && (
-            <motion.div
-              ref={unitRef}
-              className="lesson-unit-title absolute w-fit"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isOpened ? 0 : 0.75 }}
-              transition={GENTLE_EASE}
-            >
-              <GradientText
-                colors={[
-                  "var(--color-primary)",
-                  "var(--color-primary-container)",
-                  "var(--color-primary)",
-                ]}
-                animationSpeed={3}
-              >
-                <span className="font-bold text-lg">{unit.title}</span>
-              </GradientText>
-            </motion.div>
-          )}
           <motion.span
             initial={{ scale: 1 }}
             animate={{ scale: isOpened ? 2 : 1 }}
             transition={GENTLE_EASE}
-            ref={titleRef}
-            className="lesson-title w-[25vw]"
+            className="lesson-title relative w-[25vw]"
           >
             {lesson.title}
+            {unit && (
+              <motion.div
+                className="lesson-unit-title absolute bottom-full left-1/2 -translate-x-1/2 w-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isOpened ? 0 : 0.75 }}
+                transition={GENTLE_EASE}
+              >
+                <GradientText
+                  colors={[
+                    "var(--color-quanta-primary)",
+                    "var(--color-quanta-primary-container)",
+                    "var(--color-quanta-primary)",
+                  ]}
+                  animationSpeed={3}
+                >
+                  <span className="font-bold text-lg">{unit.title}</span>
+                </GradientText>
+              </motion.div>
+            )}
           </motion.span>
         </motion.h2>
       </motion.div>

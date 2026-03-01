@@ -97,7 +97,7 @@ function HomeContent() {
       {/* Header */}
       <header>
         {/* About Nav */}
-        <div className="absolute inset-0 z-0 bg-linear-to-b from-surface to-transparent"></div>
+        <div className="absolute inset-0 z-0 bg-linear-to-b from-quanta-surface to-transparent"></div>
         <motion.span
           initial={{ opacity: 0 }}
           animate={{
@@ -143,7 +143,7 @@ function HomeContent() {
       >
         <HomeSection className="flex flex-col items-center justify-start">
           <BlurText
-            text="QUANTUM MADE EASY"
+            text="READY TO LEARN?"
             delay={75}
             animateBy="words"
             direction="top"
@@ -173,7 +173,7 @@ function HomeContent() {
           >
             {/* Content that should fill the remaining vertical space goes here */}
             <motion.div
-              className="w-full bg-primary"
+              className="w-full bg-quanta-primary"
               initial={{ height: 0 }}
               animate={{ height: "100%" }}
               transition={GENTLE_EASE}
@@ -277,20 +277,29 @@ function ToyGates({
     const gateSize = 16;
     const gateComps = [
       <HGate key={1} className={`text-red-500 w-${gateSize} h-${gateSize}`} />,
-      <XGate key={2} className={`text-primary w-${gateSize} h-${gateSize}`} />,
-      <YGate key={3} className={`text-primary w-${gateSize} h-${gateSize}`} />,
-      <ZGate key={4} className={`text-primary w-${gateSize} h-${gateSize}`} />,
+      <XGate
+        key={2}
+        className={`text-quanta-primary w-${gateSize} h-${gateSize}`}
+      />,
+      <YGate
+        key={3}
+        className={`text-quanta-primary w-${gateSize} h-${gateSize}`}
+      />,
+      <ZGate
+        key={4}
+        className={`text-quanta-primary w-${gateSize} h-${gateSize}`}
+      />,
       <SGate
         key={5}
-        className={`text-secondary w-${gateSize} h-${gateSize}`}
+        className={`text-quanta-secondary w-${gateSize} h-${gateSize}`}
       />,
       <TGate
         key={6}
-        className={`text-secondary w-${gateSize} h-${gateSize}`}
+        className={`text-quanta-secondary w-${gateSize} h-${gateSize}`}
       />,
       <NotGate
         key={7}
-        className={`text-primary w-${gateSize} h-${gateSize}`}
+        className={`text-quanta-primary w-${gateSize} h-${gateSize}`}
       />,
     ];
     // eslint-disable-next-line react-hooks/set-state-in-effect

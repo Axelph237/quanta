@@ -12,76 +12,76 @@
    * Adapted for Dark Mode support using CSS variables.
    */
   /* Primary */
-  --color-primary: #2b7fff;
-  --color-on-primary: oklch(100% 0 0);
-  --color-primary-container: #ff0000;
-  --color-on-primary-container: #ffffff;
+  --color-quanta-primary: #2b7fff;
+  --color-quanta-on-primary: oklch(100% 0 0);
+  --color-quanta-primary-container: #ff0000;
+  --color-quanta-on-primary-container: #ffffff;
 
   /* Secondary - Unused */
-  --color-secondary: var(--color-purple-400);
-  --color-secondary-hover: var(--color-purple-500);
-  --color-on-secondary: #ffffff;
-  --color-secondary-container: var(--color-violet-200);
-  --color-on-secondary-container: var(--color-on-secondary);
+  --color-quanta-secondary: var(--color-purple-400);
+  --color-quanta-secondary-hover: var(--color-purple-500);
+  --color-quanta-on-secondary: #ffffff;
+  --color-quanta-secondary-container: var(--color-violet-200);
+  --color-quanta-on-secondary-container: var(--color-quanta-on-secondary);
 
   /* Tertiary - Unused */
-  --color-tertiary: #000000;
-  --color-on-tertiary: #ffffff;
-  --color-tertiary-container: #000000;
-  --color-on-tertiary-container: #ffffff;
+  --color-quanta-tertiary: #000000;
+  --color-quanta-on-tertiary: #ffffff;
+  --color-quanta-tertiary-container: #000000;
+  --color-quanta-on-tertiary-container: #ffffff;
 
   /* Error */
-  --color-error: var(--color-red-500);
-  --color-on-error: #ffffff;
-  --color-error-container: #f9dedc;
-  --color-on-error-container: #410e0b;
+  --color-quanta-error: var(--color-red-500);
+  --color-quanta-on-error: #ffffff;
+  --color-quanta-error-container: #f9dedc;
+  --color-quanta-on-error-container: #410e0b;
 
-  --color-background: #ffffffff;
-  --color-on-background: #000000ff;
+  --color-quanta-background: #ffffffff;
+  --color-quanta-on-background: #000000ff;
 
-  --color-surface: #ffffffff;
-  --color-on-surface: #000000ff;
-  --color-surface-variant: #e7e0ec;
-  --color-on-surface-variant: #49454f;
+  --color-quanta-surface: #ffffffff;
+  --color-quanta-on-surface: #000000ff;
+  --color-quanta-surface-variant: #e7e0ec;
+  --color-quanta-on-surface-variant: #49454f;
 
-  --color-outline: #79747e;
-  --color-outline-variant: #cac4d0;
+  --color-quanta-outline: #79747e;
+  --color-quanta-outline-variant: #cac4d0;
 }
 
 .dark {
   /* Primary */
-  --color-primary: var(--color-blue-500);
-  --color-on-primary: #020e3b;
-  --color-primary-container: var(--color-sky-300);
-  --color-on-primary-container: var(--color-on-primary);
+  --color-quanta-primary: var(--color-blue-500);
+  --color-quanta-on-primary: #020e3b;
+  --color-quanta-primary-container: var(--color-sky-300);
+  --color-quanta-on-primary-container: var(--color-quanta-on-primary);
 
   /* Secondary - Unused */
-  --color-secondary: var(--color-purple-400);
-  --color-on-secondary: #ffffff;
-  --color-secondary-container: var(--color-violet-200);
-  --color-on-secondary-container: var(--color-on-secondary);
+  --color-quanta-secondary: var(--color-purple-400);
+  --color-quanta-on-secondary: #ffffff;
+  --color-quanta-secondary-container: var(--color-violet-200);
+  --color-quanta-on-secondary-container: var(--color-quanta-on-secondary);
 
   /* Tertiary - Unused */
-  --color-tertiary: #ffffff;
-  --color-on-tertiary: #000000;
-  --color-tertiary-container: #ffffff;
-  --color-on-tertiary-container: #000000;
+  --color-quanta-tertiary: #ffffff;
+  --color-quanta-on-tertiary: #000000;
+  --color-quanta-tertiary-container: #ffffff;
+  --color-quanta-on-tertiary-container: #000000;
 
-  --color-error: #f2b8b5;
-  --color-on-error: #601410;
-  --color-error-container: #8c1d18;
-  --color-on-error-container: #f9dedc;
+  --color-quanta-error: #f2b8b5;
+  --color-quanta-on-error: #601410;
+  --color-quanta-error-container: #8c1d18;
+  --color-quanta-on-error-container: #f9dedc;
 
-  --color-background: #000000;
-  --color-on-background: #ffffff;
+  --color-quanta-background: #000000;
+  --color-quanta-on-background: #ffffff;
 
-  --color-surface: #000000;
-  --color-on-surface: #ffffff;
-  --color-surface-variant: #49454f;
-  --color-on-surface-variant: #cac4d0;
+  --color-quanta-surface: #000000;
+  --color-quanta-on-surface: #ffffff;
+  --color-quanta-surface-variant: #49454f;
+  --color-quanta-on-surface-variant: #cac4d0;
 
-  --color-outline: #938f99;
-  --color-outline-variant: #49454f;
+  --color-quanta-outline: #938f99;
+  --color-quanta-outline-variant: #49454f;
 }
 
 @theme {
@@ -99,69 +99,69 @@
    */
 
   /* Display */
-  --text-display-large: 3.5625rem;
-  --leading-display-large: 4rem;
-  --font-weight-display-large: 400;
+  --text-quanta-display-large: 3.5625rem;
+  --leading-quanta-display-large: 4rem;
+  --font-weight-quanta-display-large: 400;
 
-  --text-display-medium: 2.8125rem;
-  --leading-display-medium: 3.25rem;
-  --font-weight-display-medium: 400;
+  --text-quanta-display-medium: 2.8125rem;
+  --leading-quanta-display-medium: 3.25rem;
+  --font-weight-quanta-display-medium: 400;
 
-  --text-display-small: 2.25rem;
-  --leading-display-small: 2.75rem;
-  --font-weight-display-small: 400;
+  --text-quanta-display-small: 2.25rem;
+  --leading-quanta-display-small: 2.75rem;
+  --font-weight-quanta-display-small: 400;
 
   /* Headline */
-  --text-headline-large: 2rem;
-  --leading-headline-large: 2.5rem;
-  --font-weight-headline-large: 400;
+  --text-quanta-headline-large: 2rem;
+  --leading-quanta-headline-large: 2.5rem;
+  --font-weight-quanta-headline-large: 400;
 
-  --text-headline-medium: 1.75rem;
-  --leading-headline-medium: 2.25rem;
-  --font-weight-headline-medium: 400;
+  --text-quanta-headline-medium: 1.75rem;
+  --leading-quanta-headline-medium: 2.25rem;
+  --font-weight-quanta-headline-medium: 400;
 
-  --text-headline-small: 1.5rem;
-  --leading-headline-small: 2rem;
-  --font-weight-headline-small: 400;
+  --text-quanta-headline-small: 1.5rem;
+  --leading-quanta-headline-small: 2rem;
+  --font-weight-quanta-headline-small: 400;
 
   /* Title */
-  --text-title-large: 1.375rem;
-  --leading-title-large: 1.75rem;
-  --font-weight-title-large: 400;
+  --text-quanta-title-large: 1.375rem;
+  --leading-quanta-title-large: 1.75rem;
+  --font-weight-quanta-title-large: 400;
 
-  --text-title-medium: 1rem;
-  --leading-title-medium: 1.5rem;
-  --font-weight-title-medium: 500;
+  --text-quanta-title-medium: 1rem;
+  --leading-quanta-title-medium: 1.5rem;
+  --font-weight-quanta-title-medium: 500;
 
-  --text-title-small: 0.875rem;
-  --leading-title-small: 1.25rem;
-  --font-weight-title-small: 500;
+  --text-quanta-title-small: 0.875rem;
+  --leading-quanta-title-small: 1.25rem;
+  --font-weight-quanta-title-small: 500;
 
   /* Label */
-  --text-label-large: 0.875rem;
-  --leading-label-large: 1.25rem;
-  --font-weight-label-large: 500;
+  --text-quanta-label-large: 0.875rem;
+  --leading-quanta-label-large: 1.25rem;
+  --font-weight-quanta-label-large: 500;
 
-  --text-label-medium: 0.75rem;
-  --leading-label-medium: 1rem;
-  --font-weight-label-medium: 500;
+  --text-quanta-label-medium: 0.75rem;
+  --leading-quanta-label-medium: 1rem;
+  --font-weight-quanta-label-medium: 500;
 
-  --text-label-small: 0.6875rem;
-  --leading-label-small: 1rem;
-  --font-weight-label-small: 500;
+  --text-quanta-label-small: 0.6875rem;
+  --leading-quanta-label-small: 1rem;
+  --font-weight-quanta-label-small: 500;
 
   /* Body */
-  --text-body-large: 1rem;
-  --leading-body-large: 1.5rem;
-  --font-weight-body-large: 400;
+  --text-quanta-body-large: 1rem;
+  --leading-quanta-body-large: 1.5rem;
+  --font-weight-quanta-body-large: 400;
 
-  --text-body-medium: 0.875rem;
-  --leading-body-medium: 1.25rem;
-  --font-weight-body-medium: 400;
+  --text-quanta-body-medium: 0.875rem;
+  --leading-quanta-body-medium: 1.25rem;
+  --font-weight-quanta-body-medium: 400;
 
-  --text-body-small: 0.75rem;
-  --leading-body-small: 1rem;
-  --font-weight-body-small: 400;
+  --text-quanta-body-small: 0.75rem;
+  --leading-quanta-body-small: 1rem;
+  --font-weight-quanta-body-small: 400;
 
   /**
    * SIZING AND SPACING TOKENS (Material Design 3)
@@ -173,12 +173,12 @@
    * This matches your old 4px grid exactly.
    */
 
-  --spacing: 0.25rem; /* 4px base unit */
+  --spacing-quanta: 0.25rem; /* 4px base unit */
 
   /**
   * ANIMATION TOKENS (Material Design 3)
   */
-  --animate-gradient: gradient 3s linear infinite;
+  --animate-quanta-gradient: gradient 3s linear infinite;
   @keyframes gradient {
     0% {
       background-position: 0% 50%;
@@ -191,8 +191,8 @@
     }
   }
 
-  --animate-slide-logo: slide-logo 0.3s ease-out forwards;
-  --animate-slide-logo-back: slide-logo-back 0.3s ease-out forwards;
+  --animate-quanta-slide-logo: slide-logo 0.3s ease-out forwards;
+  --animate-quanta-slide-logo-back: slide-logo-back 0.3s ease-out forwards;
   @keyframes slide-logo {
     0% {
       transform: translateX(0);
@@ -210,7 +210,7 @@
     }
   }
 
-  --animate-shine: shine 5s linear infinite;
+  --animate-quanta-shine: shine 5s linear infinite;
   @keyframes shine {
     0% {
       background-position: 100% 50%;
@@ -232,11 +232,11 @@ body {
 
 body {
   --page-padding: 4rem;
-  @apply antialiased bg-surface text-on-surface min-h-screen flex flex-col;
+  @apply antialiased bg-quanta-surface text-quanta-on-surface min-h-screen flex flex-col;
 }
 
 header {
-  @apply px-[var(--page-padding)] pt-10 fixed gap-0 top-0 left-0 right-0 z-10 h-fit flex items-center justify-between text-on-surface;
+  @apply px-[var(--page-padding)] pt-10 fixed gap-0 top-0 left-0 right-0 z-10 h-fit flex items-center justify-between text-quanta-on-surface;
 }
 
 .button-primary {
@@ -248,7 +248,7 @@ header {
 }
 
 .page-nav {
-  @apply text-label-large cursor-pointer hover:underline underline-offset-4 transition-all duration-200;
+  @apply text-quanta-label-large cursor-pointer hover:underline underline-offset-4 transition-all duration-200;
 }
 
 /* Icons */
@@ -317,5 +317,5 @@ mjx-container {
 
 /* Definitions */
 [class*="define-"] {
-  @apply !text-secondary hover:!text-secondary-hover !cursor-help;
+  @apply !text-quanta-secondary hover:!text-quanta-secondary-hover !cursor-help;
 }

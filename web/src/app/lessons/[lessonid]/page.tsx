@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getLessonById, Lesson } from "../lessons";
+import { getLessonById, Lesson } from "@/lib/lessons";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { redirect, RedirectType } from "next/navigation";
@@ -77,7 +77,7 @@ export default function LessonPage({
               priority
             />
           ) : (
-            <div className="w-[100vw] h-[100vh] bg-primary"></div>
+            <div className="w-[100vw] h-[100vh] bg-quanta-primary"></div>
           )}
           {lesson?.title && (
             <motion.h2 className="absolute flex top-0 left-0 w-[100vw] h-[100vh] text-center justify-center items-center">

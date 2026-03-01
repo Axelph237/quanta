@@ -167,7 +167,7 @@ export default function GameHandler({
   return (
     <div
       id={id}
-      className="relative rounded-lg border-2 border-on-surface p-10 overflow-hidden w-full h-1/2 min-h-fit"
+      className="relative rounded-lg border-2 border-quanta-on-surface p-10 overflow-hidden w-full h-1/2 min-h-fit"
     >
       {/* First game has a "Play!" button, each sequential game has a "Ready?" button */}
       <AnimatePresence>
@@ -184,14 +184,14 @@ export default function GameHandler({
             </h1>
             {activeGame === 0 ? (
               <button
-                className="button-primary cursor-pointer bg-on-surface text-surface rounded-full"
+                className="button-primary cursor-pointer bg-quanta-on-surface text-quanta-surface rounded-full"
                 onClick={handleClick}
               >
                 Play!
               </button>
             ) : (
               <button
-                className="button-primary cursor-pointer bg-on-surface text-surface rounded-full"
+                className="button-primary cursor-pointer bg-quanta-on-surface text-quanta-surface rounded-full"
                 onClick={handleClick}
               >
                 Ready?
@@ -204,10 +204,10 @@ export default function GameHandler({
         {levels.map((_, index) => (
           <div
             key={index}
-            className="p-1 border-2 border-on-surface rounded-full"
+            className="p-1 border-2 border-quanta-on-surface rounded-full"
           >
             <div
-              className={`w-[10px] aspect-square ${index === activeGame ? "bg-on-surface/50" : index < activeGame ? "bg-on-surface" : "bg-transparent"} rounded-full transition-all duration-300`}
+              className={`w-[10px] aspect-square ${index === activeGame ? "bg-quanta-on-surface/50" : index < activeGame ? "bg-quanta-on-surface" : "bg-transparent"} rounded-full transition-all duration-300`}
             ></div>
           </div>
         ))}
@@ -242,7 +242,7 @@ export default function GameHandler({
         {background}
       </motion.div>
       <button
-        className="button-primary absolute !p-0 m-2 bottom-0 flex w-8 aspect-square items-center justify-center text-surface left-0 bg-on-surface z-10"
+        className="button-primary absolute !p-0 m-2 bottom-0 flex w-8 aspect-square items-center justify-center text-quanta-surface left-0 bg-quanta-on-surface z-10"
         onClick={() => setBgVisible(!bgVisible)}
       >
         {bgVisible ? (

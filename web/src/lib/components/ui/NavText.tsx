@@ -45,9 +45,9 @@ export default function NavText({
       >
         <GradientText
           colors={[
-            "var(--color-primary)",
-            "var(--color-primary-container)",
-            "var(--color-primary)",
+            "var(--color-quanta-primary)",
+            "var(--color-quanta-primary-container)",
+            "var(--color-quanta-primary)",
           ]}
           animationSpeed={3}
         >

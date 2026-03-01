@@ -22,12 +22,12 @@ import ShinyText from "@/lib/components/react-bits/ShinyText";
 // All available gate components
 const GATES = [
   { gate: HGate, color: "var(--color-red-500)" },
-  { gate: NotGate, color: "var(--color-primary)" },
-  { gate: SGate, color: "var(--color-secondary)" },
-  { gate: TGate, color: "var(--color-secondary)" },
-  { gate: XGate, color: "var(--color-primary)" },
-  { gate: YGate, color: "var(--color-primary)" },
-  { gate: ZGate, color: "var(--color-primary)" },
+  { gate: NotGate, color: "var(--color-quanta-primary)" },
+  { gate: SGate, color: "var(--color-quanta-secondary)" },
+  { gate: TGate, color: "var(--color-quanta-secondary)" },
+  { gate: XGate, color: "var(--color-quanta-primary)" },
+  { gate: YGate, color: "var(--color-quanta-primary)" },
+  { gate: ZGate, color: "var(--color-quanta-primary)" },
 ];
 
 interface GateBody {
@@ -188,7 +188,32 @@ export default function LandingPage() {
     // Keep the mouse in sync with rendering
     render.mouse = mouse;
 
-    // 8. RUN ENGINE
+    // 8. CURSOR MANAGEMENT ON THE CANVAS
+    const canvas = render.canvas;
+    let isDragging = false;
+
+    Events.on(mouseConstraint, "startdrag", () => {
+      isDragging = true;
+      canvas.style.cursor = "grabbing";
+    });
+
+    Events.on(mouseConstraint, "enddrag", () => {
+      isDragging = false;
+      canvas.style.cursor = "grab";
+    });
+
+    // Check hover on each engine update
+    Events.on(engine, "afterUpdate", () => {
+      if (isDragging) return;
+      const bodies = Composite.allBodies(engine.world);
+      const hoveredBodies = Matter.Query.point(
+        bodies.filter((b) => !b.isStatic && !b.isSensor),
+        mouse.position,
+      );
+      canvas.style.cursor = hoveredBodies.length > 0 ? "grab" : "default";
+    });
+
+    // 9. RUN ENGINE
     const runner = Runner.create();
     Runner.run(runner, engine);
     Render.run(render);
@@ -221,7 +246,7 @@ export default function LandingPage() {
 
   return (
     <main
-      className="absolute inset-0 overflow-hidden h-screen w-screen bg-background"
+      className="absolute inset-0 overflow-hidden h-screen w-screen bg-quanta-background"
       ref={scope}
     >
       <header>
@@ -244,7 +269,7 @@ export default function LandingPage() {
         </motion.h1>
 
         <span
-          className={`absolute text-surface-variant left-1/2 top-3/4 flex items-center gap-2 -translate-x-1/2 ${outfit.className}`}
+          className={`absolute text-quanta-surface-variant left-1/2 top-3/4 flex items-center gap-2 -translate-x-1/2 ${outfit.className}`}
         >
           <Swipe className="w-14 h-14" />
           <ShinyText className="text-2xl opacity-75" text="drag to clear" />
@@ -287,7 +312,7 @@ function PhysicsGate({ gateBody }: { gateBody: GateBody }) {
 
   return (
     <div
-      className={`absolute pointer-events-none cursor-pointer`}
+      className="absolute pointer-events-none"
       style={{
         left: position.x - gateBody.size / 2,
         top: position.y - gateBody.size / 2,

@@ -22,7 +22,7 @@ export const GatePalette: FC = () => {
           onDragStart={(e) => {
             //e.dataTransfer.setData("application/gate-type", g.type);
           }}
-          className="bg-primary z-10 rounded w-[40px] h-[40px] flex text-center items-center justify-center cursor-grab aspect-square"
+          className="bg-quanta-primary z-10 rounded w-[40px] h-[40px] flex text-center items-center justify-center cursor-grab aspect-square"
         >
           {/* Replace this with your gate icon component */}
           {g.label}

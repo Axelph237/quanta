@@ -78,7 +78,7 @@ export default function QuizQuestion({
           question.answers.map((answer) => (
             <button
               key={answer.text}
-              className="button-primary bg-primary col-span-1 text-xl"
+              className="button-primary bg-quanta-primary col-span-1 text-xl"
               onClick={(e) => onAnswer(question, answer, e)}
             >
               {answer.text}
@@ -89,11 +89,11 @@ export default function QuizQuestion({
             <input
               type="text"
               ref={inputRef}
-              className="input-no-border p-2 border-b-3 border-primary/25 focus:border-primary/75 transition-all duration-200"
+              className="input-no-border p-2 border-b-3 border-quanta-primary/25 focus:border-quanta-primary/75 transition-all duration-200"
             />
             <button
               type="submit"
-              className="bg-primary w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-all duration-200"
+              className="bg-quanta-primary w-8 h-8 rounded-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-all duration-200"
               onClick={(e) =>
                 onAnswer(
                   question,

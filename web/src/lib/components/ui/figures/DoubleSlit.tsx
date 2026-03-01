@@ -215,7 +215,7 @@ export default function DoubleSlitFigure() {
       <P5Canvas sketch={sketch(600, 600, measured)} />
       <button
         onClick={toggleMeasured}
-        className="button-primary bg-primary flex flex-row items-center gap-2"
+        className="button-primary bg-quanta-primary flex flex-row items-center gap-2"
       >
         {measured ? (
           <>
