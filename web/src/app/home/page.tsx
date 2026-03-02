@@ -6,6 +6,7 @@ import { libreBasker, outfit } from "@/app/fonts";
 import Link from "next/link";
 import BlurText from "@/lib/components/react-bits/BlurText";
 import {
+  AnimatePresence,
   HTMLMotionProps,
   motion,
   useAnimate,
@@ -17,10 +18,11 @@ import NavText from "@/lib/components/ui/NavText";
 import { Suspense, useEffect, useRef, useState } from "react";
 import useComputedCSS from "@/lib/hooks/useComputedCSS";
 import Logo from "@/lib/components/ui/Logo";
-import { GENTLE_EASE } from "../globals";
+import { COLORS, GENTLE_EASE } from "../globals";
 import { useSearchParams } from "next/navigation";
 import Draggable from "@/lib/components/ui/Draggable";
 import {
+  HandLazy,
   HandReaching,
   HGate,
   NotGate,
@@ -178,7 +180,7 @@ function HomeContent() {
             direction="top"
             className={`${
               fromLanding ? "mb-4" : ""
-            } text-center text-[5rem] lg:text-[10rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
+            } text-center text-[5rem] lg:text-[7rem] xl:text-[8rem] 2xl:text-[10rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
             onAnimationComplete={() => console.log("Completed anim")}
           />
           {/* {!fromLanding && (
@@ -201,51 +203,7 @@ function HomeContent() {
             ref={heroImgRef}
           >
             {/* Content that should fill the remaining vertical space goes here */}
-            <motion.div
-              id="hero-img"
-              className="relative w-full bg-quanta-primary"
-              initial={{ height: 0 }}
-              animate={{ height: "100%" }}
-              transition={GENTLE_EASE}
-            >
-              <motion.div
-                id="hero-img-content"
-                initial={{ opacity: 0, filter: "blur(10px)" }}
-                animate={{ opacity: 1, filter: "blur(0px)" }}
-                transition={{
-                  ...GENTLE_EASE,
-                  delay: GENTLE_EASE.duration,
-                }}
-                className="relative w-full h-full flex flex-row place-content-between"
-              >
-                <motion.span
-                  initial={{ left: "-50%", scale: 0.8 }}
-                  animate={{ left: "0%", scale: 1 }}
-                  transition={{
-                    ...GENTLE_EASE,
-                    duration: GENTLE_EASE.duration! * 2,
-                    delay: GENTLE_EASE.duration,
-                  }}
-                  className="relative"
-                >
-                  <HandReaching className="text-quanta-surface h-1/2 flex-1 relative top-1/2 -translate-y-1/2 aspect-auto" />
-                </motion.span>
-                <motion.span
-                  animate={{ rotate: [0, 180] }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 250,
-                    damping: 20,
-                    mass: 2,
-                    repeat: Infinity,
-                    repeatDelay: 1,
-                  }}
-                  className="flex-1 flex items-center justify-center"
-                >
-                  <TerriblyInnacurateQubit className="text-quanta-surface h-1/3 relative aspect-auto" />
-                </motion.span>
-              </motion.div>
-            </motion.div>
+            <HeroImg />
           </div>
         </HomeSection>
 
@@ -429,5 +387,97 @@ function ToyGates({
         );
       })}
     </>
+  );
+}
+
+function HeroImg() {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.div
+      id="hero-img"
+      className="relative w-full"
+      initial={{ height: 0 }}
+      animate={{
+        height: "100%",
+        background: isHovered
+          ? `linear-gradient(180deg, ${COLORS.primary.hex} 50%, ${COLORS.secondary.hex} 100%)`
+          : `linear-gradient(180deg, ${COLORS.primary.hex} 0%, ${COLORS.primary.hex} 100%)`,
+        transition: {
+          default: GENTLE_EASE,
+          background: {
+            ...GENTLE_EASE,
+            delay: GENTLE_EASE.duration,
+          },
+        },
+      }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+    >
+      <motion.div
+        id="hero-img-content"
+        initial={{ opacity: 0, filter: "blur(10px)" }}
+        animate={{ opacity: 1, filter: "blur(0px)" }}
+        transition={{
+          ...GENTLE_EASE,
+          delay: GENTLE_EASE.duration,
+        }}
+        className="relative w-full h-full flex flex-row justify-between"
+      >
+        <AnimatePresence mode="wait">
+          <motion.span
+            id="hero-img-hand-content"
+            className="relative"
+            key={isHovered ? 1 : 0} // Reaching Hand : Lazy Hand
+            initial={{
+              opacity: 0,
+              left: isHovered ? "-50%" : "-10%",
+              top: isHovered ? "0%" : "50%",
+              scale: isHovered ? 0.8 : 1,
+              filter: "blur(10px)",
+            }}
+            animate={{
+              opacity: 1,
+              left: "0%",
+              top: "0%",
+              scale: 1,
+              filter: "blur(0px)",
+            }}
+            exit={{
+              opacity: 0,
+              left: "-50%",
+              top: "0%",
+              scale: 0.8,
+              filter: "blur(10px)",
+            }}
+            transition={GENTLE_EASE}
+          >
+            {isHovered ? (
+              <HandReaching className="text-quanta-surface h-7/12 flex-1 relative top-1/2 -translate-y-1/2 aspect-auto" />
+            ) : (
+              <HandLazy className="text-quanta-surface h-1/2 flex-1 relative top-1/2 -translate-y-1/2 -translate-x-[2px] aspect-auto" />
+            )}
+          </motion.span>
+        </AnimatePresence>
+        <motion.span
+          animate={{
+            rotate: [0, 180],
+            transition: {
+              rotate: {
+                type: "spring",
+                stiffness: 250,
+                damping: 20,
+                mass: 2,
+                repeat: Infinity,
+                repeatDelay: 1,
+              },
+            },
+          }}
+          className="mr-64 flex items-center justify-center"
+        >
+          <TerriblyInnacurateQubit className="text-quanta-surface h-3/7 relative aspect-auto" />
+        </motion.span>
+      </motion.div>
+    </motion.div>
   );
 }

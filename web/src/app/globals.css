@@ -12,7 +12,7 @@
    * Adapted for Dark Mode support using CSS variables.
    */
   /* Primary */
-  --color-quanta-primary: #2b7fff;
+  --color-quanta-primary: #2b7ffff;
   --color-quanta-on-primary: oklch(100% 0 0);
   --color-quanta-primary-container: #ff0000;
   --color-quanta-on-primary-container: #ffffff;
@@ -308,6 +308,24 @@ header {
     transparent,
     rgba(43, 127, 255, 0.3)
   );
+}
+
+/* Scroll Bar */
+/* width */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+*::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
 }
 
 /* MathJax styling */
