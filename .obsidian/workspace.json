@@ -34,9 +34,21 @@
               "icon": "lucide-file",
               "title": "entangle"
             }
+          },
+          {
+            "id": "44c85b67c5b38402",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.12.4"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.12.4"
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -198,7 +210,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "c645554c1fcc7649",
+  "active": "44c85b67c5b38402",
   "lastOpenFiles": [
     "web/public/assets/hand_pointing_thinned.svg",
     "web/public/assets/hand_pointing copy.svg",

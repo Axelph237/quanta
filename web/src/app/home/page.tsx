@@ -260,7 +260,7 @@ function HomeContent() {
       <motion.div
         className="fixed pointer-events-none"
         initial={{ opacity: 0 }}
-        animate={{ opacity: clickCounter >= 10 ? [1, 0] : 0 }}
+        animate={{ opacity: clickCounter >= 10 ? [1, 1, 0] : 0 }}
         transition={{ duration: 0.75 }}
       >
         <Image
