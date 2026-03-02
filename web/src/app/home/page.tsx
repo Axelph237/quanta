@@ -401,13 +401,13 @@ function HeroImg() {
       animate={{
         height: "100%",
         background: isHovered
-          ? `linear-gradient(180deg, ${COLORS.primary.hex} 50%, ${COLORS.secondary.hex} 100%)`
-          : `linear-gradient(180deg, ${COLORS.primary.hex} 0%, ${COLORS.primary.hex} 100%)`,
+          ? `linear-gradient(270deg, ${COLORS.primary.hex} 25%, ${COLORS.secondary.hex} 100%)`
+          : `linear-gradient(270deg, ${COLORS.primary.hex} 0%, ${COLORS.primary.hex} 100%)`,
         transition: {
           default: GENTLE_EASE,
           background: {
             ...GENTLE_EASE,
-            delay: GENTLE_EASE.duration,
+            delay: GENTLE_EASE.duration! * 1.3,
           },
         },
       }}
