@@ -88,7 +88,7 @@ export const gates: Record<string, GateDefinition> = {
     color: COLORS.error.hex,
     label: "Hadamard",
     description:
-      "Creates a superposition of the qubit in the computational basis. I.E. $|0\\rangle \\rightarrow \\frac{|0\\rangle + |1\\rangle}{\\sqrt{2}}$.",
+      "Creates a superposition of the qubit in the computational basis. I.E. $H|0\\rangle \\rightarrow \\frac{1}{\\sqrt{2}}(|0\\rangle + |1\\rangle)$.",
     targetSVG: <icons.HGate />,
 
     numControls: 0,
@@ -116,7 +116,7 @@ export const gates: Record<string, GateDefinition> = {
     color: COLORS.secondary.hex,
     label: "Controlled-NOT",
     description:
-      "Controlled-NOT gate. If the control qubit is in the $|1\\rangle$ state, the target qubit will be flipped.",
+      "If the control qubit is in the $|1\\rangle$ state, the target qubit will be flipped.",
     targetSVG: <icons.NotGate />,
 
     numControls: 1,
@@ -130,12 +130,31 @@ export const gates: Record<string, GateDefinition> = {
     color: COLORS.secondary.hex,
     label: "Controlled-Controlled-NOT",
     description:
-      "Controlled-Controlled-NOT gate. If both control qubits are in the $|1\\rangle$ state, the target qubit will be flipped.",
+      "If both control qubits are in the $|1\\rangle$ state, the target qubit will be flipped.",
     targetSVG: <icons.NotGate />,
 
     numControls: 2,
     numTargets: 1,
     apply: (c: Circuit, qubits: number[]) => c.appendGate("ccx", qubits, {}),
+    place: nullPlacement,
+    hidden: true,
+  },
+  ccz: {
+    id: "ccz",
+    type: "ccz",
+    color: COLORS.secondary.hex,
+    label: "Controlled-Controlled-Z",
+    description:
+      "Flips the state's phase if all qubits are in the $|1\\rangle$ state.",
+    targetSVG: <icons.NotGate />,
+
+    numControls: 2,
+    numTargets: 1,
+    apply: (c: Circuit, qubits: number[]) => {
+      c.appendGate("h", [qubits[qubits.length - 1]], {});
+      c.appendGate("ccx", qubits, {});
+      c.appendGate("h", [qubits[qubits.length - 1]], {});
+    },
     place: nullPlacement,
     hidden: true,
   },

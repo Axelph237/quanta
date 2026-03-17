@@ -39,7 +39,7 @@ export type CircuitState = {
 };
 
 // --- Gate Types ---
-type GateType = "h" | "x" | "y" | "z" | "s" | "cx" | "ccx" | "swap" | "measure" | "empty" | "block";
+type GateType = "h" | "x" | "y" | "z" | "s" | "cx" | "ccx" | "ccz" | "swap" | "measure" | "empty" | "block";
 
 /**
  * Defines the properties of a gate.

@@ -10,6 +10,7 @@ import Logo from "@/lib/components/ui/Logo";
 import { DefineTooltips } from "@/lib/components/ui/DefineTooltip";
 import * as icons from "@/lib/components/ui/Icons";
 import { useAnalytics } from "@/lib/components/providers/AnalyticsProvider";
+import CircuitScriptLoader from "@/lib/circuit/quantumCircuitClient";
 
 export default function LessonPage({
   params,
@@ -43,6 +44,7 @@ export default function LessonPage({
   return (
     <>
       <DefineTooltips />
+      <CircuitScriptLoader />
       <motion.header
         className="w-full block"
         animate={{ left: 0 }}

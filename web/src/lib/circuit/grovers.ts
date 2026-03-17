@@ -1,3 +1,9 @@
+/**
+ * This file is just an example of how to use the quantum circuit client and write grover's algo.
+ * It is not intended to be used in the application.
+ * - Aiden :)
+ */
+
 import Circuit from "quantum-circuit";
 import { createCircuit } from "./quantumCircuitClient";
 

@@ -6,7 +6,7 @@ const DEFAULT_GATE_SIZE = 30;
 
 const INITIAL_GRID: Grid = {
   xMargin: DEFAULT_GATE_SIZE * 2,
-  yMargin: DEFAULT_GATE_SIZE * 2,
+  yMargin: DEFAULT_GATE_SIZE,
   columnWidth: DEFAULT_GATE_SIZE + DEFAULT_GATE_SIZE / 4,
   rowHeight: DEFAULT_GATE_SIZE + DEFAULT_GATE_SIZE / 4,
   gateSize: DEFAULT_GATE_SIZE,
@@ -22,20 +22,19 @@ export function useResponsiveGrid() {
 
     let gateSize = 0;
     if (viewport.isXL) {
-      gateSize = Math.min(viewport.width, viewport.height) / 20;
+      gateSize = Math.min(viewport.width, viewport.height) / 25;
     } else if (viewport.isLg) {
-      gateSize = Math.min(viewport.width, viewport.height) / 30;
+      gateSize = Math.min(viewport.width, viewport.height) / 35;
     } else if (viewport.isMd) {
-      gateSize = Math.min(viewport.width, viewport.height) / 40;
+      gateSize = Math.min(viewport.width, viewport.height) / 45;
     } else if (viewport.isSm) {
-      gateSize = Math.min(viewport.width, viewport.height) / 50;
+      gateSize = Math.min(viewport.width, viewport.height) / 55;
     }
-    const padding = gateSize * 2;
-    const margin = gateSize / 4;
+    const margin = gateSize / 2;
 
     setGrid({
-      xMargin: padding,
-      yMargin: padding,
+      xMargin: gateSize * 2,
+      yMargin: gateSize,
       columnWidth: gateSize + margin,
       rowHeight: gateSize + margin,
       gateSize: gateSize,

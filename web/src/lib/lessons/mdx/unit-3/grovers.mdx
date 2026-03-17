@@ -1,8 +1,9 @@
 import Callout from "@/lib/components/ui/Callout"
 import WarpingCircle from "@/lib/components/ui/figures/WarpingCircle"
 import QuasiProbGraph from "@/lib/components/ui/figures/QuasiProbGraph"
-import { Eye, ListItem } from "@/lib/components/ui/Icons"
+import { Eye, ListItem, SchrodingersCat } from "@/lib/components/ui/Icons"
 import CircuitCanvas from "@/lib/circuit/CircuitCanvas"
+import ShinyText from "@/lib/components/react-bits/ShinyText"
 
 {/* CCZ gate */}
 export const ccz = [
@@ -104,12 +105,13 @@ Phone books are a bad example: they are a dataset of random entries, the names c
 
 In the case of sudoku, our oracle would essentially mark the "correct" state if it satisfied all the rules. Let's say that a solution to our sudoku puzzle is represented by the state $|100\rangle$, the quasi-probabilities of wave equation would be
 
-<QuasiProbGraph 
+<div className="center-page-content">
+  <QuasiProbGraph 
     values={[1, 1, 1, 1, -1, 1, 1, 1].map((val) => val / Math.sqrt(8))} 
     labels={["000", "001", "010", "011", "100", "101", "110", "111"]} 
     yMax="0.5" 
     yMin="-0.5" />
-
+</div>
 
 After the first iteration. You can see that the marked state has a negative phase (thus negative amplitude). We will see how we can extract this negative amplitude into a positive amplitude in the next step of the algorithm!
 
@@ -130,11 +132,13 @@ Now the sum of all the amplitudes is: $7 \frac{1}{\sqrt{8}} - \frac{1}{\sqrt{8}}
 
 If we reflect all of these states about that average (or, find the difference between two times the average $\overline{\alpha}$ and the state's amplitude $\alpha_i$: $2\overline{\alpha} - \alpha_i$), we get the following:
 
+<div className="center-page-content">
 <QuasiProbGraph 
     values={[1, 1, 1, 1, -1, 1, 1, 1].map((val) => Math.abs(2 * (3 / (4 * Math.sqrt(8))) - (val / Math.sqrt(8))))} 
     labels={["000", "001", "010", "011", "100", "101", "110", "111"]} 
     yMax={(Math.abs(2 * (3 / (4 * Math.sqrt(8))) - (-1 / Math.sqrt(8)))).toFixed(2)} 
     yMin="0" />
+</div>
 
 See how the amplitude of the marked state $|100\rangle$ has increased and the others have all decreased? This is *exactly* what we want! If we were to measure this state now, we would have an extremely highly likelyhood of measuring the solution to our problem.
 
@@ -147,11 +151,13 @@ So how many times do we need to repeat this process? In his original paper, Lov 
 
 After applying the oracle $O$ (marking the target state) and the defuser $D$ one more time (for a total of two times), we get the following amplitudes:
 
+<div className="center-page-content">
 <QuasiProbGraph 
     values={[-1, -1, -1, -1, 11, -1, -1, -1].map((val) => val / (4 * Math.sqrt(8)))} 
     labels={["000", "001", "010", "011", "100", "101", "110", "111"]} 
     yMax={(11 / (4 * Math.sqrt(8))).toFixed(2)} 
     yMin={(-1 / (4 * Math.sqrt(8))).toFixed(2)} />
+</div>
 
 With a probability amplitude of $\sim 0.97$, we have a $0.97^2 \approx 0.94$ chance of measuring the correct state! To be sure we know the correct state, we might run the algorithm multiple times, keeping track of our outcome each time. That way we will measure the correct state the majority of the time!
 
@@ -160,12 +166,40 @@ With a probability amplitude of $\sim 0.97$, we have a $0.97^2 \approx 0.94$ cha
 
 Okay, so we have looked at the steps to this algorithm, but how would we actually implement this on a quantum computer? For this section, let's scratch the paper, and instead look at the actual circuit.
 
-**The Oracle** is an arbitrary unitary gate that is defined on a per-problem basis. Essentially, this is our "input" where we describe the database and constraints we want to solve for. Like with the sudoku example, this would be our board state and the rules of sudoku described by a matrix (check out THIS paper to see how this can be implemented for a game of sudoku).
+### SP.1 - The Oracle
+is an arbitrary unitary gate that is defined on a per-problem basis. Essentially, this is our "input" where we describe the database and constraints we want to solve for. Like with the sudoku example, this would be our board state and the rules of sudoku described by a matrix.
 
-**The Diffuser** is standard across all applications of Grover's algorithm. It is defined as:
+Earlier, we talked about an oracle that simply marked the $|100\rangle$ state. In this case, the circuit for the oracle looks like:
+<div className="">
+<CircuitCanvas
+        numQubits={3}
+        numColumns={7}
+        initialGates={[
+          ["ellipsis", [0]],
+          ["ellipsis", [1]],
+          ["ellipsis", [2]],
+          ...oracle,
+        ]}
+        compute={false}
+      />
+</div>
+The qubits in our circuit are $|q2\rangle |q1\rangle |q0\rangle$, meaning that the $|1\rangle$ in $|100\rangle$ corresponds to the $q2$ qubit. To mark the state, we use the <span className="define-ccx-gate">CCNOT</span> gate. So, our oracle must set the $q1$ and $q2$ qubits to $|1\rangle$ so that $|100\rangle$ is treated as $|111\rangle$ (first set of NOT gates), and return the state after the CCNOT gate (second set of NOT gates). 
+
+Aren't we supposed to be adding a negative phase, not flipping bits? That's true! The CCNOT gate with Hadamard gates around the target qubit together create what is called a <span className="define-ccz-gate">CCZ</span> gate.
+
+*(check out THIS paper to see how this can be implemented for a game of sudoku)*
+
+### SP.2 - The Diffuser
+is standard across all applications of Grover's algorithm. It is defined as:
 $$
     D = 2|s\rangle\langle s| - I
 $$
+Where $|s\rangle$ is the uniform superposition of all states, and $I$ is the identity matrix. 
+
+Or, in more plain english, it is the reflection of the states about the average amplitude. There are three parts to the diffuser:
+1. Apply $H$ to all qubits, creating a uniform superposition of all states. Effectively, we spread the average amplitude across all states.
+2. Apply a phase flips with <span className="define-ccz-gate">CCZ</span> to the initial state $|s\rangle = |0^N\rangle$. So, we must apply a NOT to all qubits before and after the CCZ.
+3. Apply $H$ to all qubits again, returning them to their original state but with their amplitude reflected around $|s\rangle$.
 
 <CircuitCanvas
         numQubits={3}
@@ -179,4 +213,30 @@ $$
         compute={false}
       />
 
+### SP.3 - The Full Circuit
+Now, we can put it all together! Note, we start by putting all qubits in a uniform superposition, then we apply the oracle, then the diffuser, and repeat!
 
+<Callout title="Full Grover's Circuit" icon={<SchrodingersCat className="size-6" />}>
+<div className="overflow-x-scroll">
+<CircuitCanvas
+        numQubits={3}
+        numColumns={25}
+        initialGates={[
+          ["h", [0]],
+          ["h", [1]],
+          ["h", [2]],
+          ...oracle,
+          ...diffuser,
+          ...oracle,
+          ...diffuser,
+        ]}
+      />
+</div>
+<ShinyText text="Scroll to see whole circuit..." speed={5} />
+</Callout>
+
+Take a moment to look through the circuit. See the repetitions? Oracle... Diffuser... Oracle... Diffuser. Two iterations, just as we talked about before!
+
+And even more exitingly... see the probability on measuring each qubit? It's almost certain we'll measure $|100\rangle$! Those probabilities look a lot like our graph from earlier after two iterations of the oracle and diffuser! 
+
+*P.S.: That full circuit is simulated in real time, meaning the circuit are accurately executing the algorithm!*

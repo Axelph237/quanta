@@ -21,7 +21,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <h4 className="text-xl font-semibold mb-2 opacity-60">{children}</h4>
     ),
     p: ({ children }) => (
-      <p className="mb-8 text-xl leading-relaxed">{children}</p>
+      <p className="mb-6  text-xl leading-relaxed">{children}</p>
     ),
     a: ({ href, children }) => (
       <a href={href} className="text-quanta-primary hover:underline">
@@ -44,7 +44,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ol: ({ children }) => (
       <ol className="list-decimal list-inside mb-4">{children}</ol>
     ),
-    li: ({ children }) => <li className="mb-2">{children}</li>,
+    li: ({ children }) => <li className="mb-4 ml-6 text-lg">{children}</li>,
     blockquote: ({ children }) => (
       <blockquote className="border-l-4 border-quanta-primary pl-4 italic my-4">
         {children}

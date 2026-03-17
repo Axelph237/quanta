@@ -8,6 +8,7 @@ import { createCircuit, State, stateAsObjects } from "./quantumCircuitClient";
 import { qubitSpans } from "./gates";
 import { motion } from "framer-motion";
 import { COLORS } from "@/app/globals";
+import { dmMono } from "@/app/fonts";
 
 export default function CircuitCanvas({
   numQubits,
@@ -339,6 +340,18 @@ function AmplitudeDisplay({
         fill="var(--color-quanta-primary)"
         mask={`url(#probability-mask-${qubit})`}
       />
+      <text
+        x={pos.x + grid.gateSize / 2}
+        y={pos.y + grid.gateSize / 2}
+        dominantBaseline="middle"
+        textAnchor="middle"
+        fill="var(--color-quanta-on-surface)"
+        fontSize={grid.gateSize / 3}
+        className={dmMono.className}
+        strokeWidth={0}
+      >
+        {(probability * 100).toFixed(0) + "%"}
+      </text>
       <circle
         cx={pos.x + grid.gateSize / 2}
         cy={pos.y + grid.gateSize / 2}
