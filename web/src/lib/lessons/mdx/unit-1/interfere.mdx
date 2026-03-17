@@ -1,0 +1,23 @@
+import Callout from "@/lib/components/ui/Callout";
+import { SchrodingersCat } from "@/lib/components/ui/Icons";
+
+# Interference
+
+## Rock Skipping
+Imagine you dropped a pebble in a pond. Unsurprisingly, the water begins to ripple and wave outward from the point of impact. Your friend throws another rock in, creating its own set of ripples. As the waves begin to intersect, the peaks and troughs of the waves add together, getting larger where two peaks **interfere**, or dipping lower at the troughs. Both of these are examples of what is called **constructive interference**. Similarly, when a peak and a trough meet, they cancel out, this creates **destructive interference**.
+
+## Amplitudes
+For the first time in the history of Quanta (four lessons now), an analogy is actually accurate to our quantum particles! In *A Brief History*, we talked about how these quantum systems behave like "waves". We expanded this idea of waving in *Superposition*, where we said that a wave can be made up of multiple coinciding *probability amplitudes*. Just like in our pond example, the wave at any point in the pond is in a superposition of two waves, interfering with each other.
+
+The key difference: our amplitudes are special. More accurately, a wave in a pond may have an amplitude representing the number of inches up (or below) from the surface of the water that wave can reach, we will call this amplitude $A$. $A$ here is a scalar, but quantum systems also have what is called a phase. When the phase of two wave functions are aligned, they **constructively interfere**. However, when they are unaligned (or opposite each other), they **destructively interfere**. This can be seen in the double slit experiment from the *A Brief History* module.
+
+<Callout title="Note" icon={<SchrodingersCat className="icon-sm" />} color="#2b7fff">
+*The phase and amplitude of a wave function is written $Ae^{i\theta}$. Using Euler's formula, this expands to:*
+$$
+Acos(\theta)+Aisin(\theta)
+$$
+*Here you can see that there are both real and imaginary (denoted by the $i$) parts of the phase! This is too big a topic for our sake, but in short, our wave equations have multiple waving properties within their single phase!*
+</Callout>
+
+## Please Interfere
+The beauty of interference is that it allows us to coerce the overall wave function of a system into producing an output corresponding to some question we may be asking. The exact implementation of this is dependent on the algorithm being used, but in the case of Grover's Algorithm, interference is used to amplify the probability of measuring the target state through constructive interference.

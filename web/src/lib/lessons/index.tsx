@@ -1,6 +1,7 @@
 import { StaticImageData } from "next/image";
 import unit1 from "./mdx/unit-1";
 import unit2 from "./mdx/unit-2";
+import unit3 from "./mdx/unit-3";
 
 export interface Unit {
   id: string;
@@ -34,7 +35,7 @@ const MECHANICS_UNIT_LESSONS: Lesson[] = [
     unitId: "mechanics",
     title: "BRA-KET NOTATION",
     description: "Hiiiiiii",
-    tocId: "1.1",
+    tocId: "1.2",
     headerImg: undefined,
     pageContent: <unit1.braKet />,
   },
@@ -48,11 +49,20 @@ const MECHANICS_UNIT_LESSONS: Lesson[] = [
     pageContent: <unit1.superposition />,
   },
   {
+    id: "interfer",
+    unitId: "mechanics",
+    title: "INTERFERENCE",
+    description: "Hiiiiiii",
+    tocId: "1.3",
+    headerImg: undefined,
+    pageContent: <unit1.interfere />,
+  },
+  {
     id: "entanglement",
     unitId: "mechanics",
     title: "ENTANGLEMENT",
     description: "",
-    tocId: "1.3",
+    tocId: "1.4",
     headerImg: undefined,
     pageContent: <unit1.entanglement />,
   },
@@ -88,7 +98,17 @@ const COMPUTING_UNIT_LESSONS: Lesson[] = [
   },
 ];
 
-const ALGORITHMS_UNIT_LESSONS: Lesson[] = [];
+const ALGORITHMS_UNIT_LESSONS: Lesson[] = [
+  {
+    id: "grovers",
+    unitId: "algorithms",
+    title: "GROVER'S ALGORITHM",
+    description: "",
+    tocId: "3.0",
+    headerImg: undefined,
+    pageContent: <unit3.grovers />,
+  },
+];
 
 export const LESSONS: Lesson[] = [
   ...MECHANICS_UNIT_LESSONS,
@@ -100,7 +120,7 @@ export const UNITS: Unit[] = [
   {
     id: "mechanics",
     title: 'UNIT 1: WHAT IS "QUANTUM"?',
-    description: "The foray into quantum physics",
+    description: "An introduction to quantum physics",
     lessons: MECHANICS_UNIT_LESSONS,
   },
   {

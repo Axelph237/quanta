@@ -396,8 +396,11 @@ function HeroImg() {
   return (
     <motion.div
       id="hero-img"
-      className="relative w-full"
-      initial={{ height: 0 }}
+      className="w-full"
+      initial={{
+        height: 0,
+        background: `linear-gradient(270deg, ${COLORS.primary.hex} 25%, ${COLORS.primary.hex} 100%)`,
+      }}
       animate={{
         height: "100%",
         background: isHovered
@@ -420,6 +423,7 @@ function HeroImg() {
         animate={{ opacity: 1, filter: "blur(0px)" }}
         transition={{
           ...GENTLE_EASE,
+          duration: GENTLE_EASE.duration! * 0.6,
           delay: GENTLE_EASE.duration,
         }}
         className="relative w-full h-full flex flex-row justify-between"

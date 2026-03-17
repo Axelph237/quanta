@@ -4,6 +4,7 @@ import { COLORS } from "@/app/globals";
 import { P5CanvasInstance, P5Canvas } from "@p5-wrapper/react";
 import { useState } from "react";
 import { Eye, EyeOff } from "../Icons";
+import { useViewportSize } from "@/lib/hooks/useViewportSize";
 
 export function sketch(
   width: number,
@@ -13,8 +14,8 @@ export function sketch(
   return (p: P5CanvasInstance) => {
     let t = 0; // time parameter for animation
     const waveSpeed = 2; // pixels per frame
-    const wavelength = 80; // distance between wave crests
-    const slitSeparation = 200; // distance between the two slits
+    const wavelength = width / 5; // distance between wave crests
+    const slitSeparation = height / 3; // distance between the two slits
     const slitWidth = 20; // width of each slit opening
     const wallThickness = 5;
 
@@ -205,25 +206,30 @@ export function sketch(
 
 export default function DoubleSlitFigure() {
   const [measured, setMeasured] = useState(false);
+  const viewportSize = useViewportSize();
+
+  const length = Math.min(viewportSize.width / 6, 300);
 
   const toggleMeasured = () => {
     setMeasured(!measured);
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <P5Canvas sketch={sketch(600, 600, measured)} />
+    <div className="flex flex-col items-start gap-4">
+      <P5Canvas sketch={sketch(length, length, measured)} />
       <button
         onClick={toggleMeasured}
         className="button-primary bg-quanta-primary flex flex-row items-center gap-2"
       >
         {measured ? (
           <>
-            <EyeOff className="icon-sm" /> Stop Measuring
+            <EyeOff className="icon-sm" />{" "}
+            <span className="hidden lg:block">Don&apos;t Measure</span>
           </>
         ) : (
           <>
-            <Eye className="icon-sm" /> Start Measuring
+            <Eye className="icon-sm" />{" "}
+            <span className="hidden lg:block">Measure</span>
           </>
         )}
       </button>

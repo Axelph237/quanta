@@ -6,6 +6,12 @@ const nextConfig = {
   reactCompiler: true,
   reactStrictMode: false,
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+  images: {
+    remotePatterns: [{
+      protocol: "https",
+      hostname: "**"
+    }]
+  }
 };
 
 const rehypeMathdefsPath = fileURLToPath(

@@ -15,4 +15,8 @@ export const COLORS = {
     hex: "#c27aff",
     rgb: [194, 122, 255],
   },
+  error: {
+    hex: "#fb2c36",
+    rgb: [251, 44, 54],
+  }
 }

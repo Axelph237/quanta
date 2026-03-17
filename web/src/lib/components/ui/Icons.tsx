@@ -379,3 +379,21 @@ export function HandLazy(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function ListItem(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 16"
+      width="100%"
+      height="100%"
+      preserveAspectRatio="none"
+      role="img"
+      aria-label="Flexible list item"
+      {...props}
+    >
+      <circle cx="4" cy="8" r="3" fill="currentColor" />
+      <rect x="10" y="5" width="88" height="6" rx="3" fill="currentColor" />
+    </svg>
+  );
+}

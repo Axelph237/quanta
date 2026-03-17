@@ -1,5 +1,10 @@
 import type { MDXComponents } from "mdx/types";
 import Image from "next/image";
+import { HTMLAttributes } from "react";
+
+export function NoFormat(props: HTMLAttributes<HTMLElement>) {
+  return <section {...props} />;
+}
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -13,7 +18,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <h3 className="text-3xl font-semibold mb-2">{children}</h3>
     ),
     h4: ({ children }) => (
-      <h4 className="text-xl font-semibold mb-2">{children}</h4>
+      <h4 className="text-xl font-semibold mb-2 opacity-60">{children}</h4>
     ),
     p: ({ children }) => (
       <p className="mb-8 text-xl leading-relaxed">{children}</p>
@@ -46,7 +51,13 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </blockquote>
     ),
     img: ({ src, alt }) => (
-      <Image src={src} alt={alt} className="w-full h-auto rounded-lg my-4" />
+      <Image
+        src={src}
+        alt={alt}
+        width={1000}
+        height={1000}
+        className="w-full h-auto rounded-lg my-4"
+      />
     ),
     ...components,
   };

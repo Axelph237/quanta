@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 export function useViewportSize() {
     const [size, setSize] = useState<{ width: number, height: number }>({ width: 0, height: 0 });
 
+    // WidthGreaterThan
+    const wgt = (w: number) => size.width >= w;
+
     useEffect(() => {
         const updateSize = () => {
             const viewportWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -20,5 +23,6 @@ export function useViewportSize() {
         return () => window.removeEventListener("resize", updateSize)
     }, [])
 
-    return size
+    // is*: based on TailwindCSS responsive breakpoints
+    return {...size, isSm: wgt(640), isMd: wgt(768), isLg: wgt(1024), isXL: wgt(1280), is2XL: wgt(1536) }
 }

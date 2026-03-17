@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Quanta | Lessons",
@@ -10,5 +11,13 @@ export default function LessonsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <Script
+        src="https://unpkg.com/quantum-circuit@0.9.247/dist/quantum-circuit.min.js"
+        strategy="beforeInteractive"
+      />
+      {children}
+    </>
+  );
 }
