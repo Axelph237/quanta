@@ -67,7 +67,7 @@
   --color-quanta-tertiary-container: #ffffff;
   --color-quanta-on-tertiary-container: #000000;
 
-  --color-quanta-error: #f2b8b5;
+  --color-quanta-error: var(--color-red-500);
   --color-quanta-on-error: #601410;
   --color-quanta-error-container: #8c1d18;
   --color-quanta-on-error-container: #f9dedc;

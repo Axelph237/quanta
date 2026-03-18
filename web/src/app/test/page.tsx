@@ -61,6 +61,7 @@ export default function TestPage() {
   return (
     <main className="w-[100vw] h-[100vh] flex flex-col gap-20 items-center justify-center">
       <DefineTooltips />
+
       <div className="w-full flex flex-row gap-10">
         <CircuitPalette />
         <CircuitCanvas

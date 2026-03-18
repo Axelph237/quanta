@@ -145,7 +145,7 @@ export const gates: Record<string, GateDefinition> = {
     color: COLORS.secondary.hex,
     label: "Controlled-Controlled-Z",
     description:
-      "Flips the state's phase if all qubits are in the $|1\\rangle$ state.",
+      "Flips the state's phase if both control qubits are in the $|1\\rangle$ state.",
     targetSVG: <icons.NotGate />,
 
     numControls: 2,

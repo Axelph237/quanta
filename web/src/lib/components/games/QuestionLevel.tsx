@@ -15,14 +15,14 @@ interface InputQuestion {
   answer?: string;
 }
 
-type QuizQuestion = ChoiceQuestion | InputQuestion;
+export type QuizQuestionType = ChoiceQuestion | InputQuestion;
 
 export default function QuizQuestion({
   question,
   levelAPI,
   ...props
 }: {
-  question: QuizQuestion;
+  question: QuizQuestionType;
 } & GameComponentProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [gridDims, setGridDims] = useState({ cols: 1, rows: 4 });
@@ -51,7 +51,7 @@ export default function QuizQuestion({
   }, [levelAPI, props.startTrigger]);
 
   const onAnswer = (
-    question: QuizQuestion,
+    question: QuizQuestionType,
     response: { text: string; correct: boolean },
     e: React.MouseEvent,
   ) => {

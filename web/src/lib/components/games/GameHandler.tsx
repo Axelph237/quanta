@@ -89,6 +89,7 @@ export default function GameHandler({
   const [activeState, setActiveState] = useState<GameState | null>(null);
   const [startTrigger, setStartTrigger] = useState<boolean>(false); // Trigger to start the internal game
   const [displayMessage, setDisplayMessage] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(true);
 
   const getRandomMessage = (messages: string[]) => {
     // eslint-disable-next-line react-hooks/purity
@@ -114,9 +115,11 @@ export default function GameHandler({
       setTimeout(() => {
         setActiveGame(activeGame + 1);
       }, 500);
+      setSuccess(true);
     } else {
       setDisplayMessage(getRandomMessage(failureMessages || FAILURE_MESSAGES));
       setActiveState(GameState.READY);
+      setSuccess(false);
     }
     setStartTrigger(false);
   };
@@ -184,7 +187,7 @@ export default function GameHandler({
   return (
     <div
       id={id}
-      className={`${className} relative rounded-lg border-2 border-quanta-on-surface p-10 overflow-hidden w-full h-1/2 min-h-fit ${className}`}
+      className={`${className} relative rounded-lg border-2 ${success || activeState !== GameState.READY ? "border-quanta-on-surface" : "border-quanta-error"} transition-color duration-250 p-10 overflow-hidden w-full h-1/2 min-h-fit ${className}`}
       {...rest}
     >
       {/* First game has a "Play!" button, each sequential game has a "Ready?" button */}
@@ -196,24 +199,40 @@ export default function GameHandler({
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="absolute bg-quanta-surface/50 top-0 right-0 w-full h-full flex flex-col gap-2 items-center justify-center z-10"
           >
-            <h1 className="text-4xl font-bold">{name}</h1>
-            <h1 className="text-xl w-1/2 text-center opacity-85">
-              {description}
-            </h1>
-            {activeGame === 0 ? (
-              <button
-                className="button-primary cursor-pointer bg-quanta-on-surface text-quanta-surface rounded-full"
-                onClick={handleClick}
-              >
-                Play!
-              </button>
+            {success ? (
+              <>
+                <h1 className="text-4xl font-bold">{name}</h1>
+                <h1 className="text-xl w-1/2 text-center opacity-85">
+                  {description}
+                </h1>
+                <button
+                  className="button-primary cursor-pointer bg-quanta-on-surface text-quanta-surface rounded-full"
+                  onClick={handleClick}
+                >
+                  Ready?
+                </button>
+              </>
             ) : (
-              <button
-                className="button-primary cursor-pointer bg-quanta-on-surface text-quanta-surface rounded-full"
-                onClick={handleClick}
-              >
-                Ready?
-              </button>
+              <>
+                <motion.h1
+                  animate={{
+                    rotate: [0, -3, 3, 0],
+                  }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="text-4xl font-bold"
+                >
+                  {displayMessage}
+                </motion.h1>
+                <h1 className="text-xl w-1/2 text-center opacity-85">
+                  Not quite the right answer
+                </h1>
+                <button
+                  className="button-primary cursor-pointer bg-quanta-on-surface text-quanta-surface rounded-full"
+                  onClick={handleClick}
+                >
+                  Ready?
+                </button>
+              </>
             )}
           </motion.div>
         )}

@@ -11,6 +11,8 @@ import { DefineTooltips } from "@/lib/components/ui/DefineTooltip";
 import * as icons from "@/lib/components/ui/Icons";
 import { useAnalytics } from "@/lib/components/providers/AnalyticsProvider";
 import CircuitScriptLoader from "@/lib/circuit/quantumCircuitClient";
+import { getQuizCompletion, PostQuiz, PreQuiz } from "@/lib/lessons/Quizzes";
+import PageSection from "@/lib/components/ui/PageSection";
 
 export default function LessonPage({
   params,
@@ -40,6 +42,16 @@ export default function LessonPage({
       RedirectType.push,
     );
   };
+
+  if (lesson && !getQuizCompletion(lesson.id).preQuizCompleted) {
+    return (
+      <PreQuiz
+        lessonId={lesson.id}
+        onEnd={() => {}}
+        questions={lesson.preQuestions}
+      />
+    );
+  }
 
   return (
     <>
@@ -95,6 +107,16 @@ export default function LessonPage({
         >
           {lesson && lesson.pageContent}
         </div>
+        {lesson && !getQuizCompletion(lesson.id).postQuizCompleted && (
+          <PageSection className="flex justify-center items-center">
+            <PostQuiz
+              className="w-3/4! mb-6"
+              lessonId={lesson.id}
+              onEnd={() => {}}
+              questions={lesson.postQuestions}
+            />
+          </PageSection>
+        )}
       </motion.main>
     </>
   );

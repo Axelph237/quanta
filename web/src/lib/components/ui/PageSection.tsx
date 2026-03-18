@@ -5,7 +5,7 @@ export default function PageSection({
   ...params
 }: ComponentProps<"div">) {
   return (
-    <div className={"w-full h-[100vh] " + params.className} {...params}>
+    <div {...params} className={"w-full h-screen " + params.className}>
       {children}
     </div>
   );

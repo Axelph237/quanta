@@ -15,13 +15,15 @@ export default function CircuitCanvas({
   numColumns,
   initialGates,
   onRun,
-  compute = true,
+  compute = false,
+  noEdit = false,
 }: {
   numQubits: number;
   numColumns: number;
   initialGates: [string, number[]][];
   onRun?: (state: State[]) => void;
   compute?: boolean;
+  noEdit?: boolean;
 }) {
   const containerRef = useRef<SVGSVGElement>(null);
   const [circuit, setCircuit] = useState<CircuitState>({
@@ -36,6 +38,23 @@ export default function CircuitCanvas({
   /**
    * Initialize the circuit with the initial gates
    */
+
+  const removeGates = (circuit: CircuitState, filter: Partial<PlacedGate>) => {
+    return {
+      ...circuit,
+      // All gates
+      gates: circuit.gates.filter(
+        (gate) =>
+          // Where the filter keys are
+          !Object.keys(filter).every(
+            (key) =>
+              // Identically equal to the filter's
+              gate[key as keyof PlacedGate] === filter[key as keyof PlacedGate],
+          ),
+      ),
+    };
+  };
+
   useEffect(() => {
     setCircuit((prev) => {
       const newCircuit = clearGates({ ...prev }, "implicit");
@@ -48,7 +67,8 @@ export default function CircuitCanvas({
         }
       }
 
-      return newCircuit;
+      // Fill gates are used temporarily to structure the implicitly created circuit, remove them
+      return removeGates(newCircuit, { id: "fill" });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialGates, numColumns, numQubits]);
@@ -97,75 +117,120 @@ export default function CircuitCanvas({
     (circuit.columnCount + (compute ? 1.5 : 0.5)) * grid.columnWidth;
   const height = grid.yMargin * 2 + circuit.qubitCount * grid.rowHeight;
 
+  // Gate selection
+  const [selectedGate, setSelectedGate] = useState<PlacedGate | null>(null);
+
   return (
-    <svg
-      ref={containerRef}
-      width={width}
-      height={height}
-      className="fill-quanta-on-surface stroke-quanta-on-surface"
-    >
-      {/* Render the wires */}
-      {Array.from({ length: circuit.qubitCount }).map((_, qubit) => {
-        const { y } = centerInCell(grid, 0, qubit, 0, 0);
-        return (
-          <g key={qubit}>
-            <text
-              className="define-qbit"
-              x={grid.xMargin / 2}
-              y={y}
-              dominantBaseline="middle"
-              fontSize="1rem"
-              strokeWidth={0}
-            >
-              q{qubit}
-            </text>
-            <line
-              x1={grid.xMargin * 0.9} // Idk why 0.9, truly a magic number for me here
-              y1={y}
-              x2={width - grid.columnWidth}
-              y2={y}
-            />
-          </g>
-        );
-      })}
+    <>
+      <svg
+        ref={containerRef}
+        width={width}
+        height={height}
+        className="fill-quanta-on-surface stroke-quanta-on-surface"
+      >
+        {/* Render the wires */}
+        {Array.from({ length: circuit.qubitCount }).map((_, qubit) => {
+          const { y } = centerInCell(grid, 0, qubit, 0, 0);
+          return (
+            <g key={qubit}>
+              <text
+                className="define-qbit"
+                x={grid.xMargin / 2}
+                y={y}
+                dominantBaseline="middle"
+                fontSize="1rem"
+                strokeWidth={0}
+              >
+                q{qubit}
+              </text>
+              <line
+                x1={grid.xMargin * 0.9} // Idk why 0.9, truly a magic number for me here
+                y1={y}
+                x2={width - grid.columnWidth}
+                y2={y}
+              />
+            </g>
+          );
+        })}
 
-      {/* Render the gates */}
-      {circuit.gates.map((gate, i) => (
-        <GateRenderer key={i} gate={gate} grid={grid} />
-      ))}
-
-      {/* Render the probability */}
-      {compute &&
-        Array.from({ length: circuit.qubitCount }).map((_, qubit) => (
-          <AmplitudeDisplay
-            key={qubit}
-            lastColumn={circuit.columnCount}
-            qubit={qubit}
+        {/* Render the gates */}
+        {circuit.gates.map((gate, i) => (
+          <GateRenderer
+            key={i}
+            gate={gate}
             grid={grid}
-            probability={probabilities[qubit]}
+            selected={gate.existingId === selectedGate?.existingId}
+            onClick={(g) =>
+              setSelectedGate((prev) =>
+                prev?.existingId === g.existingId || noEdit ? null : g,
+              )
+            }
           />
         ))}
 
-      {/* Render the drag preview */}
-      {dragPreview && dragPreview.candidate && (
-        <g opacity={0.5}>
-          <GateRenderer
-            gate={{
-              ...dragPreview.gate,
-              column: dragPreview.candidate.column,
-              // These are the defaults for the candidate just having a minimum number of qubits it spans
-              ...qubitSpans(dragPreview.gate, dragPreview.candidate.qubits),
-              existingId: "drag-preview",
-            }}
-            grid={grid}
-          />
-        </g>
+        {/* Render the probability */}
+        {compute &&
+          Array.from({ length: circuit.qubitCount }).map((_, qubit) => (
+            <AmplitudeDisplay
+              key={qubit}
+              lastColumn={circuit.columnCount}
+              qubit={qubit}
+              grid={grid}
+              probability={probabilities[qubit]}
+            />
+          ))}
+
+        {/* Render the drag preview */}
+        {dragPreview && dragPreview.candidate && (
+          <g opacity={0.5}>
+            <GateRenderer
+              gate={{
+                ...dragPreview.gate,
+                column: dragPreview.candidate.column,
+                // These are the defaults for the candidate just having a minimum number of qubits it spans
+                ...qubitSpans(dragPreview.gate, dragPreview.candidate.qubits),
+                existingId: "drag-preview",
+              }}
+              grid={grid}
+              selected={false}
+              onClick={() => {}}
+            />
+          </g>
+        )}
+      </svg>
+      {!noEdit && selectedGate && (
+        <OptionsDisplay
+          gate={selectedGate}
+          utilities={[
+            {
+              label: "Delete",
+              onClick: (g) => {
+                console.log("Removing gate", g);
+                setCircuit(removeGates(circuit, { existingId: g.existingId }));
+              },
+            },
+            // {
+            //   label: "Edit",
+            //   onClick: (g) => {},
+            // },
+          ]}
+        />
       )}
-    </svg>
+    </>
   );
 }
 
-function GateRenderer({ gate, grid }: { gate: PlacedGate; grid: Grid }) {
+function GateRenderer({
+  gate,
+  grid,
+  selected,
+  onClick,
+}: {
+  gate: PlacedGate;
+  grid: Grid;
+  selected: boolean;
+  onClick: (g: PlacedGate) => void;
+}) {
   /*
   I had some stuff here for dragging around gates in a circuit, but I was spending too much time on this so its temporarily
   disabled until I can later make it work
@@ -234,10 +299,21 @@ function GateRenderer({ gate, grid }: { gate: PlacedGate; grid: Grid }) {
       // onDragEnd={onDragEnd}
       // onDrag={onDrag}
       // drag
-      className={
-        gate.showDef === false
-          ? ""
-          : `define-${gate.id}-gate:color=${gate.color}`
+      className={`${gate.showDef !== false ? `define-${gate.id}-gate:color=${gate.color}` : ""} cursor-pointer!`}
+      onClick={() => onClick(gate)}
+      animate={
+        selected
+          ? {
+              rotate: [0, -5, 0, 5, 0],
+              transition: {
+                rotate: {
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  duration: 0.2,
+                },
+              },
+            }
+          : { rotate: 0 }
       }
     >
       {spanQubits.length > 1 &&
@@ -359,5 +435,51 @@ function AmplitudeDisplay({
         className="fill-transparent"
       />
     </g>
+  );
+}
+
+function OptionsDisplay({
+  gate,
+  utilities,
+}: {
+  gate: PlacedGate;
+  utilities: { label: string; onClick: (g: PlacedGate) => void }[];
+}) {
+  const [pos, setPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const active = pos.x !== 0 && pos.y !== 0;
+
+  useEffect(() => {
+    if (gate === null) return;
+
+    const el = document.getElementById(gate.existingId);
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    setPos({
+      x: rect.x + rect.width / 2,
+      y: rect.y + rect.height + 10,
+    });
+  }, [gate]);
+
+  return (
+    <div
+      className={`absolute border-2 backdrop-blur-sm px-2 flex flex-row gap-4 py-2 rounded-full -translate-x-1/2`}
+      style={{
+        left: pos.x,
+        top: pos.y,
+        borderColor: gate.color + "7f",
+        visibility: active ? "visible" : "hidden",
+      }}
+    >
+      {utilities.map((utility, i) => (
+        <button
+          className="button-primary border-2 border-quanta-on-surface/25 hover:border-quanta-on-surface rounded-full"
+          key={i}
+          onClick={() => utility.onClick(gate)}
+        >
+          {utility.label}
+        </button>
+      ))}
+    </div>
   );
 }

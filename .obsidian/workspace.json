@@ -13,42 +13,15 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "web/src/lib/lessons/mdx/advanced/nisq-chall.mdx",
+                "file": "web/src/lib/lessons/mdx/unit-3/grovers.mdx",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "nisq-chall"
-            }
-          },
-          {
-            "id": "c645554c1fcc7649",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "web/src/lib/lessons/mdx/unit-1/entangle.mdx",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "entangle"
-            }
-          },
-          {
-            "id": "44c85b67c5b38402",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.12.4"
-              },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.12.4"
+              "title": "grovers"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -210,30 +183,31 @@
       "bases:Create new base": false
     }
   },
-  "active": "44c85b67c5b38402",
+  "active": "b1f63d0d65964c08",
   "lastOpenFiles": [
+    "web/src/lib/lessons/mdx/unit-2/common-gates.mdx",
+    "web/src/lib/lessons/mdx/unit-2/quant-circ.mdx",
+    "web/src/lib/lessons/mdx/unit-2/quant-comp.mdx",
+    "web/src/lib/lessons/mdx/unit-3/grovers.mdx",
+    "web/src/lib/lessons/mdx/advanced/nisq-chall.mdx",
+    "web/src/lib/lessons/mdx/unit-1/brief-history.mdx",
+    "web/src/lib/lessons/mdx/unit-1/interfere.mdx",
+    "web/src/lib/lessons/mdx/unit-1/superpos.mdx",
+    "web/src/lib/lessons/mdx/unit-1/interfer.mdx",
+    "web/src/lib/lessons/mdx/unit-1/entangle.mdx",
+    "web/src/lib/lessons/mdx/unit-1/bra-ket.mdx",
+    "web/src/lib/lessons/mdx/unit-1/Untitled.md",
     "web/public/assets/hand_pointing_thinned.svg",
     "web/public/assets/hand_pointing copy.svg",
     "web/public/assets/hand_lazy.svg",
-    "web/public/assets/thud_sfx.mp3",
-    "web/public/assets/dragon-studio-thud-sound-effect-405470.mp3",
     "web/public/assets/cat_side_eye.jpg",
     "web/public/assets/7090f2c633fa7ab7c7439bb33c053d1d.jpg",
-    "web/src/app/home/about.mdx",
-    "web/src/app/home/page.mdx",
     "web/public/assets/terribly_innacurate_qubit.svg",
     "web/public/assets/Asset 2.svg",
     "web/public/assets/hand_pointing.svg",
     "web/public/assets/Asset 1.svg",
-    "web/src/lib/lessons/mdx/unit-1/bra-ket.mdx",
-    "web/src/lib/lessons/mdx/unit-2/common-gates.mdx",
-    "web/src/lib/lessons/mdx/unit-2/quant-comp.mdx",
-    "web/src/lib/lessons/mdx/unit-2/quant-circ.mdx",
-    "web/src/lib/lessons/mdx/unit-1/entangle.mdx",
-    "web/src/lib/lessons/mdx/unit-1/superpos.mdx",
     "outline.md",
     "web/src/app/icon.svg",
-    "web/src/app/logo.svg",
     "web/src/app/lessons/(mds)/unit-2/Untitled.md",
     "web/src/app/lessons/[lessonid]/(mds)/unit-1/schro-eqn.md",
     "README.md"

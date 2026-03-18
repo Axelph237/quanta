@@ -180,7 +180,7 @@ Earlier, we talked about an oracle that simply marked the $|100\rangle$ state. I
           ["ellipsis", [2]],
           ...oracle,
         ]}
-        compute={false}
+        noEdit
       />
 </div>
 The qubits in our circuit are $|q2\rangle |q1\rangle |q0\rangle$, meaning that the $|1\rangle$ in $|100\rangle$ corresponds to the $q2$ qubit. To mark the state, we use the <span className="define-ccx-gate">CCNOT</span> gate. So, our oracle must set the $q1$ and $q2$ qubits to $|1\rangle$ so that $|100\rangle$ is treated as $|111\rangle$ (first set of NOT gates), and return the state after the CCNOT gate (second set of NOT gates). 
@@ -210,7 +210,7 @@ Or, in more plain english, it is the reflection of the states about the average 
           ["ellipsis", [2]],
           ...diffuser,
         ]}
-        compute={false}
+        noEdit
       />
 
 ### SP.3 - The Full Circuit
@@ -230,6 +230,8 @@ Now, we can put it all together! Note, we start by putting all qubits in a unifo
           ...oracle,
           ...diffuser,
         ]}
+        compute
+        noEdit
       />
 </div>
 <ShinyText text="Scroll to see whole circuit..." speed={5} />
