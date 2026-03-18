@@ -134,11 +134,10 @@ export default function CircuitCanvas({
           return (
             <g key={qubit}>
               <text
-                className="define-qbit"
+                className="define-qbit body-text"
                 x={grid.xMargin / 2}
                 y={y}
                 dominantBaseline="middle"
-                fontSize="1rem"
                 strokeWidth={0}
               >
                 q{qubit}
@@ -205,8 +204,10 @@ export default function CircuitCanvas({
             {
               label: "Delete",
               onClick: (g) => {
-                console.log("Removing gate", g);
                 setCircuit(removeGates(circuit, { existingId: g.existingId }));
+                if (selectedGate && selectedGate.existingId === g.existingId) {
+                  setSelectedGate(null);
+                }
               },
             },
             // {

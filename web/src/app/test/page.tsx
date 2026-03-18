@@ -76,6 +76,7 @@ export default function TestPage() {
             ...oracle,
             ...diffuser,
           ]}
+          compute
         />
       </div>
       <CircuitCanvas

@@ -251,7 +251,7 @@ function HomeContent() {
         <div
           id="about-content"
           ref={aboutRef}
-          className="size-full flex flex-col items-center justify-center"
+          className="size-full flex flex-col items-start text-left justify-center w-3/4"
         >
           <AboutContent />
         </div>

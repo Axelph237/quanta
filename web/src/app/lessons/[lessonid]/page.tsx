@@ -43,7 +43,7 @@ export default function LessonPage({
     );
   };
 
-  if (lesson && !getQuizCompletion(lesson.id).preQuizCompleted) {
+  if (lesson && !getQuizCompletion(lesson.id)?.preQuizCompleted) {
     return (
       <PreQuiz
         lessonId={lesson.id}
@@ -75,7 +75,7 @@ export default function LessonPage({
             transition={GENTLE_EASE}
             className=" flex place-self-start text-white gap-2"
           >
-            <icons.Click className="icon-sm" />
+            <icons.Click className="icon" />
             Click to return to Lessons
           </motion.div>
         </div>

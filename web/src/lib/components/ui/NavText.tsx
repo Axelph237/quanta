@@ -16,7 +16,7 @@ export default function NavText({
 }: NavTextProps) {
   return (
     <motion.span
-      className={`relative inline-block ${outfit.className} ${className}`}
+      className={`relative inline-block body-text ${outfit.className} ${className}`}
       initial="default"
       whileHover="hover"
       onClick={onClick}

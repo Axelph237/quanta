@@ -121,7 +121,7 @@ function Tooltip({ state }: { state: TooltipState }) {
 
   return createPortal(
     <motion.div
-      className={`pointer-events-none absolute z-1000 h-fit border-2 border-quanta-secondary/50 backdrop-blur-xs bg-quanta-surface/75 text-white text-base p-2 rounded-lg`}
+      className={`pointer-events-none absolute z-1000 h-fit border-2 border-quanta-secondary/50 backdrop-blur-xs bg-quanta-surface/75 text-white body-text p-2 rounded-lg`}
       initial={{ opacity: 0 }}
       animate={{ opacity: state.open && state.vocab ? 1 : 0 }}
       style={{

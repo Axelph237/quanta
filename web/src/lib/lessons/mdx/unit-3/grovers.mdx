@@ -48,7 +48,7 @@ export const diffuser = [
 One of the most well-known quantum algorithms is Grover's unstructured database algorithm. The basic premise is that we want to find the output state that directly correlates to our desired input, encoded into an *oracle* function. The way in which we do this is by querying the *oracle* function and *diffusing* the result until the state is the one we are searching for.
 
 {/* A little alternate display for some transitional diagrams */}
-<Callout title="Fig 3.0.1" icon={<Eye className="size-6" />}>
+<Callout title="Fig 3.0.1" icon={<Eye className="icon" />}>
 <div className="flex flex-row gap-2 items-center justify-center w-full justify-around mb-4">
 <div className="border-1 border-white flex flex-row gap-2 items-center p-2 rounded-xl">
 <div className="flex items-center justify-center bg-quanta-primary py-4 px-6 rounded-lg">
@@ -85,7 +85,7 @@ So what is a quantum oracle? Well, in short, it is a sort of **black box**. The 
 
 Phone books are a bad example: they are a dataset of random entries, the names can be any string of characters, and phone numbers are pretty random as well. Because of this, phone books aren't actually a great unstructured database. A better example might be the structure of an atom, its potential states, or even **the rules and board of a sudoku game**. 
 
-<Callout title="Fig 3.0.2" icon={<Eye className="size-6" />}>
+<Callout title="Fig 3.0.2" icon={<Eye className="icon" />}>
 <div className="flex flex-row gap-6 text-quanta-on-surface items-center justify-center">
 <div className="flex flex-col bg-quanta-primary rounded-xl">
 <ol className="p-6 rounded-xl">
@@ -216,7 +216,7 @@ Or, in more plain english, it is the reflection of the states about the average 
 ### SP.3 - The Full Circuit
 Now, we can put it all together! Note, we start by putting all qubits in a uniform superposition, then we apply the oracle, then the diffuser, and repeat!
 
-<Callout title="Full Grover's Circuit" icon={<SchrodingersCat className="size-6" />}>
+<Callout title="Full Grover's Circuit" icon={<SchrodingersCat className="icon" />}>
 <div className="overflow-x-scroll">
 <CircuitCanvas
         numQubits={3}

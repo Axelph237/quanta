@@ -14,6 +14,7 @@ interface QuasiProbSketchProps extends SketchProps {
 }
 
 function sketch(p: P5CanvasInstance) {
+  const TEXT_SIZE = 16;
   let values = [1, 2, 3, 4];
   let displayValues = new Array(values.length).fill(0);
   let labels = ["1", "2", "3", "4"];
@@ -44,8 +45,8 @@ function sketch(p: P5CanvasInstance) {
   p.draw = () => {
     p.clear();
 
-    const marginX = 40;
-    const marginY = 40;
+    const marginX = TEXT_SIZE * 3.5;
+    const marginY = TEXT_SIZE * 3;
     const rightMargin = 20;
     const graphWidth = p.width - marginX - rightMargin;
     const graphHeight = p.height - marginY * 2;
@@ -69,7 +70,7 @@ function sketch(p: P5CanvasInstance) {
     p.fill(128, 128, 128);
     p.noStroke();
     p.textAlign(p.RIGHT, p.CENTER);
-    p.textSize(12);
+    p.textSize(TEXT_SIZE);
     p.text(yMax.toString(), marginX - 10, marginY);
     p.text(yMin.toString(), marginX - 10, p.height - marginY);
 

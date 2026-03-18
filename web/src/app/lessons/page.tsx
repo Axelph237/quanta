@@ -143,7 +143,7 @@ function LessonsPageContent() {
           transition={{ duration: 0.2 }}
           className="flex place-self-start text-quanta-surface-variant gap-2"
         >
-          <icons.Click className="icon-sm" />
+          <icons.Click className="icon" />
           <ShinyText text="Click to return Home" />
         </motion.div>
       </motion.header>
