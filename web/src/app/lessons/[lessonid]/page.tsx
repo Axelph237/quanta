@@ -3,7 +3,12 @@
 import { useEffect, useState } from "react";
 import { getLessonById, Lesson } from "@/lib/lessons";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { redirect, RedirectType } from "next/navigation";
 import { GENTLE_EASE } from "@/app/globals";
 import Logo from "@/lib/components/ui/Logo";
@@ -24,11 +29,15 @@ export default function LessonPage({
   const { scrollYProgress } = useScroll();
   const breadcrumbOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const [lessonId, setLessonId] = useState<string | undefined>(undefined);
+  const [completedPrequiz, setCompletedPrequiz] = useState<boolean>(false);
 
   useEffect(() => {
     params.then((resolvedParams) => {
       setLesson(getLessonById(resolvedParams.lessonid));
       setLessonId(resolvedParams.lessonid);
+      setCompletedPrequiz(
+        getQuizCompletion(resolvedParams.lessonid)?.preQuizCompleted,
+      );
       recordEvent({ type: "lesson_viewed", lessonId: resolvedParams.lessonid });
     });
   }, []);
@@ -43,15 +52,15 @@ export default function LessonPage({
     );
   };
 
-  if (lesson && !getQuizCompletion(lesson.id)?.preQuizCompleted) {
-    return (
-      <PreQuiz
-        lessonId={lesson.id}
-        onEnd={() => {}}
-        questions={lesson.preQuestions}
-      />
-    );
-  }
+  // if (lesson && !completedPrequiz) {
+  //   return (
+  //     <PreQuiz
+  //       lessonId={lesson.id}
+  //       onEnd={() => setCompletedPrequiz(true)}
+  //       questions={lesson.preQuestions}
+  //     />
+  //   );
+  // }
 
   return (
     <>
@@ -101,21 +110,49 @@ export default function LessonPage({
             </motion.h2>
           )}
         </div>
-        <div
-          id="lesson-content"
-          className="p-[var(--page-padding)] min-h-[100vh] text-left w-full lg:w-2/3"
-        >
-          {lesson && lesson.pageContent}
-        </div>
-        {lesson && !getQuizCompletion(lesson.id).postQuizCompleted && (
-          <PageSection className="flex justify-center items-center">
-            <PostQuiz
-              className="w-3/4! mb-6"
-              lessonId={lesson.id}
-              onEnd={() => {}}
-              questions={lesson.postQuestions}
-            />
-          </PageSection>
+
+        {lesson && (
+          <AnimatePresence mode="wait">
+            {completedPrequiz ? (
+              <motion.div
+                key="lesson-content"
+                id="lesson-content"
+                className="p-[var(--page-padding)] min-h-[100vh] text-left w-full lg:w-2/3"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={GENTLE_EASE}
+              >
+                {lesson && lesson.pageContent}
+                {lesson && !getQuizCompletion(lesson.id).postQuizCompleted && (
+                  <PageSection className="flex justify-center items-center">
+                    <PostQuiz
+                      className="mb-6"
+                      lessonId={lesson.id}
+                      onEnd={() => {}}
+                      questions={lesson.postQuestions}
+                    />
+                  </PageSection>
+                )}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="pre-quiz"
+                className="my-24 w-full flex justify-center items-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={GENTLE_EASE}
+              >
+                <PreQuiz
+                  className="w-3/4!"
+                  lessonId={lesson.id}
+                  onEnd={() => setCompletedPrequiz(true)}
+                  questions={lesson.preQuestions}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         )}
       </motion.main>
     </>

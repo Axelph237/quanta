@@ -31,6 +31,14 @@ const FAILURE_MESSAGES = [
   "YOU CAN DO IT!",
 ];
 
+const CONTINUE_MESSAGES = [
+  "ON TO THE NEXT!",
+  "LET'S CONTINUE!",
+  "LET'S KEEP GOING!",
+  "ONLY A FEW MORE!",
+  "KEEP IT UP!",
+];
+
 enum GameState {
   READY,
   PLAYING,
@@ -58,6 +66,7 @@ export default function GameHandler({
   levels,
   bg,
   hideBg,
+  recordOnly = false,
   successMessages,
   failureMessages,
   onGameStart,
@@ -71,6 +80,7 @@ export default function GameHandler({
   levels: Array<React.ReactElement<GameComponentProps>>;
   bg?: React.ReactNode;
   hideBg?: boolean;
+  recordOnly?: boolean;
   successMessages?: string[];
   failureMessages?: string[];
   onGameStart?: () => void;
@@ -96,6 +106,33 @@ export default function GameHandler({
     return messages[Math.floor(Math.random() * messages.length)];
   };
 
+  // Set display messages whenever the success changes
+  useEffect(() => {
+    (async () => {
+      if (recordOnly) {
+        setDisplayMessage(getRandomMessage(CONTINUE_MESSAGES));
+      } else {
+        setDisplayMessage(
+          success
+            ? getRandomMessage(successMessages || SUCCESS_MESSAGES)
+            : getRandomMessage(failureMessages || FAILURE_MESSAGES),
+        );
+      }
+    })();
+  }, [success]);
+
+  const setMessages = (success: boolean) => {
+    if (recordOnly) {
+      setDisplayMessage(getRandomMessage(CONTINUE_MESSAGES));
+    } else {
+      setDisplayMessage(
+        success
+          ? getRandomMessage(successMessages || SUCCESS_MESSAGES)
+          : getRandomMessage(failureMessages || FAILURE_MESSAGES),
+      );
+    }
+  };
+
   const onReady = () => {
     setActiveState(GameState.READY);
     if (activeGame !== 0) {
@@ -110,14 +147,12 @@ export default function GameHandler({
 
   const onEnd = ({ result }: { result: "win" | "lose" }) => {
     setActiveState(GameState.END);
-    if (result === "win") {
-      setDisplayMessage(getRandomMessage(successMessages || SUCCESS_MESSAGES));
+    if (result === "win" || recordOnly) {
       setTimeout(() => {
         setActiveGame(activeGame + 1);
       }, 500);
       setSuccess(true);
     } else {
-      setDisplayMessage(getRandomMessage(failureMessages || FAILURE_MESSAGES));
       setActiveState(GameState.READY);
       setSuccess(false);
     }

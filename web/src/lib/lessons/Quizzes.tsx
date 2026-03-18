@@ -73,8 +73,9 @@ export function PreQuiz({ lessonId, onEnd, questions, ...rest }: QuizProps) {
       {...rest}
       id={lessonId + "-pre-quiz"}
       name="Pre Quiz"
-      description="Let's see where you're at!"
+      description="Before we get started, let's see where you're at!"
       hideBg
+      recordOnly
       onGameEnd={thisOnEnd}
       levels={questions.map((question, i) => {
         if (question.type === "input" || question.type === "choice") {
@@ -101,6 +102,7 @@ export function PostQuiz({ lessonId, onEnd, questions, ...rest }: QuizProps) {
       name="Post Quiz"
       description="Let's see what you've learned!"
       hideBg
+      recordOnly
       onGameEnd={thisOnEnd}
       levels={questions.map((question, i) => {
         if (question.type === "input" || question.type === "choice") {
