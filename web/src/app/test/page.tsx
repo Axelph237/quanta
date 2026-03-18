@@ -1,10 +1,7 @@
 "use client";
 
 import CircuitCanvas from "@/lib/circuit/CircuitCanvas";
-import { CircuitDiagram } from "@/lib/components/circuit/circuit";
 import CircuitPalette from "@/lib/circuit/CircuitPalette";
-import { gates } from "@/lib/circuit/gates";
-import { getOriginalCodeFrame } from "next/dist/next-devtools/server/shared";
 import { DefineTooltips } from "@/lib/components/ui/DefineTooltip";
 
 // const a0 = 5.29177210903e-11;
