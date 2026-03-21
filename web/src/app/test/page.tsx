@@ -87,6 +87,17 @@ export default function TestPage() {
         ]}
         compute={false}
       />
+      <CircuitCanvas
+        numQubits={5}
+        numColumns={9}
+        initialGates={[
+          ["ellipsis", [0]],
+          ["ellipsis", [1]],
+          ["ellipsis", [2]],
+          ...diffuser,
+        ]}
+        compute={true}
+      />
       {/* <FnChart
         chart={{
           view: {

@@ -102,7 +102,7 @@ export function PostQuiz({ lessonId, onEnd, questions, ...rest }: QuizProps) {
       name="Post Quiz"
       description="Let's see what you've learned!"
       hideBg
-      recordOnly
+      // recordOnly
       onGameEnd={thisOnEnd}
       levels={questions.map((question, i) => {
         if (question.type === "input" || question.type === "choice") {
