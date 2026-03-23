@@ -62,7 +62,7 @@ function LessonsPageContent() {
         window.innerWidth * 0.5 -
           logoWidth / 2 -
           Number(csstopx(cssvar("--page-padding", document.body))) -
-          7, // HUH
+          10, // HUH!! 10px why? See sibling comment in app/home/page.tsx
       );
     };
     handleResize(); // Set initial height

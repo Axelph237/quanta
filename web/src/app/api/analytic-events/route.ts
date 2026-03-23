@@ -38,18 +38,3 @@ export async function POST(request: Request) {
 
     return new Response(JSON.stringify({ message: "Event recorded" }), { status: 200 });
 }
-
-// Honestly, I don't care about auth here because it's analytics data that I am okay with being public.
-// It is also neither personal nor personally identifiable information.
-export async function GET() {
-    try {
-        const db = await connectToDatabase();
-        const events = await db.collection(eventsCollectionName)
-            .find()
-            .toArray();
-        return new Response(JSON.stringify(events), { status: 200 });
-    } catch (err) {
-        console.error("Failed to retrieve events:", err);
-        return new Response(JSON.stringify({ message: "Failed to retrieve events" }), { status: 500 });
-    }
-}

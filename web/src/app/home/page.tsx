@@ -73,8 +73,8 @@ function HomeContent() {
         -(window.innerWidth * 0.5) +
           Number(csstopx(cssvar("--page-padding", document.body))) +
           logoWidth / 2 +
-          7, // I have 0 idea where this comes from but apparently it works? There is a 7 px diff between
-        // the left edge of the logo on this page, and the left edge of the logo on the lessons page
+          10, // I have 0 idea where this comes from but apparently it works? There is a 10 px diff between
+        // the left edge of the logo on this page, and the left edge of the logo on the lessons page. Truly a magic number
       );
     };
     handleResize();
