@@ -20,8 +20,6 @@ export function useMoveableGate<T extends Element>({
     if (dragTimeout) {
       clearTimeout(dragTimeout);
     }
-
-    // console.log("Drag start for", gate.id);
     setResetTrigger(false);
   };
 
@@ -62,7 +60,6 @@ export function useMoveableGate<T extends Element>({
   }, 50); // Maximize to once per 50ms
   useEffect(() => {
     const handleAttach = (e: CustomEvent<GateAttachEvent>) => {
-      console.log("Gate attached to circuit", e.detail.gate.label);
       if (e.detail.gate.id === gate.id) {
         setResetTrigger(true);
       }

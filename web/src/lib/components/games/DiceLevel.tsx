@@ -4,7 +4,7 @@ import "./Dice.css";
 import { useEffect, useRef, useState } from "react";
 import * as icons from "@/lib/components/ui/Icons";
 import { LoadingRing } from "../ui/LoadingRing";
-import { GameComponentProps } from "./GameHandler";
+import { LevelComponentProps } from "./GameHandler";
 import { fireConfettiCannon } from "../react-bits/Confetti";
 
 interface DiceProps {
@@ -48,7 +48,7 @@ export function DiceLevel({
 }: {
   numVisDice: number;
   hidDice: number[];
-} & GameComponentProps) {
+} & LevelComponentProps) {
   const [visRollValues, setVisRollValues] = useState<number[]>([]);
 
   const [sceneState, setSceneState] = useState<SceneState>(SceneState.READY);

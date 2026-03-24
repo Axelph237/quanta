@@ -56,10 +56,20 @@ const vocab: { [key: string]: Vocab } = {
     definition:
       "A black body is an object that absorbs all incident radiation (hence the color black), also emitting all radiation it absorbs.",
   },
+  quantized: {
+    term: "Quantized",
+    definition:
+      "Something that can only exist in discrete values. For example, an electron can only have certain energy levels in an atom.",
+  },
   "harm-osc": {
     term: "Harmonic Oscillator",
     definition:
       "A harmonic oscillator is a system that oscillates at a constant frequency $v$.",
+  },
+  "binary-string": {
+    term: "Binary String",
+    definition:
+      "A string of 0s and 1s. In quantum computing, it is used to represent the state of a qubit or set of qubits.",
   },
   // Map definitions for all gates
   ...Object.keys(gates).reduce(

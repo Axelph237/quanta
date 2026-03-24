@@ -7,18 +7,18 @@ Often, you will see the quantum wave equation $\Psi$ often shown surrounded by t
 
 The **ket** $|...\rangle$ represents a vector $\alpha$ such that $a=|a\rangle$. Essentially, these just represent the vector itself.
 
-The **bra** $\langle ...|$ (although largely unused in our lessons) represents the <span className="define-hconjugate">Hermitian conjugate</span> of our vector $a$ such that $a^\dagger=\langle a|$.
+The **bra** $\langle ...|$ (although largely unused in our lessons) represents the <span className="define-hconjugate">Hermitian conjugate</span> of our vector $a$ such that $a^\dagger=\langle a|$. Don't worry too much about these :) they aren't super necessary for most of the lessons.
 
 <Callout title="Elephant In The Room"  icon={<SchrodingersCat className="icon" />} color="#2b7fff">
 You may not have noticed it, but there is an elephant in the room. Technically, these definitions for bras and kets are oversimplified. While kets are largely what we described, bras are more mathematically complicated. We decided to skip these details, and instead present only what was necessary to the topics at hand.
 </Callout>
 
 ## In Quantum Computing
-For our purposes in quantum computing, bras and kets are used to represent the possible states of a system. Most of the time, we just use kets in our equations. Here's an example state:
+For our purposes in quantum computing, bras and kets are used to represent the possible states of a system (usually expressed as a <span className="define-binary-string">binary string</span>). Most of the time, we just use kets in our equations. Here's an example state with 4 <span className="define-qbit">qubits</span>:
 
 $$
-\Psi=\frac{1}{\sqrt{2}}(|0010\rangle+|1100\rangle)
+\Psi=|0010\rangle
 $$
-where $|\alpha\rangle|\beta\rangle=|\alpha\beta\rangle$. So, in this case, $|\Psi_0\rangle |\Psi_0\rangle |\Psi_1\rangle |\Psi_0\rangle = |0010\rangle$. 
+where $|\Psi_\alpha\rangle|\Psi_\beta\rangle=|\alpha\beta\rangle$. So, in this case, $|\Psi_0\rangle |\Psi_0\rangle |\Psi_1\rangle |\Psi_0\rangle = |0010\rangle$. 
 
 *We will skip talking more about bras as they do not come up in any of our other lessons :)*

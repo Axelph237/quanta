@@ -9,21 +9,24 @@ import { qubitSpans } from "./gates";
 import { motion } from "framer-motion";
 import { COLORS } from "@/app/globals";
 import { dmMono } from "@/app/fonts";
+import { throttle } from "../throttle";
 
 export default function CircuitCanvas({
   numQubits,
   numColumns,
   initialGates,
-  onRun,
+  onCompute,
   compute = false,
   noEdit = false,
+  hideDefs = false,
 }: {
   numQubits: number;
   numColumns: number;
   initialGates: [string, number[]][];
-  onRun?: (state: State[]) => void;
+  onCompute?: (state: State[]) => void;
   compute?: boolean;
   noEdit?: boolean;
+  hideDefs?: boolean;
 }) {
   const containerRef = useRef<SVGSVGElement>(null);
   const [circuit, setCircuit] = useState<CircuitState>({
@@ -31,7 +34,10 @@ export default function CircuitCanvas({
     columnCount: numColumns,
     gates: [],
   });
-  const [probabilities, setProbabilities] = useState<number[]>(
+  const [qubitStates, setQubitStates] = useState<State[]>(
+    Array(numQubits).fill({ real: 0, imag: 0, bits: "0", prob: 0 }),
+  );
+  const [qubitProbs, setQubitProbs] = useState<number[]>(
     Array(numQubits).fill(0),
   );
 
@@ -94,13 +100,15 @@ export default function CircuitCanvas({
 
       qCircSim.run();
 
-      setProbabilities(qCircSim.probabilities());
-      if (onRun) {
-        onRun(stateAsObjects(qCircSim));
+      setQubitProbs(qCircSim.probabilities());
+      const states = stateAsObjects(qCircSim);
+      setQubitStates(states);
+      if (onCompute) {
+        onCompute(states);
       }
     };
     newCircuit();
-  }, [circuit, onRun]);
+  }, [circuit, onCompute]);
 
   // Gate placement hooks
   const grid = useResponsiveGrid();
@@ -109,8 +117,22 @@ export default function CircuitCanvas({
     gridRef.current = grid;
   }, [grid]);
 
-  useGateDrop(containerRef, gridRef, circuit, setCircuit);
-  const dragPreview = useGateDrag(containerRef, gridRef, circuitRef);
+  // Framer Motion's drag inertia continues firing drag events after drop, so we need some throttling
+  // for race conditions
+  const [showPreview, setShowPreview] = useState<boolean>(false);
+  const cooldown = useRef<boolean>(false);
+  useGateDrop(containerRef, gridRef, circuit, setCircuit, () => {
+    setShowPreview(false);
+    cooldown.current = true;
+    setTimeout(() => {
+      // Ignore drag events for 700ms after drop
+      cooldown.current = false;
+    }, 700);
+  });
+  const dragPreview = useGateDrag(containerRef, gridRef, circuitRef, () => {
+    if (cooldown.current) return;
+    setShowPreview(true);
+  });
 
   const width =
     grid.xMargin +
@@ -159,28 +181,31 @@ export default function CircuitCanvas({
             gate={gate}
             grid={grid}
             selected={gate.existingId === selectedGate?.existingId}
-            onClick={(g) =>
+            onClick={(g) => {
+              if (noEdit) return;
               setSelectedGate((prev) =>
-                prev?.existingId === g.existingId || noEdit ? null : g,
-              )
-            }
+                prev?.existingId === g.existingId ? null : g,
+              );
+            }}
+            hideDef={hideDefs}
           />
         ))}
 
         {/* Render the probability */}
         {compute &&
-          Array.from({ length: circuit.qubitCount }).map((_, qubit) => (
+          Array.from({ length: circuit.qubitCount }).map((_, q) => (
             <AmplitudeDisplay
-              key={qubit}
+              key={q}
               lastColumn={circuit.columnCount}
-              qubit={qubit}
+              qubit={q}
               grid={grid}
-              probability={probabilities[qubit]}
+              probability={qubitProbs[q]}
+              // phase={Math.atan2(qubitStates[q].real, qubitStates[q].imag)}
             />
           ))}
 
         {/* Render the drag preview */}
-        {dragPreview && dragPreview.candidate && (
+        {showPreview && dragPreview && dragPreview.candidate && (
           <g opacity={0.5}>
             <GateRenderer
               gate={{
@@ -193,6 +218,7 @@ export default function CircuitCanvas({
               grid={grid}
               selected={false}
               onClick={() => {}}
+              hideDef={hideDefs}
             />
           </g>
         )}
@@ -226,11 +252,13 @@ function GateRenderer({
   grid,
   selected,
   onClick,
+  hideDef = false,
 }: {
   gate: PlacedGate;
   grid: Grid;
   selected: boolean;
   onClick: (g: PlacedGate) => void;
+  hideDef?: boolean;
 }) {
   /*
   I had some stuff here for dragging around gates in a circuit, but I was spending too much time on this so its temporarily
@@ -270,10 +298,10 @@ function GateRenderer({
     >
       {gate.type !== "empty" && (
         <rect
-          x={0}
-          y={0}
-          width={100}
-          height={100}
+          x={5}
+          y={12.5}
+          width={90}
+          height={75}
           className="fill-quanta-surface"
         />
       )}
@@ -300,7 +328,7 @@ function GateRenderer({
       // onDragEnd={onDragEnd}
       // onDrag={onDrag}
       // drag
-      className={`${gate.showDef !== false ? `define-${gate.id}-gate:color=${gate.color}` : ""} cursor-pointer!`}
+      className={`${gate.showDef !== false && !hideDef ? `define-${gate.id}-gate:color=${gate.color}` : ""} cursor-pointer!`}
       onClick={() => onClick(gate)}
       animate={
         selected
@@ -372,11 +400,13 @@ function AmplitudeDisplay({
   lastColumn,
   grid,
   probability,
+  // phase,
 }: {
   qubit: number;
   lastColumn: number;
   grid: Grid;
   probability: number;
+  // phase: number;
 }) {
   const pos = centerInCell(
     grid,
@@ -385,7 +415,16 @@ function AmplitudeDisplay({
     grid.gateSize,
     grid.gateSize,
   );
-  const size = grid.gateSize / 2;
+
+  // const toHue = (r: number) => {
+  //   const TWO_PI = 2 * Math.PI;
+  //   const MIN_COLOR = 195;
+  //   const MAX_COLOR = 288;
+
+  //   const t = r / TWO_PI;
+  //   const hue = MIN_COLOR + t * (MAX_COLOR - MIN_COLOR);
+  //   return `hsl(${hue}, 100%, 50%)`;
+  // };
 
   return (
     <g className={`define-qbit-prob:color=${COLORS.primary.hex}`}>
@@ -400,11 +439,10 @@ function AmplitudeDisplay({
         </mask>
       </defs>
 
-      <rect
-        x={pos.x}
-        y={pos.y}
-        width={grid.gateSize}
-        height={grid.gateSize}
+      <circle
+        cx={pos.x + grid.gateSize / 2}
+        cy={pos.y + grid.gateSize / 2}
+        r={grid.gateSize / 2}
         strokeWidth={0}
         fill="var(--color-quanta-surface)"
       />
@@ -414,6 +452,7 @@ function AmplitudeDisplay({
         width={grid.gateSize}
         height={grid.gateSize * probability}
         strokeWidth={0}
+        // fill={toHue(phase)}
         fill="var(--color-quanta-primary)"
         mask={`url(#probability-mask-${qubit})`}
       />
@@ -446,6 +485,7 @@ function OptionsDisplay({
   gate: PlacedGate;
   utilities: { label: string; onClick: (g: PlacedGate) => void }[];
 }) {
+  const thisRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const active = pos.x !== 0 && pos.y !== 0;
 
@@ -455,26 +495,30 @@ function OptionsDisplay({
     const el = document.getElementById(gate.existingId);
     if (!el) return;
 
-    const rect = el.getBoundingClientRect();
+    const anchorRect = el.getBoundingClientRect();
+    const offsetRect = thisRef.current?.offsetParent?.getBoundingClientRect();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPos({
-      x: rect.x + rect.width / 2,
-      y: rect.y + rect.height + 10,
+      x: anchorRect.left + anchorRect.width / 2 - (offsetRect?.left || 0),
+      y: anchorRect.top + anchorRect.height + 10 - (offsetRect?.top || 0),
     });
   }, [gate]);
 
   return (
     <div
+      ref={thisRef}
       className={`absolute border-2 backdrop-blur-sm px-2 flex flex-row gap-4 py-2 rounded-full -translate-x-1/2`}
       style={{
         left: pos.x,
         top: pos.y,
         borderColor: gate.color + "7f",
+        backgroundColor: gate.color + "2f",
         visibility: active ? "visible" : "hidden",
       }}
     >
       {utilities.map((utility, i) => (
         <button
-          className="button-primary border-2 border-quanta-on-surface/25 hover:border-quanta-on-surface rounded-full"
+          className="button-primary border-2 bg-quanta-surface/50 border-quanta-on-surface/25 hover:border-quanta-on-surface rounded-full"
           key={i}
           onClick={() => utility.onClick(gate)}
         >

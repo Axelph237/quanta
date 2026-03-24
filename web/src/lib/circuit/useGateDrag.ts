@@ -17,7 +17,7 @@ type DragPreview = {
  * Non-destructive gate drag hook
  * @param circuit a reference to the circuit state
  */
-export function useGateDrag(containerRef: RefObject<SVGElement | null>, gridRef: RefObject<Grid>, circuitRef: RefObject<CircuitState>): DragPreview | null {
+export function useGateDrag(containerRef: RefObject<SVGElement | null>, gridRef: RefObject<Grid>, circuitRef: RefObject<CircuitState>, callback?: ({ gate, column, qubits }: { gate: GateDefinition, column?: number, qubits?: number[] }) => void): DragPreview | null {
     const [dragPreview, setDragPreview] = useState<DragPreview | null>(null);
 
     useEffect(() => {
@@ -45,6 +45,10 @@ export function useGateDrag(containerRef: RefObject<SVGElement | null>, gridRef:
                 mouseY: y,
                 candidate,
             });
+
+            if (callback) {
+                callback({ gate, column: candidate?.column, qubits: candidate?.qubits });
+            }
         }
 
         document.addEventListener("gate-drag", onDrag as EventListener);

@@ -1,8 +1,8 @@
 import { Dispatch, RefObject, SetStateAction, useEffect } from "react";
-import { CircuitState, GateAttachEvent, GateMoveEvent, Grid, PlacedGate } from "./types";
+import { CircuitState, GateAttachEvent, GateDefinition, GateMoveEvent, Grid, PlacedGate } from "./types";
 import { findNearestValidPlacement, getGateExistingId } from "./placement";
 
-export function useGateDrop(containerRef: RefObject<SVGElement | null>, gridRef: RefObject<Grid>, circuit: CircuitState, setCircuit: Dispatch<SetStateAction<CircuitState>>) {
+export function useGateDrop(containerRef: RefObject<SVGElement | null>, gridRef: RefObject<Grid>, circuit: CircuitState, setCircuit: Dispatch<SetStateAction<CircuitState>>, callback?: ({ gate, column, qubits }: { gate: GateDefinition, column: number, qubits: number[] }) => void) {
   useEffect(() => {
     const onDrop = (e: CustomEvent<GateMoveEvent>) => {
       const { x, y, gate } = e.detail;
@@ -48,6 +48,10 @@ export function useGateDrop(containerRef: RefObject<SVGElement | null>, gridRef:
             ]
           } as CircuitState
         });
+
+        if (callback) {
+          callback({ gate, column: candidate.column, qubits: candidate.qubits });
+        }
 
         const attachEvent = new CustomEvent<GateAttachEvent>("attach-gate", {
           detail: {

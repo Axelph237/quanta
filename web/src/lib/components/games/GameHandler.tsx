@@ -45,14 +45,14 @@ enum GameState {
   END,
 }
 
-export interface GameComponentProps {
+export interface LevelComponentProps {
   levelAPI?: {
-    ready: () => void;
-    playing: () => void;
-    end: ({ result }: { result: "win" | "lose" }) => void;
-    recordAction: (action: string, details: Serializable) => void;
+    ready: () => void; // Called when the level is ready to be played
+    playing: () => void; // Called when the level is being played
+    end: ({ result }: { result: "win" | "lose" }) => void; // Called when the level ends
+    recordAction: (action: string, details: Serializable) => void; // Called to record an action
   };
-  startTrigger?: boolean;
+  startTrigger?: boolean; // Trigger to start the level, useful for levels that need an action to trigger on start
 }
 
 /**
@@ -77,7 +77,7 @@ export default function GameHandler({
   id: string;
   name: string;
   description?: string;
-  levels: Array<React.ReactElement<GameComponentProps>>;
+  levels: Array<React.ReactElement<LevelComponentProps>>;
   bg?: React.ReactNode;
   hideBg?: boolean;
   recordOnly?: boolean;

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { GameComponentProps } from "./GameHandler";
+import { LevelComponentProps } from "./GameHandler";
 import { fireConfettiCannon } from "../react-bits/Confetti";
 import * as icons from "../ui/Icons";
 
@@ -23,7 +23,7 @@ export default function QuizQuestion({
   ...props
 }: {
   question: QuizQuestionType;
-} & GameComponentProps) {
+} & LevelComponentProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [gridDims, setGridDims] = useState({ cols: 1, rows: 4 });
   const [answerSubmitted, setAnswerSubmitted] = useState(false);

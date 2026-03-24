@@ -2,6 +2,10 @@
 
 import CircuitCanvas from "@/lib/circuit/CircuitCanvas";
 import CircuitPalette from "@/lib/circuit/CircuitPalette";
+import GameHandler from "@/lib/components/games/GameHandler";
+import CircuitLevel from "@/lib/components/games/CircuitLevel";
+import Aurora from "@/lib/components/react-bits/Aurora";
+import Iridescence from "@/lib/components/react-bits/Iridescence";
 import { DefineTooltips } from "@/lib/components/ui/DefineTooltip";
 
 // const a0 = 5.29177210903e-11;
@@ -59,44 +63,33 @@ export default function TestPage() {
     <main className="w-[100vw] h-[100vh] flex flex-col gap-20 items-center justify-center">
       <DefineTooltips />
 
-      <div className="w-full flex flex-row gap-10">
-        <CircuitPalette />
-        <CircuitCanvas
-          numQubits={3}
-          numColumns={26}
-          initialGates={[
-            ["h", [0]],
-            ["h", [1]],
-            ["h", [2]],
-            ...oracle,
-            ...diffuser,
-            ...oracle,
-            ...diffuser,
-          ]}
-          compute
-        />
-      </div>
-      <CircuitCanvas
-        numQubits={3}
-        numColumns={9}
-        initialGates={[
-          ["ellipsis", [0]],
-          ["ellipsis", [1]],
-          ["ellipsis", [2]],
-          ...diffuser,
+      <GameHandler
+        id="test"
+        name="Test"
+        levels={[
+          <CircuitLevel
+            key={1}
+            initialGates={[]}
+            options={["h", "x", "s"]}
+            numQubits={2}
+            numColumns={4}
+            levelAPI={undefined}
+            startTrigger={false}
+            targetState={[
+              {
+                bits: "000",
+                real: 1 / Math.sqrt(2),
+                imag: 0,
+              },
+              {
+                bits: "001",
+                imag: 1 / Math.sqrt(2),
+                real: 0,
+              },
+            ]}
+          />,
         ]}
-        compute={false}
-      />
-      <CircuitCanvas
-        numQubits={5}
-        numColumns={9}
-        initialGates={[
-          ["ellipsis", [0]],
-          ["ellipsis", [1]],
-          ["ellipsis", [2]],
-          ...diffuser,
-        ]}
-        compute={true}
+        bg={<Aurora />}
       />
       {/* <FnChart
         chart={{
