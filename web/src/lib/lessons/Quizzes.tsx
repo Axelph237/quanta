@@ -2,7 +2,7 @@
  * These components just simplify the logic for Pre/Post quiz games. They also reduce the amount of code I need to write in the lessons dict
  */
 import GameHandler, {
-  GameComponentProps,
+  LevelComponentProps,
 } from "../components/games/GameHandler";
 import QuizQuestion, {
   QuizQuestionType,
@@ -11,7 +11,7 @@ import QuizQuestion, {
 interface QuizProps extends React.ComponentProps<"div"> {
   lessonId: string;
   onEnd: () => void;
-  questions: (QuizQuestionType | React.ReactElement<GameComponentProps>)[];
+  questions: (QuizQuestionType | React.ReactElement<LevelComponentProps>)[];
 }
 
 /*
@@ -83,7 +83,7 @@ export function PreQuiz({ lessonId, onEnd, questions, ...rest }: QuizProps) {
             <QuizQuestion key={i} question={question as QuizQuestionType} />
           );
         }
-        return question as React.ReactElement<GameComponentProps>;
+        return question as React.ReactElement<LevelComponentProps>;
       })}
     />
   );
@@ -110,7 +110,7 @@ export function PostQuiz({ lessonId, onEnd, questions, ...rest }: QuizProps) {
             <QuizQuestion key={i} question={question as QuizQuestionType} />
           );
         }
-        return question as React.ReactElement<GameComponentProps>;
+        return question as React.ReactElement<LevelComponentProps>;
       })}
     />
   );
