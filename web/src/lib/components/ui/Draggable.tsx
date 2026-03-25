@@ -7,9 +7,9 @@ interface DraggableProps extends HTMLMotionProps<"div"> {
 export default function Draggable({ children, ...props }: DraggableProps) {
   return (
     <motion.div
-      drag={props.drag ?? true}
-      className={`absolute cursor-grabbing ${props.className}`}
       {...props}
+      drag={props.drag ?? true}
+      className={`absolute cursor-grab active:cursor-grabbing ${props.className}`}
     >
       {children}
     </motion.div>

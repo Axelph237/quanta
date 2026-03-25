@@ -1,8 +1,28 @@
+import { CircuitCanvas, CircuitPalette } from "@/lib/circuit";
+import Callout from "@/lib/components/ui/Callout";
+import * as icons from "@/lib/components/ui/Icons";
+
 # Quantum Circuitry
 You could think of a quantum circuit as the code that runs on a quantum computer. A quantum circuit describes the operations to be performed on a set of qubits, and the order to perform them in. 
 
 Let's define some key vocabulary. The *width* of a circuit is the number of qubits a circuit contains. The *depth* of a circuit is the number of time-steps (or layers of gates), essentially the longest path from input to output. Both of these can help us to understand how error-prone a circuit may be based on the fidelity of the computer it is being run on.
 ## Circuit Diagrams
-A quantum circuit diagram is typically illustrated with horizontal lines representing qubits on the system. Operations (or *gates*) are shown as boxes at different "time-steps" along these horizontal lines. Here is an example diagram from the IBM textbook:
-![IBM Example](https://quantum.cloud.ibm.com/assets-docs-learning/_next/image?url=%2Flearning%2Fimages%2Fcourses%2Ffundamentals-of-quantum-algorithms%2Fquantum-query-algorithms%2Fdeutsch-algorithm%2Fextracted-outputs%2F787e3c81-0.avif&w=640&q=75)
-Here, $q_1$ is undergoing a *Controlled-NOT* gate with $q_0$ as its target at time-step 0. It then undergoes a *Pauli X* (also called *NOT*) gate at time-step 1. We will get more into what these specific gates actually mean in a later lesson. The time-steps are not explicitly labeled as it is typically unimportant for the user to understand them beyond the order of operations. But for now, this diagram will serve as a trivial example.
+A quantum circuit diagram is typically illustrated with horizontal lines representing qubits on the system. Operations (or *gates*) are shown as boxes at different "time-steps" along these horizontal lines. Here is an example circuit diagram:
+<Callout title="Example Circuit" icon={<icons.SchrodingersCat className="icon" />}>
+<div className="flex items-center justify-center">
+<CircuitCanvas numQubits={2} numColumns={2} initialGates={[
+    ["cx", [0, 1]],
+    ["x", [1]]
+]} noEdit compute />
+</div>
+</Callout>
+Here, $q_0$ is undergoing a <span className="define-cx-gate">Controlled-NOT</span> gate with $q_1$ as its target at time-step 0. It then undergoes a <span className="define-x-gate">Pauli-X</span> (also called NOT) gate at time-step 1. We will get more into what these specific gates actually mean in a later lesson. 
+
+The time-steps are not explicitly labeled as it is typically unimportant for the user to understand them beyond the order of operations. But for now, this diagram will serve as a trivial example.
+
+## Playground
+Play around with the circuit diagram below. Drag and drop any gates you'd like into the circuit and see what happens!
+<div className="flex flex-row gap-8 items-center justify-center">
+<CircuitPalette />
+<CircuitCanvas numQubits={3} numColumns={6} initialGates={[]} compute />
+</div>

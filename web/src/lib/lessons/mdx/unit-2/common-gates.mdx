@@ -1,25 +1,38 @@
 
 import Callout from "@/lib/components/ui/Callout";
-import { SchrodingersCat } from "@/lib/components/ui/Icons";
+import * as icons from "@/lib/components/ui/Icons";
+import { CircuitCanvas } from "@/lib/circuit";
+import GateToy from "@/lib/components/ui/GateToy";
+import { COLORS } from "@/app/globals";
 
 # Common Gates
 As we get ready to take a look at Grover's algorithm, it's important we build a shared language of quantum operations! So, here are some of the most common (and relevant to Grover's algorithm) quantum gates.
 
+<span className="flex flex-row gap-8">
 ## NOT (Pauli-X)
+<GateToy gateID="x" />
+</span>
 #### Flipping the Qubit
 
+<Callout title="Matrix" icon={<icons.XGate className="icon" />}>
 $$
 X=\begin{bmatrix}0&1\\1&0\end{bmatrix}
 $$
+</Callout>
 
 A NOT gate does pretty much just that! It inverts the state of the qubit. For instance, $X |1\rangle = |0\rangle$
 
-## Hadamard
+<span className="flex flex-row gap-8">
+## Hadamard 
+<GateToy gateID="h" />
+</span>
 #### Creating Superposition
 
+<Callout title="Matrix" icon={<icons.HGate className="icon" />}>
 $$
 H=\frac{1}{\sqrt{2}}\begin{bmatrix}1&1\\1&-1\end{bmatrix}
 $$
+</Callout>
 
 The Hadamard gate puts the qubit it acts upon into a superposition of states. For instance,
 $$
@@ -27,14 +40,19 @@ H|1\rangle = \frac{1}{\sqrt{2}}|0\rangle+\frac{1}{\sqrt{2}}|1\rangle
 $$
 This is quite possibly the most important gate in all of quantum computing; I mean, we almost always have to set the system into a superposition as the first step of a calculation!
 
-## CNOT
-#### Controlled Not
+<span className="flex flex-row gap-8">
+## Controlled-NOT
+<GateToy gateID="cx" />
+</span>
+#### To C or NOT to C
 
+<Callout title="Matrix" icon={<icons.CnotGate className="icon" />}>
 $$
 CNOT=\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&0&1\\0&0&1&0\end{bmatrix}
 $$
+</Callout>
 
-A Controlled Not gate (C-Not) is an _entangling_ gate that flips the target qubit given that the control qubit was in the $$|1\rangle$$ state. C-Not doesn't always entangle, but its capability of entangling makes it still valid for the Quantum Gate Universality Theorem.
+A Controlled Not gate (or CNOT) is an _entangling_ gate that flips the target qubit given that the control qubit was in the $$|1\rangle$$ state. CNOT doesn't always entangle, but its capability of entangling makes it still valid for the Quantum Gate Universality Theorem.
 
 Here are a couple examples with qubit 1 as the control, and qubit 2 as the target:
 $$
@@ -46,17 +64,28 @@ $$
 
 ## R<sub>Z</sub>
 #### Rotation around Z
-
+<Callout title="Matrix" icon={<icons.SchrodingersCat className="icon" />}>
 $$
 R_Z(\theta)=\begin{bmatrix}e^{-i\frac{\theta}{2}}&0\\0&e^{i\frac{\theta}{2}}\end{bmatrix}
 $$
+</Callout>
 
-The Z-Rotation gate (RZ) is a _single-qubit_ gate that applies a phase of $\frac{\theta}{2}$
-to a qubit. For instance, 
+The Z-Rotation gate (R<sub>Z</sub>) is a _single-qubit_ gate that applies a phase of $\frac{\theta}{2}$
+to a qubit. For example,
+
 $$
 R_Z(\frac{\pi}{2})(\alpha|1\rangle + \beta|0\rangle) = \alpha e^{-i\frac{\pi}{4}}|1\rangle + \beta e^{i\frac{\pi}{4}}|0\rangle
 $$
 
-<Callout title="Recall" icon={<SchrodingersCat className="icon" />} color="#2b7fff">
+<span className="flex flex-row gap-8">
+## S & T
+<GateToy gateID="s" />
+</span>
+#### Specialized R<sub>Z</sub> Gates
+The **S** gate (seen above) is a special type of R<sub>Z</sub> gate where $\theta = \frac{\pi}{2}$, giving it the alternate title "Z90" as it performs a 90 degree rotation around the z-axis.
+
+Similarly, the **T** gate performs a 45 degree rotation around the z-axis. This means that $S = T^2$
+
+<Callout title="Recall" icon={<icons.SchrodingersCat className="icon" />} color="#2b7fff">
 Recall that the phase of a qubit is $Ae^{i\theta}$, where $A$ is the amplitude and $\theta$ is the phase. 
 </Callout>

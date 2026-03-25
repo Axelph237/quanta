@@ -227,7 +227,7 @@ export function findNearestValidPlacement(
  * @returns 
  */
 export function implicitPlacement([gateName, qubits]: [string, number[]], circuit: CircuitState): PlacedGate | null {
-  const gateDef = gates[gateName]; // Get base gate definition for this gate name
+  const gateDef = gates[gateName.toLowerCase()]; // Get base gate definition for this gate name
   if (!gateDef) {
     throw new Error(`Gate ${gateName} not found`);
   }
