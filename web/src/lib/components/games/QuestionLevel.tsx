@@ -1,7 +1,11 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { LevelComponentProps } from "./GameHandler";
 import { fireConfettiCannon } from "../react-bits/Confetti";
 import * as icons from "../ui/Icons";
+import { renderSnippet } from "@/lib/markdown/render-snippet";
+import { useViewportSize } from "@/lib/hooks/useViewportSize";
 
 interface ChoiceQuestion {
   type: "choice";
@@ -24,6 +28,7 @@ export default function QuizQuestion({
 }: {
   question: QuizQuestionType;
 } & LevelComponentProps) {
+  const viewport = useViewportSize();
   const inputRef = useRef<HTMLInputElement>(null);
   const [gridDims, setGridDims] = useState({ cols: 1, rows: 4 });
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
@@ -36,11 +41,15 @@ export default function QuizQuestion({
   // Set question grid dimensions
   useEffect(() => {
     if (question.type === "choice") {
-      const sideLength = Math.ceil(Math.sqrt(question.answers.length));
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setGridDims({ cols: sideLength, rows: sideLength });
+      if (viewport.isMd) {
+        const sideLength = Math.ceil(Math.sqrt(question.answers.length));
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setGridDims({ cols: sideLength, rows: sideLength });
+      } else {
+        setGridDims({ cols: 1, rows: question.answers.length });
+      }
     }
-  }, [question]);
+  }, [question, viewport]);
 
   // Once given the okay to start, immediately start playing
   useEffect(() => {
@@ -65,10 +74,15 @@ export default function QuizQuestion({
   };
   return (
     <div className="flex flex-col gap-4 h-full justify-center items-center">
-      <h2 className="text-2xl font-bold">{question.question}</h2>
+      <h2
+        className="text-2xl font-bold"
+        dangerouslySetInnerHTML={{
+          __html: renderSnippet(question.question),
+        }}
+      />
       <form
         onSubmit={(e) => e.preventDefault()}
-        className={`grid gap-4`}
+        className={`grid gap-3 md:gap-4 w-full md:w-fit`}
         style={{
           gridTemplateColumns: `repeat(${gridDims.cols}, 1fr)`,
           gridTemplateRows: `repeat(${gridDims.rows}, 1fr)`,
@@ -78,10 +92,14 @@ export default function QuizQuestion({
           question.answers.map((answer) => (
             <button
               key={answer.text}
-              className="button-primary bg-quanta-primary col-span-1 text-xl"
+              className="button-primary bg-quanta-primary col-span-1"
               onClick={(e) => onAnswer(question, answer, e)}
             >
-              {answer.text}
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: renderSnippet(answer.text),
+                }}
+              />
             </button>
           ))
         ) : (

@@ -12,6 +12,7 @@ import { COLORS } from "@/app/globals";
 import { Eye, EyeOff } from "../ui/Icons";
 import { useAnalytics } from "../providers/AnalyticsProvider";
 import { Serializable } from "child_process";
+import { useViewportSize } from "@/lib/hooks/useViewportSize";
 
 const SUCCESS_MESSAGES = [
   "NICE!",
@@ -93,6 +94,7 @@ export default function GameHandler({
       }
     />
   );
+  const viewport = useViewportSize();
   const { recordEvent } = useAnalytics();
   const [bgVisible, setBgVisible] = useState<boolean>(hideBg ? false : true);
   const [activeGame, setActiveGame] = useState<number>(0);
@@ -222,7 +224,7 @@ export default function GameHandler({
   return (
     <div
       id={id}
-      className={`${className} relative rounded-lg border-2 ${success || activeState !== GameState.READY ? "border-quanta-on-surface" : "border-quanta-error"} transition-color duration-250 p-10 overflow-hidden w-full h-1/2 min-h-fit ${className}`}
+      className={`${className} h-fit relative rounded-lg border-2 ${success || activeState !== GameState.READY ? "border-quanta-on-surface" : "border-quanta-error"} transition-color duration-250 p-10 overflow-hidden w-full h-1/2 min-h-fit ${className}`}
       {...rest}
     >
       {/* First game has a "Play!" button, each sequential game has a "Ready?" button */}
@@ -296,7 +298,10 @@ export default function GameHandler({
           exit={{
             left: "-100%",
           }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          transition={{
+            duration: viewport.isMd ? 0.5 : 0.3,
+            ease: "easeInOut",
+          }}
         >
           {renderedLevel}
         </motion.span>

@@ -5,8 +5,35 @@ import { CircuitCanvas } from "@/lib/circuit";
 import GateToy from "@/lib/components/ui/GateToy";
 import { COLORS } from "@/app/globals";
 
+
 # Common Gates
-As we get ready to take a look at Grover's algorithm, it's important we build a shared language of quantum operations! So, here are some of the most common (and relevant to Grover's algorithm) quantum gates.
+As we get ready to take a look at Grover's algorithm, it's important we build a shared language of quantum operations! First, let's talk about the ways a gate is represented, and then we can dive into a few select gates.
+
+## Gate Representations
+### Matrices
+Quantum gates are often represented as matrices to describe the way they act on a state. Here is an example from the <span className="define-h-gate">Hadamard</span> gate:
+$$
+H=\frac{1}{\sqrt{2}} \begin{bmatrix}1&1\\1&-1\end{bmatrix}
+$$
+Remember how from our earlier lesson we had the uniformly superposed single-qubit state:
+$$
+\Psi = |0\rangle
+$$
+Well, we can represent that same state as a <span className="define-vector">vector</span> of all possible states and their amplitudes. For a single qubit, the only possible states are $|0\rangle$ and $|1\rangle$. So, our state could be represented like:
+$$
+\begin{bmatrix}A_0\\ A_1\end{bmatrix} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}
+$$
+Putting it all together, the $X$ gate applied to our wave function $\Psi$ would look like:
+$$
+H |\Psi\rangle = \frac{1}{\sqrt2} \begin{bmatrix}\class{border-t-2 border-l-2 border-r-2 border-quanta-primary p-1 rounded-t-lg}{1}&\class{border-t-2 w-full border-l-2 border-r-2 border-quanta-secondary p-1 rounded-t-lg place-items-end}{1}\\\class{border-b-2 border-l-2 border-r-2 border-quanta-primary p-1 rounded-b-lg}{1}&\class{border-b-2 border-l-2 border-r-2 border-quanta-secondary p-1 rounded-b-lg}{-1}\end{bmatrix} \begin{bmatrix} \class{border-2 border-quanta-primary p-1 rounded-lg}1 \\ \class{border-2 border-quanta-secondary p-1 rounded-lg}0 \end{bmatrix}
+$$
+Which, when multiplied out (you don't need to do the math yourself, just trust me 😼 ) gives us:
+$$
+\frac1{\sqrt2} \begin{bmatrix} 1 + 0 \\ 1 - 0 \end{bmatrix} = \frac1{\sqrt2} \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \class{bg-quanta-primary/10 border-2 border-quanta-primary p-2 rounded-xl}{\frac1{\sqrt2}(|0\rangle + |1\rangle)}
+$$
+Keep this in mind as you read more about the Hadamard gate below to see why it does this!
+### In Circuits
+We will get more into circuits in the next lesson, but often times a gate is represented as a box labelled by its name. This is to show what gate is applied in a circuit. As you go through this lesson, most gates will also have an example circuit gate!
 
 <span className="flex flex-row gap-8">
 ## NOT (Pauli-X)
@@ -62,6 +89,9 @@ $$
 CNOT_{1,2}|00\rangle = |00\rangle
 $$
 
+<Callout title="Note" color={COLORS.secondary.hex} icon={<icons.SchrodingersCat className="icon" />} >
+The following gates are what are called "phase" gates. These can be harder to understand without me diving in too deep, so don't be worried if they don't make sense right now :)
+</Callout>
 ## R<sub>Z</sub>
 #### Rotation around Z
 <Callout title="Matrix" icon={<icons.SchrodingersCat className="icon" />}>

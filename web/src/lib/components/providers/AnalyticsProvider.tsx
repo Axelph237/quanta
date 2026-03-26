@@ -5,7 +5,7 @@ import {
   AnalyticsContextType,
   AnalyticsEventDocument,
 } from "@/lib/types/analytics";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 import ConsentText from "./AnalyticsConsentText.mdx";
 import { AnimatePresence, motion } from "framer-motion";
@@ -38,32 +38,41 @@ const setPermissions = (permission: boolean) => {
 // Provider component for handling analytic data
 // Exposes recordEvent() for child components to record important events
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
-  const [usagePermission, setUsagePermission] = useState<string | null>(
-    getPermissions(),
-  );
-  let deviceId = localStorage.getItem("deviceId");
-  if (!deviceId) {
-    deviceId = crypto.randomUUID();
-    localStorage.setItem("deviceId", deviceId);
-  }
+  const [usagePermission, setUsagePermission] = useState<string | null>(null);
+  const deviceIdRef = useRef<string | null>(null);
 
   const updatePerms = (permission: boolean) => {
     setUsagePermission(permission.toString());
     setPermissions(permission);
   };
 
+  useEffect(() => {
+    deviceIdRef.current = localStorage.getItem("deviceId");
+    if (!deviceIdRef.current) {
+      deviceIdRef.current = crypto.randomUUID();
+      localStorage.setItem("deviceId", deviceIdRef.current);
+    }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setUsagePermission(getPermissions());
+  }, []);
+
   // FUNCTION EXPOSED IN CONTEXT
   const recordEvent = async (
     event: AnalyticsEvent,
     timeBucket: number = 10_000, // default 10 second time bucket
   ) => {
-    if (!usagePermission || usagePermission === "false") {
+    if (
+      !usagePermission ||
+      usagePermission === "false" ||
+      !deviceIdRef.current
+    ) {
       console.warn("recordEvent: Usage recording is not enabled.");
       return;
     }
 
     // Create a dedupe key to prevent duplicate events from being recorded
-    let eventId: string = `${deviceId}:${event.type}:`;
+    let eventId: string = `${deviceIdRef.current}:${event.type}:`;
     const currentTimeBucket = Math.floor(Date.now() / timeBucket);
     switch (event.type) {
       case "lesson_viewed":
@@ -89,7 +98,7 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
 
     const data: AnalyticsEventDocument = {
       event,
-      deviceId,
+      deviceId: deviceIdRef.current,
       eventId,
       timestamp: new Date().toISOString(),
     };
@@ -186,7 +195,7 @@ function ConsentPopup({
             className="button-primary bg-quanta-primary"
             onClick={() => updatePerms(true)}
           >
-            Accept
+            I Agree
           </button>
           <button
             className="text-quanta-primary text-sm cursor-pointer"
@@ -201,7 +210,12 @@ function ConsentPopup({
 }
 
 export function ConsentCheckbox() {
-  const [checked, setChecked] = useState(getPermissions() === "true");
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setChecked(getPermissions() === "true");
+  }, []);
 
   const handleClick = () => {
     const newChecked = !checked;
@@ -216,7 +230,7 @@ export function ConsentCheckbox() {
     >
       <div
         id="usage-permission-checkbox"
-        className={` cursor-pointer w-6 h-6 rounded-md border border-quanta-primary flex items-center justify-center ${checked ? "bg-quanta-primary" : ""}`}
+        className={`cursor-pointer w-6 h-6 p-4 rounded-md border border-quanta-primary flex items-center justify-center transition-all duration-150 ${checked ? "bg-quanta-primary" : ""}`}
       >
         {checked && (
           <motion.span
@@ -224,13 +238,13 @@ export function ConsentCheckbox() {
             animate={{ scale: 1 }}
             transition={{ duration: 0.2, type: "spring", stiffness: 500 }}
           >
-            <SchrodingersCat className="w-4 h-4" />
+            <SchrodingersCat className="w-6 h-6" />
           </motion.span>
         )}
       </div>
       <label
         htmlFor="usage-permission-checkbox"
-        className="text-lg ms-2 text-sm font-medium text-heading"
+        className="ms-2 text-sm font-medium text-heading"
       >
         Allow Collection of Usage Analytics for Research
       </label>

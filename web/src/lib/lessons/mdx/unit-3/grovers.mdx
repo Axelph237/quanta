@@ -1,6 +1,6 @@
 import Callout from "@/lib/components/ui/Callout"
 import WarpingCircle from "@/lib/components/ui/figures/WarpingCircle"
-import QuasiProbGraph from "@/lib/components/ui/figures/QuasiProbGraph"
+import ProbGraph from "@/lib/components/ui/figures/ProbGraph"
 import { Eye, ListItem, SchrodingersCat } from "@/lib/components/ui/Icons"
 import CircuitCanvas from "@/lib/circuit/CircuitCanvas"
 import ShinyText from "@/lib/components/react-bits/ShinyText"
@@ -45,28 +45,31 @@ export const diffuser = [
 ];
 
 # Grover's Algorithm
-One of the most well-known quantum algorithms is Grover's unstructured database algorithm. The basic premise is that we want to find the output state that directly correlates to our desired input, encoded into an *oracle* function. The way in which we do this is by querying the *oracle* function and *diffusing* the result until the state is the one we are searching for.
+One of the most well-known quantum algorithms is Grover's unstructured database algorithm. Essentially, Grover's algorithm uses an *oracle* function to find the solution to a given problem. The way in which we do this is by querying the *oracle* function and *diffusing* the result until the state is the one we are searching for. We will get more into what each of these terms actually mean later in the lesson.
 
 {/* A little alternate display for some transitional diagrams */}
 <Callout title="Fig 3.0.1" icon={<Eye className="icon" />}>
-<div className="flex flex-row gap-2 items-center justify-center w-full justify-around mb-4">
-<div className="border-1 border-white flex flex-row gap-2 items-center p-2 rounded-xl">
-<div className="flex items-center justify-center bg-quanta-primary py-4 px-6 rounded-lg">
-<p className="hidden xl:inline">$\text{Oracle}$</p>
-<p className="inline xl:hidden">$O$</p>
-</div>
-<p>$\rightarrow$</p>
-<div className="flex items-center justify-center bg-quanta-primary py-4 px-6 rounded-lg">
-<p className="hidden xl:inline">$\text{Diffuser}$</p>
-<p className="inline xl:hidden">$D$</p>
-</div>
-$^{\otimes \frac{\pi}{4} \sqrt{N}}$
-</div>
-<p>$\rightarrow$</p>
-<div className="flex items-center justify-center bg-quanta-primary py-4 px-6 rounded-lg">
-<p>$\text{Output}$</p>
-</div>
-
+<div className="flex flex-col sm:flex-row gap-2 items-center w-full justify-center mb-4">
+  <div className="max-w-full border border-white flex flex-col sm:flex-row gap-2 items-center p-2 rounded-xl">
+    <div className="flex items-center justify-center bg-quanta-primary py-4 px-6 rounded-lg">
+      <p className="hidden xl:inline">$\text{Oracle}$</p>
+      <p className="inline xl:hidden">$O$</p>
+    </div>
+    <p className="hidden sm:inline">$\rightarrow$</p>
+    <p className="sm:hidden">$\downarrow$</p>
+    <div className="diffuser-container flex flex-row items-center gap-2">
+      <div className="flex items-center justify-center bg-quanta-primary py-4 px-6 rounded-lg">
+        <p className="hidden xl:inline">$\text{Diffuser}$</p>
+        <p className="inline xl:hidden">$D$</p>
+      </div>
+      $^{\otimes \frac{\pi}{4} \sqrt{N}}$
+    </div>
+  </div>
+  <p className="hidden sm:inline">$\rightarrow$</p>
+  <p className="sm:hidden">$\downarrow$</p>
+  <div className="flex items-center justify-center bg-quanta-primary py-4 px-6 rounded-lg">
+    <p>$\text{Output}$</p>
+  </div>
 </div>
 *Where $^{\otimes \frac{\pi}{4} \sqrt{N}}$ represents $\frac{\pi}{4} \sqrt{N}$ applications of the oracle ($O$) and diffuser ($D$).*
 </Callout>
@@ -86,7 +89,7 @@ So what is a quantum oracle? Well, in short, it is a sort of **black box**. The 
 Phone books are a bad example: they are a dataset of random entries, the names can be any string of characters, and phone numbers are pretty random as well. Because of this, phone books aren't actually a great unstructured database. A better example might be the structure of an atom, its potential states, or even **the rules and board of a sudoku game**. 
 
 <Callout title="Fig 3.0.2" icon={<Eye className="icon" />}>
-<div className="flex flex-row gap-6 text-quanta-on-surface items-center justify-center">
+<div className="flex flex-col sm:flex-row gap-6 text-quanta-on-surface items-center justify-center">
 <div className="flex flex-col bg-quanta-primary rounded-xl">
 <ol className="p-6 rounded-xl">
 <li>1. <p className="hidden xl:inline">No same numbers in row</p><p className="inline xl:hidden">. . .</p></li>
@@ -95,7 +98,8 @@ Phone books are a bad example: they are a dataset of random entries, the names c
 </ol>
 </div>
 
-<p className="ml-6 text-quanta-on-">$- \text{ describes } \rightarrow$</p>
+<p className="hidden sm:inline ml-6 text-quanta-on-surface">$- \text{ describes } \rightarrow$</p>
+<p className="sm:hidden text-quanta-on-surface">describes</p>
 
 <WarpingCircle />
 
@@ -103,10 +107,10 @@ Phone books are a bad example: they are a dataset of random entries, the names c
 *The rules of Sudoku can be explained as describing all possible games of sudoku, rather than listing them all out explicitly. This is similar to a database being **unstructured**.*
 </Callout>
 
-In the case of sudoku, our oracle would essentially mark the "correct" state if it satisfied all the rules. Let's say that a solution to our sudoku puzzle is represented by the state $|100\rangle$, the quasi-probabilities of wave equation would be
+In the case of sudoku, our oracle would essentially mark the "correct" state if it satisfied all the rules. Let's say that a solution to our sudoku puzzle is represented by the state $|100\rangle$, the amplitudes of wave equation would be
 
 <div className="center-page-content">
-  <QuasiProbGraph 
+  <ProbGraph 
     values={[1, 1, 1, 1, -1, 1, 1, 1].map((val) => val / Math.sqrt(8))} 
     labels={["000", "001", "010", "011", "100", "101", "110", "111"]} 
     yMax="0.5" 
@@ -124,16 +128,19 @@ The goal of the diffuser is referred to as **inversion-about-the-mean**. In othe
 
 In our above graph, we saw that our wave equation looked like the following:
 $$
-\Psi = \frac{1}{\sqrt{8}} (|000\rangle + |001\rangle + |010\rangle + |011\rangle \class{text-quanta-secondary}{- |100\rangle} + |101\rangle + |110\rangle + |111\rangle)
+\Psi = \frac{1}{\sqrt{8}} (|000\rangle + |001\rangle + |010\rangle + |011\rangle \class{text-quanta-primary}{- |100\rangle} + |101\rangle + |110\rangle + |111\rangle)
 $$
 *(Note, $\frac{1}{\sqrt{8}} \approx 0.3535$)*
 
-Now the sum of all the amplitudes is: $7 \frac{1}{\sqrt{8}} - \frac{1}{\sqrt{8}} = \frac{6}{\sqrt{8}}$. Taking the average of these we get: $\frac{6}{\sqrt{8}} \div 8 = \frac{6}{8\sqrt{8}} = \frac{3}{4\sqrt{8}} \approx 0.265$.
+Now the sum of all the amplitudes is: $7 \frac{1}{\sqrt{8}} - \frac{1}{\sqrt{8}} = \frac{6}{\sqrt{8}}$. Taking the average of these we get: 
+$$
+\frac{6}{\sqrt{8}} \div 8 = \frac{6}{8\sqrt{8}} = \frac{3}{4\sqrt{8}} \approx 0.265
+$$
 
-If we reflect all of these states about that average (or, find the difference between two times the average $\overline{\alpha}$ and the state's amplitude $\alpha_i$: $2\overline{\alpha} - \alpha_i$), we get the following:
+If we reflect all of these states about that average (or, find the difference between two times the average $\overline{\alpha}$ and the state's amplitude $\alpha_i$: $2\overline{\alpha} - \alpha_i$), we get the following amplitudes:
 
 <div className="center-page-content">
-<QuasiProbGraph 
+<ProbGraph 
     values={[1, 1, 1, 1, -1, 1, 1, 1].map((val) => Math.abs(2 * (3 / (4 * Math.sqrt(8))) - (val / Math.sqrt(8))))} 
     labels={["000", "001", "010", "011", "100", "101", "110", "111"]} 
     yMax={(Math.abs(2 * (3 / (4 * Math.sqrt(8))) - (-1 / Math.sqrt(8)))).toFixed(2)} 
@@ -152,7 +159,7 @@ So how many times do we need to repeat this process? In his original paper, Lov 
 After applying the oracle $O$ (marking the target state) and the defuser $D$ one more time (for a total of two times), we get the following amplitudes:
 
 <div className="center-page-content">
-<QuasiProbGraph 
+<ProbGraph 
     values={[-1, -1, -1, -1, 11, -1, -1, -1].map((val) => val / (4 * Math.sqrt(8)))} 
     labels={["000", "001", "010", "011", "100", "101", "110", "111"]} 
     yMax={(11 / (4 * Math.sqrt(8))).toFixed(2)} 
@@ -167,10 +174,10 @@ With a probability amplitude of $\sim 0.97$, we have a $0.97^2 \approx 0.94$ cha
 Okay, so we have looked at the steps to this algorithm, but how would we actually implement this on a quantum computer? For this section, let's scratch the paper, and instead look at the actual circuit.
 
 ### SP.1 - The Oracle
-is an arbitrary unitary gate that is defined on a per-problem basis. Essentially, this is our "input" where we describe the database and constraints we want to solve for. Like with the sudoku example, this would be our board state and the rules of sudoku described by a matrix.
+The *oracle* is an arbitrary unitary gate that is defined on a per-problem basis. Essentially, this is our "input" where we describe the database and constraints we want to solve for. Like with the sudoku example, this would be our board state and the rules of sudoku described by a matrix.
 
 Earlier, we talked about an oracle that simply marked the $|100\rangle$ state. In this case, the circuit for the oracle looks like:
-<div className="">
+<div className="w-full overflow-x-scroll">
 <CircuitCanvas
         numQubits={3}
         numColumns={7}
@@ -187,10 +194,10 @@ The qubits in our circuit are $|q2\rangle |q1\rangle |q0\rangle$, meaning that t
 
 Aren't we supposed to be adding a negative phase, not flipping bits? That's true! The CCNOT gate with Hadamard gates around the target qubit together create what is called a <span className="define-ccz-gate">CCZ</span> gate.
 
-*(check out THIS paper to see how this can be implemented for a game of sudoku)*
+*(check out <a className="text-quanta-primary hover:underline" href="https://elib.dlr.de/193653/1/Abgabe_weiss22.pdf" target="_blank">this paper</a> to see how Grover's algorithm can be implemented for a game of sudoku!)*
 
 ### SP.2 - The Diffuser
-is standard across all applications of Grover's algorithm. It is defined as:
+The *diffuser* is standard across all applications of Grover's algorithm. It is defined as:
 $$
     D = 2|s\rangle\langle s| - I
 $$
@@ -201,6 +208,7 @@ Or, in more plain english, it is the reflection of the states about the average 
 2. Apply a phase flips with <span className="define-ccz-gate">CCZ</span> to the initial state $|s\rangle = |0^N\rangle$. So, we must apply a NOT to all qubits before and after the CCZ.
 3. Apply $H$ to all qubits again, returning them to their original state but with their amplitude reflected around $|s\rangle$.
 
+<div className="w-full overflow-x-scroll">
 <CircuitCanvas
         numQubits={3}
         numColumns={9}
@@ -212,6 +220,7 @@ Or, in more plain english, it is the reflection of the states about the average 
         ]}
         noEdit
       />
+</div>
 
 ### SP.3 - The Full Circuit
 Now, we can put it all together! Note, we start by putting all qubits in a uniform superposition, then we apply the oracle, then the diffuser, and repeat!

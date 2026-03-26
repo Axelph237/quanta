@@ -71,6 +71,21 @@ const vocab: { [key: string]: Vocab } = {
     definition:
       "A string of 0s and 1s. In quantum computing, it is used to represent the state of a qubit or set of qubits.",
   },
+  nondeterm: {
+    term: "Nondeterministic",
+    definition:
+      "When the outcome of an event is unable to be determined ahead of time. Often, this is the same as something being random.",
+  },
+  determ: {
+    term: "Deterministic",
+    definition:
+      "When the outcome of an event is able to be determined ahead of time.",
+  },
+  vector: {
+    term: "Vector",
+    definition:
+      "A vector is an object in math that has both *magnitude* and *direction*. In quantum computing, it is used to represent the state of a qubit or set of qubits.",
+  },
   // Map definitions for all gates
   ...Object.keys(gates).reduce(
     (acc, key) => {
@@ -98,12 +113,15 @@ const vocab: { [key: string]: Vocab } = {
 /* The Tooltip component that renders on a user's hover */
 function Tooltip({ state }: { state: TooltipState }) {
   const viewport = useViewportSize();
-  const [pos, setPos] = useState({ top: 0, left: 0 });
+  const [pos, setPos] = useState<{ top: number; left: number } | undefined>(
+    undefined,
+  );
   const [vocab, setVocab] = useState<Vocab | undefined>(undefined);
   const width = viewport?.isXL ? 500 : viewport?.width * 0.5;
 
   useEffect(() => {
     if (!state.open || !state.vocab) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setVocab(state.vocab);
 
     const update = () => {
@@ -128,6 +146,8 @@ function Tooltip({ state }: { state: TooltipState }) {
       window.removeEventListener("resize", update);
     };
   }, [state, viewport]);
+
+  if (!pos) return;
 
   return createPortal(
     <motion.div

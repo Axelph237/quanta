@@ -17,7 +17,7 @@ export function getGateExistingId(gateDef: GateDefinition) {
  */
 export function cellToPixel(grid: Grid, column: number, qubit: number) {
   return {
-    x: grid.xMargin + column * grid.columnWidth,
+    x: grid.xMargin + grid.gateSize * 1.5 + column * grid.columnWidth,
     y: grid.yMargin + qubit * grid.rowHeight,
   };
 }

@@ -242,8 +242,59 @@ const MECHANICS_UNIT_LESSONS: Lesson[] = [
           { text: "I'm not sure", correct: true },
         ],
       },
+      {
+        type: "choice",
+        question: "Have you ever heard of destructive interference?",
+        answers: [
+          { text: "Yes", correct: true },
+          { text: "No", correct: true },
+          { text: "I'm not sure", correct: true },
+        ],
+      },
     ],
-    postQuestions: [],
+    postQuestions: [
+      {
+        type: "choice",
+        question: "What is constructive interference?",
+        answers: [
+          {
+            text: "When two waves interfere, increasing the amplitude of the wave",
+            correct: true,
+          },
+          {
+            text: "When two waves interfere, decreasing the amplitude of the wave",
+            correct: false,
+          },
+        ],
+      },
+      {
+        type: "choice",
+        question: "What is destructive interference?",
+        answers: [
+          {
+            text: "When two waves interfere, decreasing the amplitude of the wave",
+            correct: true,
+          },
+          {
+            text: "When two waves interfere, increasing the amplitude of the wave",
+            correct: false,
+          },
+        ],
+      },
+      {
+        type: "choice",
+        question: "What is special about probability amplitudes?",
+        answers: [
+          { text: "They can be negative & complex", correct: true },
+          { text: "They can be negative but not complex", correct: false },
+          { text: "They can be complex but not negative", correct: false },
+          {
+            text: "They are identical to classical probabilities",
+            correct: false,
+          },
+        ],
+      },
+    ],
   },
   {
     id: "entanglement",
@@ -306,9 +357,12 @@ const COMPUTING_UNIT_LESSONS: Lesson[] = [
         question: "How well would you say you understand classical computers?",
         answers: [
           { text: "I know nothing at all", correct: true },
-          { text: "I know how to use a computer", correct: true },
-          { text: "I know how to program a computer", correct: true },
-          { text: "I understand computer hardware", correct: true },
+          { text: "I know how to use computers", correct: true },
+          { text: "I know how to use and program computers", correct: true },
+          {
+            text: "I understand computer hardware and programming",
+            correct: true,
+          },
         ],
       },
       {
@@ -316,7 +370,6 @@ const COMPUTING_UNIT_LESSONS: Lesson[] = [
         question: "What does it mean for an operation to be irreversible?",
         answers: [
           { text: "Information is lost during the operation", correct: true },
-          { text: "The operation cannot be undone physically", correct: false },
           { text: "The operation takes too much power", correct: false },
           {
             text: "The operation takes an infinite amount of time",
@@ -331,10 +384,10 @@ const COMPUTING_UNIT_LESSONS: Lesson[] = [
         question:
           "How well do you feel you could explain the basics of a quantum computer to someone else?",
         answers: [
-          { text: "I can't explain it at all", correct: true },
-          { text: "Poorly", correct: true },
-          { text: "Decently", correct: true },
-          { text: "Exceptionally", correct: true },
+          { text: "1. I can't explain it at all", correct: true },
+          { text: "2. Poorly", correct: true },
+          { text: "3. Decently", correct: true },
+          { text: "4. Adequately", correct: true },
         ],
       },
       {
@@ -356,62 +409,11 @@ const COMPUTING_UNIT_LESSONS: Lesson[] = [
     ],
   },
   {
-    id: "circuits",
-    unitId: "computing",
-    title: "QUANTUM CIRCUITS",
-    description: "",
-    tocId: "2.1",
-    headerImg: undefined,
-    pageContent: <unit2.quantCirc />,
-    preQuestions: [
-      {
-        type: "choice",
-        question: "Have you ever heard of quantum circuits?",
-        answers: [
-          { text: "Yes", correct: true },
-          { text: "No", correct: true },
-          { text: "I'm not sure", correct: true },
-        ],
-      },
-    ],
-    postQuestions: [
-      {
-        type: "choice",
-        question: "What is the width of a quantum circuit?",
-        answers: [
-          { text: "The number of qubits in a circuit", correct: true },
-          { text: "The physical size of the quantum computer", correct: false },
-          {
-            text: "The amount of time the circuit takes to run",
-            correct: false,
-          },
-          { text: "The number of gates in the circuit", correct: false },
-        ],
-      },
-      {
-        type: "choice",
-        question: "What does a quantum circuit represent?",
-        answers: [
-          {
-            text: "The operations to be performed on a set of qubits",
-            correct: true,
-          },
-          {
-            text: "The electrical wiring of a quantum computer",
-            correct: false,
-          },
-          { text: "A map of where to place qubits", correct: false },
-          { text: "A blueprint for classical components", correct: false },
-        ],
-      },
-    ],
-  },
-  {
     id: "gates",
     unitId: "computing",
     title: "COMMON GATES",
     description: "",
-    tocId: "2.2",
+    tocId: "2.1",
     headerImg: undefined,
     pageContent: <unit2.commonGates />,
     preQuestions: [
@@ -461,6 +463,57 @@ const COMPUTING_UNIT_LESSONS: Lesson[] = [
             correct: true,
           },
           { text: "It applies a Hadamard gate to all qubits", correct: false },
+        ],
+      },
+    ],
+  },
+  {
+    id: "circuits",
+    unitId: "computing",
+    title: "QUANTUM CIRCUITS",
+    description: "",
+    tocId: "2.2",
+    headerImg: undefined,
+    pageContent: <unit2.quantCirc />,
+    preQuestions: [
+      {
+        type: "choice",
+        question: "Have you ever heard of quantum circuits?",
+        answers: [
+          { text: "Yes", correct: true },
+          { text: "No", correct: true },
+          { text: "I'm not sure", correct: true },
+        ],
+      },
+    ],
+    postQuestions: [
+      {
+        type: "choice",
+        question: "What is the width of a quantum circuit?",
+        answers: [
+          { text: "The number of qubits in a circuit", correct: true },
+          { text: "The physical size of the quantum computer", correct: false },
+          {
+            text: "The amount of time the circuit takes to run",
+            correct: false,
+          },
+          { text: "The number of gates in the circuit", correct: false },
+        ],
+      },
+      {
+        type: "choice",
+        question: "What does a quantum circuit represent?",
+        answers: [
+          {
+            text: "The operations to be performed on a set of qubits",
+            correct: true,
+          },
+          {
+            text: "The electrical wiring of a quantum computer",
+            correct: false,
+          },
+          { text: "A map of where to place qubits", correct: false },
+          { text: "A blueprint for classical components", correct: false },
         ],
       },
     ],

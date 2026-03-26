@@ -1,10 +1,17 @@
 import Callout from "@/lib/components/ui/Callout";
 
+# So Why Quantum?
+For most of us, it is easy to think that classical computers are good at able to solve just about any problem. This is somewhat true, as technology has progress, we have been able to find better and better solutions to *many* problems. Many times, what we need is just a stronger computer, a bigger hammer. However, sometimes we need a more specialized tool.
+
+Classical computers are very good at solving problems that have a deterministic solution: in other words, you can reason your way from step 1 as to what the next best step is (if-then logic). However, there are a number of problems that don't have such easy if-then logic. For example, imagine you are a salesperson and you want to visit a certain set of addresses in the shortest route possible. To solve this problem you'd have to check *every* possible path through all destinations. Depending on the size of the route, that could take an incredibly long amount of time! Our modern day computers don't "solve" this problem simply by calculating it efficiently, they instead chunk it up and distribute it across many computers to more quickly compute the answer for your maps app. Quantum computers, due to the phenomena of superposition and  entanglement, are perfect for problems like these.
+
+Now, a better GPS for your car is not what we are aiming for with quantum computers. So let's instead generalize the types of problems a quantum computer can excel at as any problem that is easy to describe, but hard to verify which answer is right (like the traveling salesman problem above). These are often called Nondeterministic-Polynomial problems (NP for short) due to their <span className="define-nondeterm">nondeterministic</span> nature at many steps of the problem.
+
 # Drawing The Line
 Now that we have an understanding a type of problems quantum computers excel at solving, let's draw some lines between classical computing and quantum computing. This way, we'll be able to see why quantum computers are the desired technology for solving these problems.
 ## Classical Computing
 ### Deterministic
-Most distinctly, classical computers (what you most likely have in your pocket right now) are completely deterministic. Without me getting too excited, *all* modern classical computations are deterministic. Any randomness is what we call *pseudo-random*.
+Most distinctly, classical computers (what you most likely have in your pocket right now) are completely <span className="define-determ">deterministic</span>. Without me getting too excited, *all* modern classical computations are deterministic. Any randomness is what we call *pseudo-random*.
 
 <Callout title="Fun Fact">
 *any* classical program or computation can be turned into a deterministic piece of logic (DFA), despite it including seemingly random or non-deterministic logic.
@@ -12,7 +19,7 @@ Most distinctly, classical computers (what you most likely have in your pocket r
 ### Discrete
 The bits of a classical computer are *discrete*, meaning they do not have an infinite number of values they can cover. Each bit (as you likely know) can only represent a one or zero at any point in time.
 ### Irreversible
-In classical computing, many operations performed on an input are *irreversible*. Meaning that given an output to an operation, we cannot perform any operations to reconstruct the input. A simple example is that both $0 \lor 1 \equiv 1$ and $1 \lor 1 \equiv 1$ (MAKE EASIER TO UNDERSTAND) are logically equivalent. Given an output of $1$, you could not tell me if the input was $(0,1)$, or $(1,1)$.
+In classical computing, many operations performed on an input are *irreversible*. Meaning that given an output to an operation, we cannot perform any operations to reconstruct the input. A simple example would be like mixing colors. Both <span className="py-1 px-2 rounded-xl bg-[#00ff00] text-quanta-surface">green</span> and <span className="py-1 px-2 rounded-xl bg-[#ff0000] text-quanta-surface">red</span> mix to make <span className="py-1 px-2 rounded-xl bg-[#ffff00] text-quanta-surface">yellow</span>, but there are many other colors like this <span className="py-1 px-2 rounded-xl bg-[#ED5300] text-quanta-surface">orange</span> and <span className="py-1 px-2 rounded-xl bg-[#024C00] text-white">dark green</span> that could make the same <span className="py-1 px-2 rounded-xl bg-[#ffff00] text-quanta-surface">yellow</span> when mixed. If all you know was the resulting color, you could never know the original colors!
 ## Quantum Computing
 Finally! This is what we are all about. I hope you found the preliminary introduction and thinking interesting, let's get to it.
 ### Qubits
@@ -30,9 +37,10 @@ The actual implementation of a qubit varies drastically by computer architecture
 ### Decoherence
 An extremely important topic when talking about quantum computers are their coherence times. Because quantum computers are *analog* computers, they still have the potential to lose information to their environment. One common cause would be temperature or spontaneous light emissions. The interference of those causing the superposition of the qubit to collapse. The duration that a quantum computer can, on average, keep a qubit in superposition is its coherence time.
 
-At this current point in time, quantum coherence is a massive field of study, with higher coherence times often allowing new QPUs to swiftly declare "quantum supremacy" over previous QPUs.
+At this current point in time, quantum coherence is a massive field of study, with higher coherence times often allowing new quantum processing units (QPU) to swiftly declare "quantum supremacy" over previous QPUs.
 ### Fidelity
-Similarly, the fidelity of an operation on a qubit is its accuracy to the intended output. In other words, how likely is an operation on a qubit to produce the expected result. For classical computers, this is essentially guaranteed:  $\lnot 1 \equiv 0$ will always be true. 
+Similarly, the fidelity of an operation on a qubit is its accuracy to the intended output. In other words, how likely is an operation on a qubit to produce the expected result. For classical computers, when we take the opposite of $1$, it is essentially guaranteed to be a $0$. 
+
 We would hope the same for quantum computers, and massive steps are being made in quantum fidelity. However, due to the different quantum architectures and techniques used for quantum gates (which we will talk about more in the next lesson), perfect results are not always guaranteed.
 
 <Callout title="Current Fidelities">

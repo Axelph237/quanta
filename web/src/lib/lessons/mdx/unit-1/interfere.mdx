@@ -9,7 +9,9 @@ Imagine you dropped a pebble in a pond. Unsurprisingly, the water begins to ripp
 ## Amplitudes
 For the first time in the history of Quanta (four lessons now), an analogy is actually accurate to our quantum particles! In *A Brief History*, we talked about how these quantum systems behave like "waves". We expanded this idea of waving in *Superposition*, where we said that a wave can be made up of multiple coinciding *probability amplitudes*. Just like in our pond example, the wave at any point in the pond is in a superposition of two waves, interfering with each other.
 
-The key difference: our amplitudes are special. More accurately, a wave in a pond may have an amplitude representing the number of inches up (or below) from the surface of the water that wave can reach, we will call this amplitude $A$. $A$ here is a scalar, but quantum systems also have what is called a phase. When the phase of two wave functions are aligned, they **constructively interfere**. However, when they are unaligned (or opposite each other), they **destructively interfere**. This can be seen in the double slit experiment from the *A Brief History* module.
+A wave in a pond may have an amplitude representing the number of inches up (or below) from the surface of the water that wave can reach, we will call this amplitude $A$. In a classical system, in addition to $A$, a wave may have a phase shift. This means that the peaks of the wave are shifted across the independent axis. When the phase of two wave functions are aligned, they **constructively interfere**. However, when they are unaligned (or opposite each other), they **destructively interfere**. This can be seen in the double slit experiment from the *A Brief History* module.
+
+Quantum mechanical waves are no different, they similarly have **constructive** and **destructive** interference. The primary difference is that the phase of a quantum system has both a *real* and a *complex* part.
 
 <Callout title="Note" icon={<SchrodingersCat className="icon" />} color="#2b7fff">
 *The phase and amplitude of a wave function is written $Ae^{i\theta}$. Using Euler's formula, this expands to:*
@@ -20,4 +22,4 @@ $$
 </Callout>
 
 ## Please Interfere
-The beauty of interference is that it allows us to coerce the overall wave function of a system into producing an output corresponding to some question we may be asking. The exact implementation of this is dependent on the algorithm being used, but in the case of Grover's Algorithm, interference is used to amplify the probability of measuring the target state through constructive interference.
+The beauty of interference is that it allows us to make certain states more or less likely depending on our needs! The exact implementation of this is dependent on the algorithm being used, but in the case of Grover's Algorithm (which we will get to in a later lesson), interference is used to amplify the probability of measuring the state through constructive interference.

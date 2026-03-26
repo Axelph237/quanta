@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "web/src/lib/lessons/quiz_questions.md",
+                "file": "web/src/lib/lessons/mdx/unit-1/bra-ket.mdx",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "quiz_questions"
+              "title": "bra-ket"
             }
           }
         ]
@@ -185,18 +185,18 @@
   },
   "active": "b1f63d0d65964c08",
   "lastOpenFiles": [
-    "web/src/lib/circuit/index.ts",
-    "web/src/lib/components/games/CircuitLevel.tsx",
-    "web/src/lib/components/games/GateLevel.tsx",
-    "web/src/lib/lessons/mdx/unit-2/quant-comp.mdx",
-    "web/src/lib/lessons/quiz_questions.md",
-    "web/src/lib/lessons/mdx/unit-1/superpos.mdx",
     "web/src/lib/lessons/mdx/unit-1/brief-history.mdx",
-    "web/src/lib/lessons/mdx/unit-1/entangle.mdx",
+    "web/src/lib/lessons/mdx/unit-2/common-gates.mdx",
     "web/src/lib/lessons/mdx/unit-1/bra-ket.mdx",
     "web/src/lib/lessons/mdx/unit-3/grovers.mdx",
-    "web/src/lib/lessons/mdx/unit-2/common-gates.mdx",
+    "web/src/lib/components/ui/figures/ProbGraph.tsx",
     "web/src/lib/lessons/mdx/unit-2/quant-circ.mdx",
+    "web/src/lib/lessons/mdx/unit-2/quant-comp.mdx",
+    "web/src/lib/lessons/mdx/unit-1/entangle.mdx",
+    "web/src/lib/lessons/mdx/unit-1/interfere.mdx",
+    "web/src/lib/lessons/quiz_questions.md",
+    "web/src/lib/circuit/index.ts",
+    "web/src/lib/components/games/CircuitLevel.tsx",
     "web/src/lib/lessons/mdx/unit-1/Untitled.md",
     "web/public/assets/hand_pointing_thinned.svg",
     "web/public/assets/hand_pointing copy.svg",

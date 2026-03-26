@@ -26,21 +26,17 @@ export function useResponsiveGrid() {
   useEffect(() => {
     if (!viewport) return;
 
-    let gateSize = 0;
     let xMargin = 0;
     if (viewport.isXL) {
-      gateSize = Math.min(viewport.width, viewport.height) / 25;
       xMargin = (csstopx(cssvar("--text-2xl")) || 0) * NUM_QBIT_CHARACTERS;
     } else if (viewport.isLg) {
-      gateSize = Math.min(viewport.width, viewport.height) / 35;
       xMargin = (csstopx(cssvar("--text-2xl")) || 0) * NUM_QBIT_CHARACTERS;
     } else if (viewport.isMd) {
-      gateSize = Math.min(viewport.width, viewport.height) / 45;
       xMargin = (csstopx(cssvar("--text-xl")) || 0) * NUM_QBIT_CHARACTERS;
     } else if (viewport.isSm) {
-      gateSize = Math.min(viewport.width, viewport.height) / 55;
       xMargin = (csstopx(cssvar("--text-lg")) || 0) * NUM_QBIT_CHARACTERS;
     }
+    const gateSize = Math.min(viewport.width, viewport.height) / 25;
     const margin = gateSize / 2;
 
     // eslint-disable-next-line react-hooks/set-state-in-effect

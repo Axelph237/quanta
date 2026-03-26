@@ -36,8 +36,10 @@ import {
 import CatSideEye from "@public/assets/cat_side_eye.jpg";
 
 import AboutContent from "./about.mdx";
+import { useViewportSize } from "@/lib/hooks/useViewportSize";
 
 function HomeContent() {
+  const viewport = useViewportSize();
   const searchParams = useSearchParams();
   const fromLanding = searchParams.get("from") === "landing";
 
@@ -121,12 +123,12 @@ function HomeContent() {
     <>
       {/* Header */}
       <header>
+        <div className="top-0 left-0 w-full h-full absolute backdrop-blur-sm mask-b-from-25%" />
         {/* About Nav */}
-        <div className="absolute inset-0 z-0 bg-linear-to-b from-quanta-surface to-transparent"></div>
         <motion.span
           initial={{ opacity: 0 }}
           animate={{
-            opacity: scrolled || redirecting ? 0 : 1,
+            opacity: scrolled || redirecting || !viewport.isSm ? 0 : 1,
           }}
           transition={GENTLE_EASE}
         >
@@ -146,10 +148,10 @@ function HomeContent() {
           <Logo
             id="logo"
             animate={{
-              left: scrolled || redirecting ? logoShift : 0,
+              left: scrolled || redirecting || !viewport.isSm ? logoShift : 0,
             }}
             transition={GENTLE_EASE}
-            textVisible={!(scrolled || redirecting)}
+            textVisible={!(scrolled || redirecting || !viewport.isSm)}
             onClick={() => setClickCounter(clickCounter + 1)}
           />
         </Link>
@@ -169,7 +171,7 @@ function HomeContent() {
         </motion.span>
       </header>
       <main
-        className="relative p-[var(--page-padding)] flex min-h-screen mt-[var(--page-padding)] flex-col items-center justify-start text-center"
+        className="relative px-(--page-padding) pb-(--page-padding) flex min-h-screen flex-col items-center justify-start text-center"
         ref={mainScope}
       >
         <HomeSection className="flex flex-col items-center justify-start">
@@ -180,7 +182,7 @@ function HomeContent() {
             direction="top"
             className={`${
               fromLanding ? "mb-4" : ""
-            } text-center text-[5rem] lg:text-[7rem] xl:text-[8rem] 2xl:text-[10rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
+            } text-center text-[3rem] sm:text-[5rem] lg:text-[7rem] xl:text-[8rem] 2xl:text-[10rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
             onAnimationComplete={() => console.log("Completed anim")}
           />
           {/* {!fromLanding && (
@@ -208,17 +210,23 @@ function HomeContent() {
         </HomeSection>
 
         {/* Quanta definition */}
-        <HomeSection className="text-left text-3xl flex flex-col px-[var(--page-padding)] items-start justify-center">
-          <h1 className={`mb-4 text-8xl font-bold ${libreBasker.className}`}>
+        <HomeSection className="text-left text-3xl flex flex-col px-0 md:px-(--page-padding) items-start justify-center">
+          <h1
+            className={`mb-4 display-text-md font-bold ${libreBasker.className}`}
+          >
             quanta
           </h1>
-          <h2 className={`mb-4 text-2xl opacity-75 ${libreBasker.className}`}>
+          <h2 className={`mb-4 body-text opacity-75 ${libreBasker.className}`}>
             / &apos;kwɒn tə /
           </h2>
-          <p className={`mb-4 text-2xl opacity-75 ${libreBasker.className}`}>
+          <p
+            className={`mb-4 heading-text-sm opacity-75 ${libreBasker.className}`}
+          >
             <i>noun:</i>
           </p>
-          <p className={`mb-4 text-2xl opacity-75 ${libreBasker.className}`}>
+          <p
+            className={`mb-4 heading-text-sm opacity-75 ${libreBasker.className}`}
+          >
             The plural form of quantum: the smallest quantity of radiant energy.
           </p>
           {/* <div className="absolute right-[400px]">
@@ -227,8 +235,8 @@ function HomeContent() {
         </HomeSection>
 
         <HomeSection className="flex flex-col items-center justify-center">
-          <h1 className={`text-xl`}>DISCRETE LEARNING</h1>
-          <p className={"w-3/4 text-4xl"}>
+          <h1 className="heading-text-lg mb-2">DISCRETE LEARNING</h1>
+          <p className={"w-3/4 heading-text-sm"}>
             <span className="opacity-100">Quanta</span>{" "}
             <span className="opacity-65">
               is a platform for learning a few interesting topics in quantum
@@ -300,93 +308,6 @@ function HomeSection({
     <div className={`h-[100vh] w-full ${className}`} {...props}>
       {children}
     </div>
-  );
-}
-
-function ToyGates({
-  count,
-  bounds,
-  ...props
-}: {
-  count: number;
-  bounds: { x: number; y: number };
-} & HTMLMotionProps<"div">) {
-  const [gates, setGates] = useState<
-    {
-      x: number;
-      y: number;
-      gate: React.ReactNode;
-      angle: number;
-      speed: number;
-    }[]
-  >([]);
-
-  useEffect(() => {
-    const gateSize = 16;
-    const gateComps = [
-      <HGate key={1} className={`text-red-500 w-${gateSize} h-${gateSize}`} />,
-      <XGate
-        key={2}
-        className={`text-quanta-primary w-${gateSize} h-${gateSize}`}
-      />,
-      <YGate
-        key={3}
-        className={`text-quanta-primary w-${gateSize} h-${gateSize}`}
-      />,
-      <ZGate
-        key={4}
-        className={`text-quanta-primary w-${gateSize} h-${gateSize}`}
-      />,
-      <SGate
-        key={5}
-        className={`text-quanta-secondary w-${gateSize} h-${gateSize}`}
-      />,
-      <TGate
-        key={6}
-        className={`text-quanta-secondary w-${gateSize} h-${gateSize}`}
-      />,
-      <NotGate
-        key={7}
-        className={`text-quanta-primary w-${gateSize} h-${gateSize}`}
-      />,
-    ];
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setGates(
-      Array.from({ length: count }, () => ({
-        x: (Math.random() - 0.5) * bounds.x,
-        y: (Math.random() - 0.5) * bounds.y,
-        angle: Math.random() * 360,
-        speed: (Math.random() - 0.5) * 10 + 15,
-        gate: gateComps[Math.floor(Math.random() * gateComps.length)],
-      })),
-    );
-  }, [count]);
-
-  return (
-    <>
-      {gates.map((gate, i) => {
-        return (
-          <Draggable
-            key={i}
-            dragConstraints={document.body.getBoundingClientRect()}
-            {...props}
-            initial={{ rotate: gate.angle }}
-            animate={{ rotate: gate.angle + (gate.speed < 0 ? -360 : 360) }}
-            transition={{
-              duration: Math.abs(gate.speed),
-              ease: "linear",
-              repeat: Infinity,
-            }}
-            style={{
-              x: gate.x,
-              y: gate.y,
-            }}
-          >
-            {gate.gate}
-          </Draggable>
-        );
-      })}
-    </>
   );
 }
 

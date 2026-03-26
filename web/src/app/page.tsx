@@ -18,6 +18,7 @@ import { GENTLE_EASE } from "./globals";
 import { redirect, RedirectType } from "next/navigation";
 import Logo from "@/lib/components/ui/Logo";
 import ShinyText from "@/lib/components/react-bits/ShinyText";
+import { useViewportSize } from "@/lib/hooks/useViewportSize";
 
 // All available gate components
 const GATES = [
@@ -37,6 +38,8 @@ interface GateBody {
   color: string;
   size: number;
 }
+
+const MOBILE_BREAKPOINT = 600;
 
 export default function LandingPage() {
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -85,13 +88,13 @@ export default function LandingPage() {
     });
 
     // 4. CREATE GATE BODIES
-    const gateCount = 50;
+    const gateCount = width > MOBILE_BREAKPOINT ? 50 : 25;
     const newGateBodies: GateBody[] = [];
-    const size = 60;
+    const size = width > MOBILE_BREAKPOINT ? 40 : 30;
 
     for (let i = 0; i < gateCount; i++) {
       // Centered around text
-      const x = Math.random() * (width * 0.8) + width * 0.1;
+      const x = Math.random() * (width * 0.5) + width * 0.25;
       const y = (Math.random() - 0.5) * (height / 4) + height / 2;
 
       const body = Bodies.circle(x, y, size / 2, {
@@ -259,7 +262,7 @@ export default function LandingPage() {
           animate={{
             scale: textAreaClear ? 1.25 : 1,
           }}
-          className={`font-bold text-9xl ${
+          className={`font-bold heading-text-lg ${
             outfit.className
           } select-none transition-all duration-1200 ${
             textAreaClear ? "" : "blur-md"
@@ -271,8 +274,8 @@ export default function LandingPage() {
         <span
           className={`absolute text-quanta-surface-variant left-1/2 top-3/4 flex items-center gap-2 -translate-x-1/2 ${outfit.className}`}
         >
-          <Swipe className="w-14 h-14" />
-          <ShinyText className="text-2xl opacity-75" text="drag to clear" />
+          <Swipe className="icon" />
+          <ShinyText className="body-text opacity-75" text="drag to clear" />
         </span>
       </div>
 

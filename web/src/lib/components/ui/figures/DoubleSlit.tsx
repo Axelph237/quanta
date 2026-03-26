@@ -49,7 +49,7 @@ export function sketch(
 
         // Constructive interference when path difference is a multiple of wavelength
         const phase = (pathDiff % wavelength) / wavelength;
-        const intensity = Math.cos(phase * 2 * Math.PI);
+        const intensity = Math.cos(phase * 2 * p.PI);
 
         // Only show points with strong constructive interference
         if (intensity > 0.9) {
@@ -181,8 +181,8 @@ export function sketch(
     function drawInterferencePattern() {
       p.noStroke();
 
-      const phase = (t * waveSpeed * 2 * Math.PI) / wavelength;
-      const pulse = (Math.sin(phase + Math.PI) + 1) / 2;
+      const phase = (t * waveSpeed * 2 * p.PI) / wavelength;
+      const pulse = (Math.sin(phase + p.PI) + 1) / 2;
 
       const baseSize = 10;
       // const size = baseSize + pulse * 3;
@@ -206,9 +206,9 @@ export function sketch(
 
 export default function DoubleSlitFigure() {
   const [measured, setMeasured] = useState(false);
-  const viewportSize = useViewportSize();
+  const viewport = useViewportSize();
 
-  const length = Math.min(viewportSize.width / 6, 300);
+  const length = Math.max(viewport.width / 6, 200);
 
   const toggleMeasured = () => {
     setMeasured(!measured);
@@ -223,13 +223,11 @@ export default function DoubleSlitFigure() {
       >
         {measured ? (
           <>
-            <EyeOff className="icon-sm" />{" "}
-            <span className="hidden lg:block">Don&apos;t Measure</span>
+            <EyeOff className="icon" /> <span>Don&apos;t Measure</span>
           </>
         ) : (
           <>
-            <Eye className="icon-sm" />{" "}
-            <span className="hidden lg:block">Measure</span>
+            <Eye className="icon" /> <span>Measure</span>
           </>
         )}
       </button>

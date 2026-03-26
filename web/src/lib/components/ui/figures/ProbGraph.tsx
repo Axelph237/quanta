@@ -1,6 +1,7 @@
 "use client";
 
 import { COLORS } from "@/app/globals";
+import useComputedCSS from "@/lib/hooks/useComputedCSS";
 import { P5CanvasInstance, P5Canvas, SketchProps } from "@p5-wrapper/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -14,7 +15,9 @@ interface QuasiProbSketchProps extends SketchProps {
 }
 
 function sketch(p: P5CanvasInstance) {
-  const TEXT_SIZE = 16;
+  const MOBILE_BREAKPOINT = 600;
+  const DESKTOP_BREAKPOINT = 1000;
+  let textSize = 16;
   let values = [1, 2, 3, 4];
   let displayValues = new Array(values.length).fill(0);
   let labels = ["1", "2", "3", "4"];
@@ -22,7 +25,32 @@ function sketch(p: P5CanvasInstance) {
   let yMax = 10;
 
   p.setup = () => {
-    p.createCanvas(600, 300);
+    const width = document.documentElement.clientWidth;
+    let margin;
+    if (width > DESKTOP_BREAKPOINT) {
+      textSize = 16;
+      margin = 50;
+    } else if (width > MOBILE_BREAKPOINT) {
+      textSize = 16;
+      margin = 50;
+    } else {
+      textSize = 10;
+      margin = 50;
+    }
+    p.createCanvas((width * 3) / 4 - margin * 2, width / 3);
+
+    p.windowResized = () => {
+      const width = document.documentElement.clientWidth;
+      let margin;
+      if (width > MOBILE_BREAKPOINT) {
+        textSize = 16;
+        margin = 100;
+      } else {
+        textSize = 10;
+        margin = 50;
+      }
+      p.resizeCanvas((width * 3) / 4 - margin * 2, width / 3);
+    };
   };
 
   p.updateWithProps = (sProps: SketchProps) => {
@@ -45,8 +73,8 @@ function sketch(p: P5CanvasInstance) {
   p.draw = () => {
     p.clear();
 
-    const marginX = TEXT_SIZE * 3.5;
-    const marginY = TEXT_SIZE * 3;
+    const marginX = textSize * 3.5;
+    const marginY = textSize * 3;
     const rightMargin = 20;
     const graphWidth = p.width - marginX - rightMargin;
     const graphHeight = p.height - marginY * 2;
@@ -70,7 +98,7 @@ function sketch(p: P5CanvasInstance) {
     p.fill(128, 128, 128);
     p.noStroke();
     p.textAlign(p.RIGHT, p.CENTER);
-    p.textSize(TEXT_SIZE);
+    p.textSize(textSize);
     p.text(yMax.toString(), marginX - 10, marginY);
     p.text(yMin.toString(), marginX - 10, p.height - marginY);
 
@@ -111,7 +139,7 @@ export interface QuasiProbGraphProps {
   yMax?: number;
 }
 
-export default function QuasiProbGraph({
+export default function ProbGraph({
   values,
   labels,
   yMin = -1,
@@ -126,9 +154,17 @@ export default function QuasiProbGraph({
 
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        setDimensions({
-          width: entry.contentRect.width,
-          height: entry.contentRect.height,
+        setDimensions((prev) => {
+          if (
+            prev.width === entry.contentRect.width &&
+            prev.height === entry.contentRect.height
+          ) {
+            return prev;
+          }
+          return {
+            width: entry.contentRect.width,
+            height: entry.contentRect.height,
+          };
         });
       }
     });
@@ -143,8 +179,8 @@ export default function QuasiProbGraph({
   return (
     <P5Canvas
       sketch={sketch}
-      width={dimensions.width}
-      height={dimensions.height}
+      // width={dimensions.width / 2}
+      // height={dimensions.height / 2}
       yMin={yMin}
       yMax={yMax}
       labels={labels}

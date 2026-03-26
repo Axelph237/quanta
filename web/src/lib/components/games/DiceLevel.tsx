@@ -152,7 +152,7 @@ export function DiceLevel({
   }, [sceneState]);
 
   return (
-    <div className="relative flex flex-row gap-4 items-end justify-center gap-10">
+    <div className="relative flex flex-col sm:flex-row items-center justify-center sm:items-end gap-10">
       <div className="flex flex-col gap-10">
         {/* Hidden Dice Box */}
         {hidDice.length > 0 && (
@@ -202,17 +202,15 @@ export function DiceLevel({
       <div
         className={`flex flex-col gap-2 items-center justify-center ${sceneState === SceneState.GUESSING ? "" : "opacity-50 pointer-events-none transition-all duration-300"}`}
       >
-        {sceneState === SceneState.GUESSING && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-          >
-            DICE SUM:{" "}
-            {visRollValues.reduce((a, b) => a + b, 0) +
-              hidDice.reduce((a, b) => a + b, 0)}
-          </motion.p>
-        )}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: sceneState === SceneState.GUESSING ? 1 : 0 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+        >
+          DICE SUM:{" "}
+          {visRollValues.reduce((a, b) => a + b, 0) +
+            hidDice.reduce((a, b) => a + b, 0)}
+        </motion.p>
         <div className="relative">
           <button
             ref={entangledBtn}
@@ -332,7 +330,7 @@ function Dice({
         }}
       >
         <div className="cube__face cube__face--front">
-          <icons.SchrodingersCat className="icon-sm" />
+          <icons.SchrodingersCat className="w-3/4" />
         </div>
         <div className="cube__face cube__face--back">2</div>
         <div className="cube__face cube__face--right">4</div>

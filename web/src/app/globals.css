@@ -231,16 +231,32 @@ body {
 }
 
 body {
-  --page-padding: 4rem;
+  --page-padding: 1.5rem;
   @apply antialiased bg-quanta-surface text-quanta-on-surface min-h-screen flex flex-col;
 }
 
+@media (min-width: 40rem) {
+  body {
+    --page-padding: 3rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  body {
+    --page-padding: 4rem;
+  }
+}
+
 header {
-  @apply px-[var(--page-padding)] pt-10 fixed gap-0 top-0 left-0 right-0 z-10 h-fit flex items-center justify-between text-quanta-on-surface;
+  @apply px-(--page-padding) pt-(--page-padding) sticky top-0 left-0 right-0 z-9999 h-fit flex items-center justify-between text-quanta-on-surface;
 }
 
 .center-page-content {
   @apply flex flex-col items-center justify-center w-full;
+}
+
+.MathJax {
+  @apply text-lg md:text-xl lg:text-2xl w-full overflow-x-scroll;
 }
 
 .body-text {
@@ -259,12 +275,24 @@ header {
   @apply text-4xl md:text-5xl lg:text-6xl;
 }
 
+.display-text-sm {
+  @apply text-5xl md:text-6xl lg:text-7xl;
+}
+
+.display-text-md {
+  @apply text-6xl md:text-7xl lg:text-8xl;
+}
+
+.display-text-lg {
+  @apply text-7xl md:text-8xl lg:text-9xl;
+}
+
 .icon {
   @apply size-4 md:size-6 lg:size-8;
 }
 
 .button-primary {
-  @apply rounded-full py-2 px-6 cursor-pointer hover:scale-105 transition-all duration-200;
+  @apply rounded-4xl md:rounded-full py-2 px-4 md:px-6 lg:px-6 cursor-pointer hover:scale-105 transition-all duration-200 text-sm md:text-lg lg:text-xl;
 }
 
 .input-no-border {

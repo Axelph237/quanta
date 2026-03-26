@@ -136,6 +136,7 @@ export default function CircuitCanvas({
 
   const width =
     grid.xMargin +
+    grid.gateSize + // Gate size for qbit labels
     (circuit.columnCount + (compute ? 1.5 : 0.5)) * grid.columnWidth;
   const height = grid.yMargin * 2 + circuit.qubitCount * grid.rowHeight;
 
@@ -165,7 +166,7 @@ export default function CircuitCanvas({
                 q{qubit}
               </text>
               <line
-                x1={grid.xMargin * 0.9} // Idk why 0.9, truly a magic number for me here
+                x1={grid.xMargin + grid.gateSize * 1.5} // Idk why 0.9, truly a magic number for me here
                 y1={y}
                 x2={width - grid.columnWidth}
                 y2={y}

@@ -31,16 +31,16 @@ import GameHandler from "@/lib/components/games/GameHandler";
 import QuestionLevel from "@/lib/components/games/QuestionLevel";
 import BlurText from "@/lib/components/react-bits/BlurText";
 import Iridescence from "@/lib/components/react-bits/Iridescence";
+import { useViewportSize } from "@/lib/hooks/useViewportSize";
 
 function LessonsPageContent() {
+  const viewport = useViewportSize();
   const searchParams = useSearchParams();
   const selectedLessonId = searchParams.get("selected");
   const selectedLessonIndex = LESSONS.findIndex(
     (l) => l.id === selectedLessonId,
   );
-  const [onboardingComplete, setOnboardingComplete] = useState<boolean>(
-    !!localStorage.getItem("onboarded"),
-  );
+  const [onboardingComplete, setOnboardingComplete] = useState<boolean>(false);
 
   const { cssvar, csstopx } = useComputedCSS();
 
@@ -54,6 +54,9 @@ function LessonsPageContent() {
   const [scope, animate] = useAnimate();
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setOnboardingComplete(!!localStorage.getItem("onboarded"));
+
     const handleResize = () => {
       const logoWidth = document
         .getElementById("logo")!
@@ -120,18 +123,18 @@ function LessonsPageContent() {
         initial={{ opacity: 1 }}
         animate={{ opacity: lessonOpened !== false ? 0 : 1 }}
         transition={GENTLE_EASE}
-        className="absolute left-0 top-0 w-[100vw] h-16 pointer-events-none z-1 bg-linear-to-b from-quanta-surface to-transparent"
+        className="fixed left-0 top-0 w-[100vw] h-16 pointer-events-none z-1 bg-linear-to-b from-quanta-surface to-transparent"
       ></motion.div>
 
       <motion.header
         id="lessons-page-header"
-        className="w-fit gap-0 flex flex-col"
-        animate={{ left: redirecting ? logoShift : 0 }}
+        className="w-fit flex flex-col fixed!"
+        animate={{ left: redirecting && viewport.isSm ? logoShift : 0 }}
         transition={GENTLE_EASE}
       >
         <Logo
           id="logo"
-          textVisible={redirecting}
+          textVisible={redirecting && viewport.isSm}
           onClick={handleHomeRedirect}
           className="cursor-pointer w-fit"
         />
@@ -194,7 +197,7 @@ function LessonsPageContent() {
             <motion.ol
               animate={{ translateX: lessonOpened ? "25vw" : 0 }}
               transition={GENTLE_EASE}
-              className="fixed flex flex-col items-center top-1/2 right-[var(--page-padding)] -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500 whitespace-nowrap min-w-[20px] "
+              className="fixed flex-col items-center top-1/2 right-[var(--page-padding)] -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500 whitespace-nowrap min-w-[20px] "
             >
               {LESSONS.map((lesson, index) => (
                 <motion.li
@@ -224,7 +227,7 @@ function LessonsPageContent() {
         initial={{ opacity: 1 }}
         animate={{ opacity: lessonOpened !== false ? 0 : 1 }}
         transition={GENTLE_EASE}
-        className="absolute bottom-0 left-0 w-[100vw] h-16 pointer-events-none z-1 bg-linear-to-t from-quanta-surface to-transparent"
+        className="fixed bottom-0 left-0 w-screen h-16 pointer-events-none z-1 bg-linear-to-t from-quanta-surface to-transparent"
       ></motion.div>
     </>
   );
@@ -351,7 +354,7 @@ function LessonItem({
             initial={{ scale: 1 }}
             animate={{ scale: isOpened ? 2 : 1 }}
             transition={GENTLE_EASE}
-            className="lesson-title relative w-[25vw]"
+            className="text-sm md:text-xl lg:text-2xl lesson-title relative w-[25vw]"
           >
             {lesson.title}
             {unit && (
@@ -369,7 +372,9 @@ function LessonItem({
                   ]}
                   animationSpeed={3}
                 >
-                  <span className="font-bold text-lg">{unit.title}</span>
+                  <span className="font-bold text-sm md:text-xl lg:text-2xl ">
+                    {unit.title}
+                  </span>
                 </GradientText>
               </motion.div>
             )}
@@ -441,7 +446,7 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: step >= 2 ? 1 : 0 }}
         transition={GENTLE_EASE}
-        className="w-3/4 h-1/2 p-6"
+        className="w-3/4 p-6"
       >
         <GameHandler
           id="onboarding-quiz"
