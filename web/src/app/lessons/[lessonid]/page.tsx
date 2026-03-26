@@ -67,7 +67,7 @@ export default function LessonPage({
       <DefineTooltips />
       <CircuitScriptLoader />
       <motion.header
-        className="w-full block"
+        className="w-full block fixed!"
         animate={{ left: 0 }}
         transition={GENTLE_EASE}
       >
