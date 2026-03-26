@@ -21,7 +21,7 @@ interface QuizProps extends React.ComponentProps<"div"> {
 */
 
 // --- QUIZ STORAGE ---
-const QUIZ_STORAGE_KEY = "quiz_completion";
+const QUIZ_STORAGE_KEY = "quizCompletion";
 
 type QuizCompletionStorage = {
   [lessonId: string]: {
@@ -33,18 +33,16 @@ type QuizCompletionStorage = {
 
 export function getQuizCompletion(lessonId: string) {
   const data = localStorage.getItem(QUIZ_STORAGE_KEY);
-  if (!data) {
-    return {
-      preQuizCompleted: false,
-      postQuizCompleted: false,
-    };
-  }
-  return JSON.parse(data)[lessonId];
+  return {
+    preQuizCompleted: false,
+    postQuizCompleted: false,
+    ...(data ? (JSON.parse(data)[lessonId] ?? {}) : {}),
+  };
 }
 
 export function isLessonCompleted(lessonId: string) {
   const quizCompletion = getQuizCompletion(lessonId);
-  return quizCompletion.preQuizCompleted && quizCompletion.postQuizCompleted;
+  return quizCompletion?.preQuizCompleted && quizCompletion?.postQuizCompleted;
 }
 
 function setQuizCompletion(

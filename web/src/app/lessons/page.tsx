@@ -16,7 +16,7 @@ import { redirect, RedirectType, useSearchParams } from "next/navigation";
 import Logo from "@/lib/components/ui/Logo";
 import { cssvar, csstopx } from "@/lib/styles";
 import { GENTLE_EASE } from "../globals";
-import { LESSONS, UNITS } from "@/lib/lessons";
+import { LESSONS, UNITS, isLessonCompleted } from "@/lib/lessons";
 import type { Lesson, Unit } from "@/lib/types/lessons";
 import GradientText from "@/lib/components/react-bits/GradientText";
 import ShinyText from "@/lib/components/react-bits/ShinyText";
@@ -25,6 +25,39 @@ import GameHandler from "@/lib/components/games/GameHandler";
 import QuestionLevel from "@/lib/components/games/QuestionLevel";
 
 import { useViewportSize } from "@/lib/hooks/useViewportSize";
+
+const COMPLETED_LESSONS_STORAGE_KEY = "completedLessons";
+type CompletedLessons = string[];
+
+/**
+ * Adds a lesson to the completed lessons list
+ * @param lessonId The ID of the lesson to add
+ * @returns true if the lesson was added, false if it was already completed
+ */
+function addCompletedLesson(lessonId: string): boolean {
+  const completedLessons: CompletedLessons = JSON.parse(
+    localStorage.getItem(COMPLETED_LESSONS_STORAGE_KEY) ?? "[]",
+  );
+  if (completedLessons.includes(lessonId)) {
+    return false;
+  }
+  completedLessons.push(lessonId);
+  localStorage.setItem(
+    COMPLETED_LESSONS_STORAGE_KEY,
+    JSON.stringify(completedLessons),
+  );
+  return true;
+}
+
+function handleLessonJump(index: number) {
+  const lessonItem = document.getElementById(
+    `${LESSONS[index].id}-card`,
+  ) as HTMLDivElement;
+
+  if (lessonItem) {
+    lessonItem.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
 
 function LessonsPageContent() {
   const viewport = useViewportSize();
@@ -35,9 +68,7 @@ function LessonsPageContent() {
   );
   const [onboardingComplete, setOnboardingComplete] = useState<boolean>(false);
 
-  const [focusedIndex, setFocusedIndex] = useState(
-    selectedLessonIndex !== -1 ? selectedLessonIndex : 0,
-  );
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const [lessonOpened, setLessonOpened] = useState<number | false>(false);
   const [logoShift, setLogoShift] = useState<number>(0);
 
@@ -45,12 +76,23 @@ function LessonsPageContent() {
   const [scope, animate] = useAnimate();
 
   useEffect(() => {
+    // Check if onboarding is complete
     (async () => {
       setOnboardingComplete(
         !!(typeof window !== "undefined" && localStorage.getItem("onboarded")),
       );
     })();
 
+    // Check if any lessons are completed
+    for (const l of LESSONS) {
+      if (isLessonCompleted(l.id)) {
+        const exists = addCompletedLesson(l.id);
+        if (!exists) {
+        }
+      }
+    }
+
+    // Window resize handler
     const handleResize = () => {
       const logoWidth = document
         .getElementById("logo")!
@@ -89,18 +131,15 @@ function LessonsPageContent() {
     setOnboardingComplete(true);
   };
 
-  // When sidebar blob is clicked, scroll to corresponding lesson
-  const handleLessonJump = (lesson: Lesson, index: number) => {
-    if (index !== focusedIndex) {
-      const lessonItem = document.getElementById(
-        `${lesson.id}-card`,
-      ) as HTMLDivElement;
+  useEffect(() => {
+    // If a lesson is selected, scroll to it
+    const jumpToIndex = selectedLessonIndex >= 0 ? selectedLessonIndex : 0;
 
-      if (lessonItem) {
-        lessonItem.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }
-  };
+    setTimeout(() => {
+      console.log("Jumping to selected lesson", jumpToIndex);
+      handleLessonJump(jumpToIndex);
+    }, GENTLE_EASE.duration! * 1000); // Wait until page transitions in
+  }, [selectedLessonIndex]);
 
   // When a lesson is scrolled into view
   const handleLessonFocus = (index: number) => {
@@ -108,6 +147,19 @@ function LessonsPageContent() {
       setFocusedIndex(index);
     }
   };
+
+  /**
+   * Lesson unlock sequence
+   */
+  const [maxCompletedLesson, setMaxCompletedLesson] = useState<number>(0);
+  useEffect(() => {
+    let max = LESSONS.findIndex((l) => !isLessonCompleted(l.id));
+    if (max === -1) max = LESSONS.length;
+    console.log("max", max);
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMaxCompletedLesson(max);
+  }, []);
 
   return (
     <>
@@ -176,12 +228,17 @@ function LessonsPageContent() {
                     key={lesson.id}
                     lesson={lesson}
                     parentRef={scope}
-                    // inViewRef={inViewTargetRef}
+                    unlocked={index <= maxCompletedLesson}
                     unit={lessonIdx === 0 ? UNITS[unitIdx - 1] : false}
                     isOpened={lessonOpened === index}
-                    onClick={() => handleLessonClick(index)}
+                    onClick={() => {
+                      if (index <= maxCompletedLesson) {
+                        handleLessonClick(index);
+                      } else {
+                        handleLessonJump(maxCompletedLesson);
+                      }
+                    }}
                     onFocus={() => handleLessonFocus(index)}
-                    // viewportDims={viewportDims}
                   />
                 );
               })}
@@ -207,7 +264,7 @@ function LessonsPageContent() {
                     height: focusedIndex === index ? "40px" : "20px",
                   }}
                   transition={{ duration: 0.2 }}
-                  onClick={() => handleLessonJump(lesson, index)}
+                  onClick={() => handleLessonJump(index)}
                 ></motion.li>
               ))}
             </motion.ol>
@@ -250,6 +307,7 @@ function LessonItem({
   isOpened,
   onFocus,
   onClick,
+  unlocked,
 }: {
   lesson: Lesson;
   unit: Unit | false;
@@ -257,8 +315,9 @@ function LessonItem({
   isOpened: boolean;
   onFocus: () => void;
   onClick: () => void;
-  // viewportDims: { height: number; width: number };
+  unlocked: boolean;
 }) {
+  const [focused, setFocused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -291,6 +350,9 @@ function LessonItem({
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (latest < 0.5 + SENSITIVITY && latest > 0.5 - SENSITIVITY) {
       onFocus();
+      setFocused(true);
+    } else {
+      setFocused(false);
     }
   });
 
@@ -304,78 +366,93 @@ function LessonItem({
   }, [isOpened, lesson]);
 
   return (
-    <>
-      <motion.div
-        id={`${lesson.id}-card`}
-        className={`relative lesson-container cursor-pointer shrink-0 bg-quanta-primary text-quanta-on-surface ${outfit.className}`}
-        initial={{ width: "40vw", height: "40vh" }}
+    <motion.div
+      id={`${lesson.id}-card`}
+      className={`relative lesson-container shrink-0 cursor-pointer text-quanta-on-surface ${outfit.className}`}
+      initial={{ width: "40vw", height: "40vh" }}
+      animate={{
+        top: isOpened ? "0" : "30vh",
+        width: isOpened ? "100vw" : "40vw",
+        height: isOpened ? "100vh" : "40vh",
+      }}
+      style={{
+        opacity: !isOpened ? cardOpacity : 1,
+        scale: !isOpened ? scale : 1,
+      }}
+      transition={GENTLE_EASE}
+      onClick={onClick}
+      ref={containerRef}
+    >
+      {lesson.headerImg ? (
+        <Image
+          src={lesson.headerImg}
+          alt={lesson.title}
+          fill
+          className="object-cover"
+        />
+      ) : (
+        <div
+          className={`absolute inset-0 bg-quanta-primary ${!unlocked && "blur-sm"}`}
+        ></div>
+      )}
+
+      <motion.h2
+        initial={{ x: "-30vw", width: "30vw" }}
         animate={{
-          top: isOpened ? "0" : "30vh",
-          width: isOpened ? "100vw" : "40vw",
-          height: isOpened ? "100vh" : "40vh",
+          x: isOpened ? 0 : "-30vw",
+          width: isOpened ? "100vw" : "30vw",
         }}
         style={{
-          opacity: !isOpened ? cardOpacity : 1,
-          scale: !isOpened ? scale : 1,
+          opacity: !isOpened ? detailOpacity : 1,
+          filter: !isOpened ? detailBlurTemplate : "blur(0)",
         }}
         transition={GENTLE_EASE}
-        onClick={onClick}
-        ref={containerRef}
+        className={`absolute flex flex-col top-0 h-full text-center justify-center items-center font-bold text-2xl`}
       >
-        {lesson.headerImg && (
-          <Image
-            src={lesson.headerImg}
-            alt={lesson.title}
-            fill
-            className="object-cover"
-          />
-        )}
-
-        <motion.h2
-          initial={{ x: "-30vw", width: "30vw" }}
-          animate={{
-            x: isOpened ? 0 : "-30vw",
-            width: isOpened ? "100vw" : "30vw",
-          }}
-          style={{
-            opacity: !isOpened ? detailOpacity : 1,
-            filter: !isOpened ? detailBlurTemplate : "blur(0)",
-          }}
+        <motion.span
+          initial={{ scale: 1 }}
+          animate={{ scale: isOpened ? 2 : 1 }}
           transition={GENTLE_EASE}
-          className="absolute flex flex-col top-0 h-full text-center justify-center items-center font-bold text-2xl"
+          className={`text-sm md:text-xl lg:text-2xl lesson-title relative w-[25vw] ${!unlocked && "blur-sm"}`}
         >
-          <motion.span
-            initial={{ scale: 1 }}
-            animate={{ scale: isOpened ? 2 : 1 }}
-            transition={GENTLE_EASE}
-            className="text-sm md:text-xl lg:text-2xl lesson-title relative w-[25vw]"
-          >
-            {lesson.title}
-            {unit && (
-              <motion.div
-                className="lesson-unit-title absolute bottom-full left-1/2 -translate-x-1/2 w-full"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: isOpened ? 0 : 0.75 }}
-                transition={GENTLE_EASE}
+          {lesson.title}
+          {unit && (
+            <motion.div
+              className="lesson-unit-title absolute bottom-full left-1/2 -translate-x-1/2 w-full"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isOpened ? 0 : 0.75 }}
+              transition={GENTLE_EASE}
+            >
+              <GradientText
+                colors={[
+                  "var(--color-quanta-primary)",
+                  "var(--color-quanta-primary-container)",
+                  "var(--color-quanta-primary)",
+                ]}
+                animationSpeed={3}
               >
-                <GradientText
-                  colors={[
-                    "var(--color-quanta-primary)",
-                    "var(--color-quanta-primary-container)",
-                    "var(--color-quanta-primary)",
-                  ]}
-                  animationSpeed={3}
-                >
-                  <span className="font-bold text-sm md:text-xl lg:text-2xl ">
-                    {unit.title}
-                  </span>
-                </GradientText>
-              </motion.div>
-            )}
-          </motion.span>
-        </motion.h2>
-      </motion.div>
-    </>
+                <span className="font-bold text-sm md:text-xl lg:text-2xl ">
+                  {unit.title}
+                </span>
+              </GradientText>
+            </motion.div>
+          )}
+        </motion.span>
+      </motion.h2>
+      {!unlocked && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: focused ? 1 : 0 }}
+          transition={{ ...GENTLE_EASE, duration: GENTLE_EASE.duration! / 2 }}
+          className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center text-quanta-on-primary/50"
+        >
+          <icons.Lock className="icon" />
+          <p className="body-text font-bold">
+            Complete previous lessons to unlock
+          </p>
+        </motion.div>
+      )}
+    </motion.div>
   );
 }
 

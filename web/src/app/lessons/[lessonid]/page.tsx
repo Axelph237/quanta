@@ -11,14 +11,15 @@ import {
   useTransform,
 } from "framer-motion";
 import { redirect, RedirectType } from "next/navigation";
-import { GENTLE_EASE } from "@/app/globals";
+import { COLORS, GENTLE_EASE } from "@/app/globals";
 import Logo from "@/lib/components/ui/Logo";
 import { DefineTooltips } from "@/lib/components/ui/DefineTooltip";
 import * as icons from "@/lib/components/ui/Icons";
 import { useAnalytics } from "@/lib/components/providers/AnalyticsProvider";
 import CircuitScriptLoader from "@/lib/circuit/quantumCircuitClient";
 import { getQuizCompletion, PostQuiz, PreQuiz } from "@/lib/lessons/Quizzes";
-import PageSection from "@/lib/components/ui/PageSection";
+import GradientText from "@/lib/components/react-bits/GradientText";
+import Link from "next/link";
 
 export default function LessonPage({
   params,
@@ -30,15 +31,19 @@ export default function LessonPage({
   const { scrollYProgress } = useScroll();
   const breadcrumbOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const [lessonId, setLessonId] = useState<string | undefined>(undefined);
-  const [completedPrequiz, setCompletedPrequiz] = useState<boolean>(false);
+  const [quizCompletion, setQuizCompletion] = useState<{
+    preQuizCompleted: boolean;
+    postQuizCompleted: boolean;
+  }>({
+    preQuizCompleted: false,
+    postQuizCompleted: false,
+  });
 
   useEffect(() => {
     params.then((resolvedParams) => {
       setLesson(getLessonById(resolvedParams.lessonid));
       setLessonId(resolvedParams.lessonid);
-      setCompletedPrequiz(
-        getQuizCompletion(resolvedParams.lessonid)?.preQuizCompleted,
-      );
+      setQuizCompletion(getQuizCompletion(resolvedParams.lessonid));
       recordEvent({ type: "lesson_viewed", lessonId: resolvedParams.lessonid });
     });
   }, [params, recordEvent]);
@@ -104,7 +109,7 @@ export default function LessonPage({
 
         {lesson && (
           <AnimatePresence mode="wait">
-            {completedPrequiz ? (
+            {quizCompletion.preQuizCompleted ? (
               <motion.div
                 key="lesson-content"
                 id="lesson-content"
@@ -115,16 +120,57 @@ export default function LessonPage({
                 transition={GENTLE_EASE}
               >
                 {lesson && lesson.pageContent}
-                {lesson && !getQuizCompletion(lesson.id).postQuizCompleted && (
-                  <PageSection className="flex justify-center items-center">
-                    <PostQuiz
-                      className="mb-6"
-                      lessonId={lesson.id}
-                      onEnd={() => {}}
-                      questions={lesson.postQuestions}
-                    />
-                  </PageSection>
-                )}
+                <AnimatePresence mode="wait">
+                  {lesson && !quizCompletion.postQuizCompleted && (
+                    <motion.div
+                      key="post-quiz"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={GENTLE_EASE}
+                      className="flex justify-center items-center"
+                    >
+                      <PostQuiz
+                        className="mb-6"
+                        lessonId={lesson.id}
+                        onEnd={() =>
+                          setQuizCompletion({
+                            ...quizCompletion,
+                            postQuizCompleted: true,
+                          })
+                        }
+                        questions={lesson.postQuestions}
+                      />
+                    </motion.div>
+                  )}
+                  {quizCompletion.postQuizCompleted && (
+                    <motion.div
+                      key="return-button"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={GENTLE_EASE}
+                      className="h-[50vh] flex justify-center items-center"
+                    >
+                      <Link
+                        href={
+                          "/lessons" + (lesson ? "?selected=" + lesson.id : "")
+                        }
+                        className="cursor-pointer flex flex-col gap-2 justify-center items-center"
+                      >
+                        <GradientText
+                          className="heading-text-lg"
+                          colors={[COLORS.primary.hex, COLORS.secondary.hex]}
+                        >
+                          You&apos;ve completed this lesson!
+                        </GradientText>
+                        <div className="flex items-center gap-3 heading-text-sm text-quanta-on-surface/50">
+                          <icons.Click className="icon" />
+                          Click to return to Lessons
+                        </div>
+                      </Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             ) : (
               <motion.div
@@ -138,7 +184,12 @@ export default function LessonPage({
                 <PreQuiz
                   className="w-3/4!"
                   lessonId={lesson.id}
-                  onEnd={() => setCompletedPrequiz(true)}
+                  onEnd={() =>
+                    setQuizCompletion({
+                      ...quizCompletion,
+                      preQuizCompleted: true,
+                    })
+                  }
                   questions={lesson.preQuestions}
                 />
               </motion.div>
