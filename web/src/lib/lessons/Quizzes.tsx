@@ -42,6 +42,11 @@ export function getQuizCompletion(lessonId: string) {
   return JSON.parse(data)[lessonId];
 }
 
+export function isLessonCompleted(lessonId: string) {
+  const quizCompletion = getQuizCompletion(lessonId);
+  return quizCompletion.preQuizCompleted && quizCompletion.postQuizCompleted;
+}
+
 function setQuizCompletion(
   lessonId: string,
   completion: { preQuizCompleted?: boolean; postQuizCompleted?: boolean },
@@ -60,7 +65,6 @@ function setQuizCompletion(
 }
 
 // --- QUIZ COMPONENTS ---
-
 export function PreQuiz({ lessonId, onEnd, questions, ...rest }: QuizProps) {
   const thisOnEnd = () => {
     setQuizCompletion(lessonId, { preQuizCompleted: true });

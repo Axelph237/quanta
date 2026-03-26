@@ -53,16 +53,6 @@ export default function LessonPage({
     );
   };
 
-  // if (lesson && !completedPrequiz) {
-  //   return (
-  //     <PreQuiz
-  //       lessonId={lesson.id}
-  //       onEnd={() => setCompletedPrequiz(true)}
-  //       questions={lesson.preQuestions}
-  //     />
-  //   );
-  // }
-
   return (
     <>
       <DefineTooltips />
