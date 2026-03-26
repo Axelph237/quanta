@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getLessonById, Lesson } from "@/lib/lessons";
+import { getLessonById } from "@/lib/lessons";
+import type { Lesson } from "@/lib/types/lessons";
 import Image from "next/image";
 import {
   AnimatePresence,
