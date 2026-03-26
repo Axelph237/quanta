@@ -32,12 +32,7 @@ function LessonsPageContent() {
   const selectedLessonIndex = LESSONS.findIndex(
     (l) => l.id === selectedLessonId,
   );
-  const [onboardingComplete, setOnboardingComplete] = useState<boolean>(
-    () =>
-      !!(typeof window !== "undefined" && localStorage.getItem("onboarded")),
-  );
-
-
+  const [onboardingComplete, setOnboardingComplete] = useState<boolean>(false);
 
   const [focusedIndex, setFocusedIndex] = useState(
     selectedLessonIndex !== -1 ? selectedLessonIndex : 0,
@@ -49,6 +44,12 @@ function LessonsPageContent() {
   const [scope, animate] = useAnimate();
 
   useEffect(() => {
+    (async () => {
+      setOnboardingComplete(
+        !!(typeof window !== "undefined" && localStorage.getItem("onboarded")),
+      );
+    })();
+
     const handleResize = () => {
       const logoWidth = document
         .getElementById("logo")!
