@@ -42,7 +42,6 @@ function HomeContent() {
   const [mainScope, animate] = useAnimate();
   const heroImgRef = useRef<HTMLDivElement>(null);
 
-
   const [logoShift, setLogoShift] = useState<number>(0);
 
   const [clickCounter, setClickCounter] = useState<number>(0);

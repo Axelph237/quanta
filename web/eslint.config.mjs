@@ -13,6 +13,11 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    "rules": {
+      "set-state-in-effect": "off"
+    }
+  }
 ]);
 
 export default eslintConfig;
