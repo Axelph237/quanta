@@ -40,7 +40,7 @@ export default function LessonPage({
       );
       recordEvent({ type: "lesson_viewed", lessonId: resolvedParams.lessonid });
     });
-  }, []);
+  }, [params, recordEvent]);
 
   const handleLogoClick = () => {
     if (lessonId) {
@@ -89,8 +89,8 @@ export default function LessonPage({
           </motion.div>
         </div>
       </motion.header>
-      <motion.main className="block flex flex-col items-center justify-start">
-        <div className="relative top-0 left-0 w-[100vw] h-[100vh]">
+      <motion.main className="flex flex-col items-center justify-start">
+        <div className="relative top-0 left-0 w-screen h-screen">
           {lesson?.headerImg ? (
             <Image
               src={lesson.headerImg}
@@ -100,10 +100,10 @@ export default function LessonPage({
               priority
             />
           ) : (
-            <div className="w-[100vw] h-[100vh] bg-quanta-primary"></div>
+            <div className="w-screen h-screen bg-quanta-primary"></div>
           )}
           {lesson?.title && (
-            <motion.h2 className="absolute flex top-0 left-0 w-[100vw] h-[100vh] text-center justify-center items-center">
+            <motion.h2 className="absolute flex top-0 left-0 w-screen h-screen text-center justify-center items-center">
               <span className="text-sm md:text-xl lg:text-2xl font-bold scale-200 w-[25vw]">
                 {lesson.title}
               </span>
@@ -117,7 +117,7 @@ export default function LessonPage({
               <motion.div
                 key="lesson-content"
                 id="lesson-content"
-                className="p-[var(--page-padding)] min-h-[100vh] text-left w-full lg:w-2/3"
+                className="p-(--page-padding) min-h-screen text-left w-full lg:w-2/3"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

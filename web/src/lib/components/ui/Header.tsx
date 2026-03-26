@@ -19,7 +19,7 @@ import Link from "next/link";
 import Logo from "./Logo";
 import { redirect, RedirectType, usePathname } from "next/navigation";
 import { usePageTransition } from "../providers/PageTransitionProvider";
-import useComputedCSS from "@/lib/hooks/useComputedCSS";
+import { cssvar, csstopx } from "@/lib/styles";
 
 type Route = {
   path: RegExp;
@@ -37,13 +37,26 @@ type Route = {
   };
 };
 
+const routes: Route[] = [
+  {
+    path: /^\/$/,
+    label: "Home",
+    onLogoClick: () => {},
+    navs: {
+      left: { text: "ABOUT", onClick: () => {} },
+      right: { text: "LESSONS", onClick: () => {} },
+    },
+  },
+  { path: /^\/lessons\/?$/, label: "Lessons" },
+  { path: /^\/lessons\/[^/]+\/?$/, label: "Lesson Page" },
+];
+
 export default function Header() {
   const { pageScope, animatePage } = usePageTransition();
 
   /**
    * Logo shift animations
    */
-  const { cssvar, csstopx } = useComputedCSS();
   const [logoShift, setLogoShift] = useState<number>(0);
 
   useEffect(() => {
@@ -131,22 +144,6 @@ export default function Header() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [showNav, setShowNav] = useState(false);
-
-  const routes: Route[] = [
-    {
-      path: /^\/$/,
-      label: "Home",
-      onLogoClick: () => {
-        setClickCounter(clickCounter + 1);
-      },
-      navs: {
-        left: { text: "ABOUT", onClick: handleAboutRedirect },
-        right: { text: "LESSONS", onClick: handleLessonsRedirect },
-      },
-    },
-    { path: /^\/lessons\/?$/, label: "Lessons" },
-    { path: /^\/lessons\/[^/]+\/?$/, label: "Lesson Page" },
-  ];
 
   const [page, setPage] = useState<Route>(routes[0]);
 

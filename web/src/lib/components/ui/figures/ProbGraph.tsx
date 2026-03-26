@@ -1,11 +1,10 @@
 "use client";
 
 import { COLORS } from "@/app/globals";
-import useComputedCSS from "@/lib/hooks/useComputedCSS";
-import { P5CanvasInstance, P5Canvas, SketchProps } from "@p5-wrapper/react";
-import { useEffect, useRef, useState } from "react";
 
-interface QuasiProbSketchProps extends SketchProps {
+import { P5CanvasInstance, P5Canvas, SketchProps } from "@p5-wrapper/react";
+
+interface ProbSketchProps extends SketchProps {
   values: number[];
   labels?: string[];
   yMin?: number;
@@ -54,7 +53,7 @@ function sketch(p: P5CanvasInstance) {
   };
 
   p.updateWithProps = (sProps: SketchProps) => {
-    const props = sProps as QuasiProbSketchProps;
+    const props = sProps as ProbSketchProps;
     if (props.values) {
       values = props.values;
       displayValues = new Array(values.length).fill(0);
@@ -132,7 +131,7 @@ function sketch(p: P5CanvasInstance) {
   };
 }
 
-export interface QuasiProbGraphProps {
+export interface ProbGraphProps {
   values: number[];
   labels?: string[];
   yMin?: number;
@@ -144,43 +143,10 @@ export default function ProbGraph({
   labels,
   yMin = -1,
   yMax = 1,
-}: QuasiProbGraphProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        setDimensions((prev) => {
-          if (
-            prev.width === entry.contentRect.width &&
-            prev.height === entry.contentRect.height
-          ) {
-            return prev;
-          }
-          return {
-            width: entry.contentRect.width,
-            height: entry.contentRect.height,
-          };
-        });
-      }
-    });
-
-    observer.observe(container);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
+}: ProbGraphProps) {
   return (
     <P5Canvas
       sketch={sketch}
-      // width={dimensions.width / 2}
-      // height={dimensions.height / 2}
       yMin={yMin}
       yMax={yMax}
       labels={labels}

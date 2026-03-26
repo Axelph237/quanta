@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  useState,
-  useEffect,
-  Suspense,
-  useRef,
-  RefObject,
-  useLayoutEffect,
-} from "react";
+import { useState, useEffect, Suspense, useRef, RefObject } from "react";
 import {
   motion,
   useAnimate,
@@ -21,7 +14,7 @@ import Image from "next/image";
 import { outfit } from "@/app/fonts";
 import { redirect, RedirectType, useSearchParams } from "next/navigation";
 import Logo from "@/lib/components/ui/Logo";
-import useComputedCSS from "@/lib/hooks/useComputedCSS";
+import { cssvar, csstopx } from "@/lib/styles";
 import { GENTLE_EASE } from "../globals";
 import { Lesson, LESSONS, Unit, UNITS } from "@/lib/lessons";
 import GradientText from "@/lib/components/react-bits/GradientText";
@@ -29,8 +22,7 @@ import ShinyText from "@/lib/components/react-bits/ShinyText";
 import * as icons from "@/lib/components/ui/Icons";
 import GameHandler from "@/lib/components/games/GameHandler";
 import QuestionLevel from "@/lib/components/games/QuestionLevel";
-import BlurText from "@/lib/components/react-bits/BlurText";
-import Iridescence from "@/lib/components/react-bits/Iridescence";
+
 import { useViewportSize } from "@/lib/hooks/useViewportSize";
 
 function LessonsPageContent() {
@@ -40,9 +32,12 @@ function LessonsPageContent() {
   const selectedLessonIndex = LESSONS.findIndex(
     (l) => l.id === selectedLessonId,
   );
-  const [onboardingComplete, setOnboardingComplete] = useState<boolean>(false);
+  const [onboardingComplete, setOnboardingComplete] = useState<boolean>(
+    () =>
+      !!(typeof window !== "undefined" && localStorage.getItem("onboarded")),
+  );
 
-  const { cssvar, csstopx } = useComputedCSS();
+
 
   const [focusedIndex, setFocusedIndex] = useState(
     selectedLessonIndex !== -1 ? selectedLessonIndex : 0,
@@ -54,9 +49,6 @@ function LessonsPageContent() {
   const [scope, animate] = useAnimate();
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setOnboardingComplete(!!localStorage.getItem("onboarded"));
-
     const handleResize = () => {
       const logoWidth = document
         .getElementById("logo")!
@@ -123,7 +115,7 @@ function LessonsPageContent() {
         initial={{ opacity: 1 }}
         animate={{ opacity: lessonOpened !== false ? 0 : 1 }}
         transition={GENTLE_EASE}
-        className="fixed left-0 top-0 w-[100vw] h-16 pointer-events-none z-1 bg-linear-to-b from-quanta-surface to-transparent"
+        className="fixed left-0 top-0 w-screen h-16 pointer-events-none z-1 bg-linear-to-b from-quanta-surface to-transparent"
       ></motion.div>
 
       <motion.header
@@ -191,13 +183,13 @@ function LessonsPageContent() {
                   />
                 );
               })}
-              <div className="shadow-item h-[100vh] w-full"></div>
+              <div className="shadow-item h-screen w-full"></div>
             </motion.div>
             {/* Lesson Blobs */}
             <motion.ol
               animate={{ translateX: lessonOpened ? "25vw" : 0 }}
               transition={GENTLE_EASE}
-              className="fixed flex-col items-center top-1/2 right-[var(--page-padding)] -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500 whitespace-nowrap min-w-[20px] "
+              className="fixed flex-col items-center top-1/2 right-(--page-padding) -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500 whitespace-nowrap min-w-[20px] "
             >
               {LESSONS.map((lesson, index) => (
                 <motion.li
@@ -435,7 +427,7 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
         </motion.span>
       </motion.h1>
       <motion.h2
-        className={`text-[2rem] lg:text-[3rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
+        className={`text-quanta-headline-large lg:text-[3rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: step >= 1 && !fadeOutHeader ? 1 : 0 }}
         transition={GENTLE_EASE}

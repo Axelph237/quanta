@@ -370,7 +370,7 @@ function BlankDice({
         animate={{ opacity: 1, scale: [1, 1.2, 1] }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.25 }}
-        className="box__face !w-full !h-full text-white top-0 left-0"
+        className="box__face w-full! h-full! text-white top-0 left-0"
       >
         {faceValue ?? ""}
       </motion.span>

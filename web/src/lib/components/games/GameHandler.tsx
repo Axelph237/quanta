@@ -104,7 +104,6 @@ export default function GameHandler({
   const [success, setSuccess] = useState<boolean>(true);
 
   const getRandomMessage = (messages: string[]) => {
-    // eslint-disable-next-line react-hooks/purity
     return messages[Math.floor(Math.random() * messages.length)];
   };
 
@@ -121,19 +120,7 @@ export default function GameHandler({
         );
       }
     })();
-  }, [success]);
-
-  const setMessages = (success: boolean) => {
-    if (recordOnly) {
-      setDisplayMessage(getRandomMessage(CONTINUE_MESSAGES));
-    } else {
-      setDisplayMessage(
-        success
-          ? getRandomMessage(successMessages || SUCCESS_MESSAGES)
-          : getRandomMessage(failureMessages || FAILURE_MESSAGES),
-      );
-    }
-  };
+  }, [success, recordOnly, successMessages, failureMessages]);
 
   const onReady = () => {
     setActiveState(GameState.READY);
@@ -193,7 +180,7 @@ export default function GameHandler({
       });
       onGameEnd?.();
     }
-  }, [activeState, activeGame, id, levels.length, recordEvent, onGameEnd]);
+  }, [activeState, activeGame, id, levels.length, recordEvent, onGameEnd, onGameStart]);
 
   // Clone the game element and inject the event handlers
   let renderedLevel;
@@ -320,7 +307,7 @@ export default function GameHandler({
       </motion.div>
       {!hideBg && (
         <button
-          className="button-primary absolute !p-0 m-2 bottom-0 flex w-8 aspect-square items-center justify-center text-quanta-surface left-0 bg-quanta-on-surface z-10"
+          className="button-primary absolute p-0! m-2 bottom-0 flex w-8 aspect-square items-center justify-center text-quanta-surface left-0 bg-quanta-on-surface z-10"
           onClick={() => setBgVisible(!bgVisible)}
         >
           {bgVisible ? (

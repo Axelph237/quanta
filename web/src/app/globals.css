@@ -374,5 +374,5 @@ mjx-container {
 
 /* Definitions */
 [class*="define-"] {
-  @apply !text-quanta-secondary hover:!text-quanta-secondary-hover !cursor-help;
+  @apply text-quanta-secondary! hover:text-quanta-secondary-hover! cursor-help!;
 }

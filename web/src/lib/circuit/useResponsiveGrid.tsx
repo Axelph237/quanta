@@ -1,7 +1,7 @@
 import { useViewportSize } from "@/lib/hooks/useViewportSize";
 import { useEffect, useState } from "react";
 import { Grid } from "./types";
-import useComputedCSS from "../hooks/useComputedCSS";
+import { cssvar, csstopx } from "../styles";
 
 // I only anticipate up to 10 qubits,
 // so there should never be more than ~3 character widths for margin
@@ -19,7 +19,6 @@ const INITIAL_GRID: Grid = {
 
 export function useResponsiveGrid() {
   const viewport = useViewportSize();
-  const { cssvar, csstopx } = useComputedCSS();
 
   const [grid, setGrid] = useState<Grid>(INITIAL_GRID);
 

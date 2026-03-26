@@ -7,7 +7,6 @@ import Link from "next/link";
 import BlurText from "@/lib/components/react-bits/BlurText";
 import {
   AnimatePresence,
-  HTMLMotionProps,
   motion,
   useAnimate,
   useMotionValueEvent,
@@ -16,22 +15,14 @@ import {
 } from "framer-motion";
 import NavText from "@/lib/components/ui/NavText";
 import { Suspense, useEffect, useRef, useState } from "react";
-import useComputedCSS from "@/lib/hooks/useComputedCSS";
+import { cssvar, csstopx } from "@/lib/styles";
 import Logo from "@/lib/components/ui/Logo";
 import { COLORS, GENTLE_EASE } from "../globals";
 import { useSearchParams } from "next/navigation";
-import Draggable from "@/lib/components/ui/Draggable";
 import {
   HandLazy,
   HandReaching,
-  HGate,
-  NotGate,
-  SGate,
   TerriblyInnacurateQubit,
-  TGate,
-  XGate,
-  YGate,
-  ZGate,
 } from "@/lib/components/ui/Icons";
 import CatSideEye from "@public/assets/cat_side_eye.jpg";
 
@@ -51,7 +42,7 @@ function HomeContent() {
   const [mainScope, animate] = useAnimate();
   const heroImgRef = useRef<HTMLDivElement>(null);
 
-  const { cssvar, csstopx } = useComputedCSS();
+
   const [logoShift, setLogoShift] = useState<number>(0);
 
   const [clickCounter, setClickCounter] = useState<number>(0);
@@ -201,7 +192,7 @@ function HomeContent() {
           )} */}
           <div
             id="hero-img-container"
-            className="flex overflow-hidden self-stretch pb-[var(--page-padding)]"
+            className="flex overflow-hidden self-stretch pb-(--page-padding)"
             ref={heroImgRef}
           >
             {/* Content that should fill the remaining vertical space goes here */}
@@ -305,7 +296,7 @@ function HomeSection({
   props?: React.HTMLAttributes<HTMLDivElement>;
 }) {
   return (
-    <div className={`h-[100vh] w-full ${className}`} {...props}>
+    <div className={`h-screen w-full ${className}`} {...props}>
       {children}
     </div>
   );
