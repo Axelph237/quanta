@@ -1,5 +1,5 @@
 import { Dispatch, RefObject, SetStateAction, useEffect } from "react";
-import { CircuitState, GateAttachEvent, GateDefinition, GateMoveEvent, Grid, PlacedGate } from "./types";
+import { CircuitState, GateAttachEvent, GateDefinition, GateMoveEvent, Grid, PlacedGate } from "@/lib/types/circuit";
 import { findNearestValidPlacement, getGateExistingId } from "./placement";
 
 export function useGateDrop(containerRef: RefObject<SVGElement | null>, gridRef: RefObject<Grid>, circuit: CircuitState, setCircuit: Dispatch<SetStateAction<CircuitState>>, callback?: ({ gate, column, qubits }: { gate: GateDefinition, column: number, qubits: number[] }) => void) {
@@ -78,5 +78,5 @@ export function useGateDrop(containerRef: RefObject<SVGElement | null>, gridRef:
     return () => {
       document.removeEventListener("gate-drop", onDrop as EventListener);
     }
-  }, [gridRef, circuit, setCircuit])
+  }, [callback, circuit, containerRef, gridRef, setCircuit])
 }

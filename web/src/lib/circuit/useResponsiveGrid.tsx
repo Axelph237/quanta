@@ -1,7 +1,7 @@
 import { useViewportSize } from "@/lib/hooks/useViewportSize";
 import { useEffect, useState } from "react";
-import { Grid } from "./types";
-import { cssvar, csstopx } from "../styles";
+import { Grid } from "@/lib/types/circuit";
+import { cssvar, csstopx } from "@/lib/styles";
 
 // I only anticipate up to 10 qubits,
 // so there should never be more than ~3 character widths for margin

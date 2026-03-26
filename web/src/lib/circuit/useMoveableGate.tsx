@@ -4,8 +4,8 @@ import {
   GateDefinition,
   GateMoveEvent,
   PlacedGate,
-} from "./types";
-import { throttle } from "../throttle";
+} from "@/lib/types/circuit";
+import { throttle } from "@/lib/throttle";
 
 export function useMoveableGate<T extends Element>({
   gate,

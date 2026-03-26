@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { CircuitState, Grid, PlacedGate } from "./types";
+import { CircuitState, Grid, PlacedGate } from "@/lib/types/circuit";
 import { useGateDrop } from "./useGateDrop";
 import { useGateDrag } from "./useGateDrag";
 import { centerInCell, clearGates, implicitPlacement } from "./placement";
@@ -9,7 +9,6 @@ import { qubitSpans } from "./gates";
 import { motion } from "framer-motion";
 import { COLORS } from "@/app/globals";
 import { dmMono } from "@/app/fonts";
-import { throttle } from "../throttle";
 
 export default function CircuitCanvas({
   numQubits,

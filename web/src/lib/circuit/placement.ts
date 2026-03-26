@@ -1,5 +1,5 @@
 import { gates, qubitSpans } from "./gates";
-import { CircuitState, GateDefinition, Grid, PlacedGate } from "./types";
+import { CircuitState, GateDefinition, Grid, PlacedGate } from "@/lib/types/circuit";
 
 // What I would use to determine snap distance cache's
 const SNAP_DISTANCE_PX = 40;

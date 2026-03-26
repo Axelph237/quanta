@@ -1,5 +1,5 @@
 import { RefObject, useState, useEffect } from "react";
-import { GateDefinition, CircuitState, Grid, GateMoveEvent } from "./types";
+import { GateDefinition, CircuitState, Grid, GateMoveEvent } from "@/lib/types/circuit";
 import { findNearestValidPlacement } from "./placement";
 
 
@@ -55,7 +55,7 @@ export function useGateDrag(containerRef: RefObject<SVGElement | null>, gridRef:
         return () => {
             document.removeEventListener("gate-drag", onDrag as EventListener);
         }
-    }, [])
+    }, [callback, circuitRef, containerRef, gridRef])
 
     return dragPreview;
 }

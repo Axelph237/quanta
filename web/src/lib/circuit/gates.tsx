@@ -1,5 +1,5 @@
 import { COLORS } from "@/app/globals";
-import { CircuitState, GateDefinition } from "./types";
+import { CircuitState, GateDefinition } from "@/lib/types/circuit";
 import * as icons from "@/lib/components/ui/Icons";
 import Circuit from "quantum-circuit";
 

@@ -11,14 +11,10 @@
             "id": "b1f63d0d65964c08",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "web/src/lib/lessons/mdx/unit-1/bra-ket.mdx",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "bra-ket"
+              "title": "New tab"
             }
           }
         ]
@@ -185,17 +181,17 @@
   },
   "active": "b1f63d0d65964c08",
   "lastOpenFiles": [
-    "web/src/lib/styles.ts",
-    "web/src/lib/css.ts",
-    "web/src/lib/lessons/mdx/unit-1/brief-history.mdx",
-    "web/src/lib/lessons/mdx/unit-2/common-gates.mdx",
+    "web/src/lib/types/circuit.ts",
+    "web/src/lib/types/types.ts",
+    "web/src/lib/lessons/advanced/index.tsx",
+    "web/src/lib/lessons/advanced/query.mdx",
+    "web/src/lib/lessons/advanced/nisq-chall.mdx",
+    "web/src/lib/lessons/advanced/index.ts",
+    "web/src/lib/lessons/advanced/example-alogs.mdx",
+    "web/src/lib/lessons/advanced/compile.mdx",
+    "web/src/lib/lessons/advanced",
     "web/src/lib/lessons/mdx/unit-1/bra-ket.mdx",
-    "web/src/lib/lessons/mdx/unit-3/grovers.mdx",
-    "web/src/lib/components/ui/figures/ProbGraph.tsx",
-    "web/src/lib/lessons/mdx/unit-2/quant-circ.mdx",
-    "web/src/lib/lessons/mdx/unit-2/quant-comp.mdx",
-    "web/src/lib/lessons/mdx/unit-1/entangle.mdx",
-    "web/src/lib/lessons/mdx/unit-1/interfere.mdx",
+    "web/src/lib/lessons/unit-1/superpos.mdx",
     "web/src/lib/lessons/quiz_questions.md",
     "web/src/lib/lessons/mdx/unit-1/Untitled.md",
     "web/public/assets/hand_pointing_thinned.svg",

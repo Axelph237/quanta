@@ -1,7 +1,6 @@
-import { throttle } from "@/lib/throttle";
 import { motion } from "framer-motion";
-import { cloneElement, useEffect, useRef, useState } from "react";
-import { GateAttachEvent, GateDefinition, GateMoveEvent } from "./types";
+import { cloneElement } from "react";
+import { GateDefinition } from "@/lib/types/circuit";
 import { gates } from "./gates";
 import { useResponsiveGrid } from "./useResponsiveGrid";
 import { useMoveableGate } from "./useMoveableGate";
