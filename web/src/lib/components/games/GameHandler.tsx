@@ -180,7 +180,15 @@ export default function GameHandler({
       });
       onGameEnd?.();
     }
-  }, [activeState, activeGame, id, levels.length, recordEvent, onGameEnd, onGameStart]);
+  }, [
+    activeState,
+    activeGame,
+    id,
+    levels.length,
+    recordEvent,
+    onGameEnd,
+    onGameStart,
+  ]);
 
   // Clone the game element and inject the event handlers
   let renderedLevel;
@@ -401,7 +409,7 @@ function DisplayMessage({ message }: { message: string }) {
         rotate: 0,
       }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="absolute top-0 left-0 w-full h-full flex items-center justify-center"
+      className="absolute top-0 left-0 w-full h-full flex items-center justify-center text-center"
     >
       <h1 className="text-4xl font-bold">{message}</h1>
     </motion.div>

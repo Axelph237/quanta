@@ -158,7 +158,7 @@ export default function LessonPage({
                         className="cursor-pointer flex flex-col gap-2 justify-center items-center"
                       >
                         <GradientText
-                          className="heading-text-lg"
+                          className="heading-text-lg text-center"
                           colors={[COLORS.primary.hex, COLORS.secondary.hex]}
                         >
                           You&apos;ve completed this lesson!
