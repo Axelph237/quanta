@@ -67,6 +67,7 @@ export default function LessonPage({
         animate={{ left: 0 }}
         transition={GENTLE_EASE}
       >
+        <div className="top-0 left-0 w-full h-full absolute backdrop-blur-sm mask-b-from-25%" />
         <div className="flex flex-col items-center">
           <Logo
             id="logo"
