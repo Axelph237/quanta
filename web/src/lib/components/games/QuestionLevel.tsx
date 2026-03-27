@@ -21,7 +21,7 @@ interface InputQuestion {
 
 export type QuizQuestionType = ChoiceQuestion | InputQuestion;
 
-export default function QuizQuestion({
+export default function QuestionLevel({
   question,
   levelAPI,
   ...props
@@ -33,8 +33,19 @@ export default function QuizQuestion({
   const [gridDims, setGridDims] = useState({ cols: 1, rows: 4 });
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
 
+  const [shuffledAnswers, setShuffledAnswers] = useState(
+    question.type === "choice" ? [...question.answers] : [],
+  );
+
   // Ready on mount
   useEffect(() => {
+    if (question.type === "choice") {
+      const shuffled = [...question.answers].sort(() => Math.random() - 0.5);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShuffledAnswers(() => {
+        return shuffled;
+      });
+    }
     levelAPI?.ready();
   }, []);
 
@@ -89,7 +100,7 @@ export default function QuizQuestion({
         }}
       >
         {question.type === "choice" ? (
-          question.answers.map((answer) => (
+          shuffledAnswers.map((answer) => (
             <button
               key={answer.text}
               className="button-primary bg-quanta-primary col-span-1"

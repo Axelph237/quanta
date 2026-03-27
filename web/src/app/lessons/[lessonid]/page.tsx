@@ -149,7 +149,7 @@ export default function LessonPage({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={GENTLE_EASE}
-                      className="h-[50vh] flex justify-center items-center"
+                      className="h-[25vh] flex justify-center items-center"
                     >
                       <Link
                         href={

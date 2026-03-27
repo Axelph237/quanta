@@ -3,9 +3,7 @@ import Callout from "@/lib/components/ui/Callout";
 # So Why Quantum?
 For most of us, it is easy to think that classical computers are good at able to solve just about any problem. This is somewhat true, as technology has progress, we have been able to find better and better solutions to *many* problems. Many times, what we need is just a stronger computer, a bigger hammer. However, sometimes we need a more specialized tool.
 
-Classical computers are very good at solving problems that have a deterministic solution: in other words, you can reason your way from step 1 as to what the next best step is (if-then logic). However, there are a number of problems that don't have such easy if-then logic. For example, imagine you are a salesperson and you want to visit a certain set of addresses in the shortest route possible. To solve this problem you'd have to check *every* possible path through all destinations. Depending on the size of the route, that could take an incredibly long amount of time! Our modern day computers don't "solve" this problem simply by calculating it efficiently, they instead chunk it up and distribute it across many computers to more quickly compute the answer for your maps app. Quantum computers, due to the phenomena of superposition and  entanglement, are perfect for problems like these.
-
-Now, a better GPS for your car is not what we are aiming for with quantum computers. So let's instead generalize the types of problems a quantum computer can excel at as any problem that is easy to describe, but hard to verify which answer is right (like the traveling salesman problem above). These are often called Nondeterministic-Polynomial problems (NP for short) due to their <span className="define-nondeterm">nondeterministic</span> nature at many steps of the problem.
+Quantum computers have the potential to serve as that specialized tools. For instance, certain algorithms on quantum computers have been shown to have considerable speedups over their classical counterparts. This, of course, is not true for every problem. However, problems like integer factorization (which is integral to modern cryptography), and certain search problems have been shown to be faster on quantum computers!
 
 # Drawing The Line
 Now that we have an understanding a type of problems quantum computers excel at solving, let's draw some lines between classical computing and quantum computing. This way, we'll be able to see why quantum computers are the desired technology for solving these problems.
@@ -35,7 +33,7 @@ The actual implementation of a qubit varies drastically by computer architecture
 *There are other quantum computing architectures that rely on N-ary possible measured states using qutrits or qudits.*
 </Callout>
 ### Decoherence
-An extremely important topic when talking about quantum computers are their coherence times. Because quantum computers are *analog* computers, they still have the potential to lose information to their environment. One common cause would be temperature or spontaneous light emissions. The interference of those causing the superposition of the qubit to collapse. The duration that a quantum computer can, on average, keep a qubit in superposition is its coherence time.
+An extremely important topic when talking about quantum computers are their coherence times. Because quantum computers are sensitive to their surroundings, they have the potential to lose information to their environment. One common cause would be temperature or spontaneous light emissions. The interference of those causing the superposition of the qubit to collapse. The duration that a quantum computer can, on average, keep a qubit in superposition is its coherence time.
 
 At this current point in time, quantum coherence is a massive field of study, with higher coherence times often allowing new quantum processing units (QPU) to swiftly declare "quantum supremacy" over previous QPUs.
 ### Fidelity

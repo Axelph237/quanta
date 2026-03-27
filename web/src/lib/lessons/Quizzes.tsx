@@ -4,7 +4,7 @@
 import GameHandler, {
   LevelComponentProps,
 } from "../components/games/GameHandler";
-import QuizQuestion, {
+import QuestionLevel, {
   QuizQuestionType,
 } from "../components/games/QuestionLevel";
 
@@ -82,7 +82,7 @@ export function PreQuiz({ lessonId, onEnd, questions, ...rest }: QuizProps) {
       levels={questions.map((question, i) => {
         if (question.type === "input" || question.type === "choice") {
           return (
-            <QuizQuestion key={i} question={question as QuizQuestionType} />
+            <QuestionLevel key={i} question={question as QuizQuestionType} />
           );
         }
         return question as React.ReactElement<LevelComponentProps>;
@@ -109,7 +109,7 @@ export function PostQuiz({ lessonId, onEnd, questions, ...rest }: QuizProps) {
       levels={questions.map((question, i) => {
         if (question.type === "input" || question.type === "choice") {
           return (
-            <QuizQuestion key={i} question={question as QuizQuestionType} />
+            <QuestionLevel key={i} question={question as QuizQuestionType} />
           );
         }
         return question as React.ReactElement<LevelComponentProps>;
