@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, useEffect, Suspense, useRef, RefObject } from "react";
+import {
+  useState,
+  useEffect,
+  Suspense,
+  useRef,
+  RefObject,
+  useMemo,
+} from "react";
 import {
   motion,
   useAnimate,
@@ -253,7 +260,7 @@ function LessonsPageContent() {
                       unit={lessonIdx === 0 ? UNITS[unitIdx - 1] : false}
                       isOpened={lessonOpened === index}
                       onClick={() => {
-                        if (index <= maxCompletedLesson) {
+                        if (true) {
                           handleLessonClick(index);
                         } else {
                           handleLessonJump(maxCompletedLesson);
