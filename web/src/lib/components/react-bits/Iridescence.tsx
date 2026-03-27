@@ -61,31 +61,29 @@ export default function Iridescence({
   const ctnDom = useRef<HTMLDivElement>(null);
   const mousePos = useRef({ x: 0.5, y: 0.5 });
 
+  const program = useRef<Program | null>(null);
+  const renderer = useRef<Renderer | null>(null);
+  const mesh = useRef<Mesh | null>(null);
+
+  const isSetup = () => {
+    return program.current && mesh.current && renderer.current;
+  };
+
   useEffect(() => {
     if (!ctnDom.current) return;
-    const ctn = ctnDom.current;
-    const renderer = new Renderer();
-    const gl = renderer.gl;
+    try {
+      renderer.current = new Renderer();
+    } catch (error) {
+      console.warn("WebGL not supported or context missing.", error);
+      return;
+    }
+    const gl = renderer.current.gl;
+    if (!gl) return;
+
     gl.clearColor(1, 1, 1, 1);
 
-    let program: Program;
-
-    function resize() {
-      const scale = 1;
-      renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
-      if (program) {
-        program.uniforms.uResolution.value = new Color(
-          gl.canvas.width,
-          gl.canvas.height,
-          gl.canvas.width / gl.canvas.height,
-        );
-      }
-    }
-    window.addEventListener("resize", resize, false);
-    resize();
-
     const geometry = new Triangle(gl);
-    program = new Program(gl, {
+    program.current = new Program(gl, {
       vertex: vertexShader,
       fragment: fragmentShader,
       uniforms: {
@@ -106,37 +104,66 @@ export default function Iridescence({
       },
     });
 
-    const mesh = new Mesh(gl, { geometry, program });
-    let animateId: number;
+    mesh.current = new Mesh(gl, { geometry, program: program.current });
+  }, []);
 
+  useEffect(() => {
+    if (!isSetup()) return;
+    const gl = renderer.current!.gl;
+    if (!gl) return;
+
+    function resize() {
+      if (!isSetup()) return;
+
+      const scale = 1;
+      renderer.current!.setSize(
+        ctnDom.current!.offsetWidth * scale,
+        ctnDom.current!.offsetHeight * scale,
+      );
+      if (program.current) {
+        program.current.uniforms.uResolution.value = new Color(
+          gl.canvas.width,
+          gl.canvas.height,
+          gl.canvas.width / gl.canvas.height,
+        );
+      }
+    }
+    window.addEventListener("resize", resize, false);
+    resize();
+
+    let animateId: number;
     function update(t: number) {
+      if (!program.current || !mesh.current || !renderer.current) return;
+
       animateId = requestAnimationFrame(update);
-      program.uniforms.uTime.value = t * 0.001;
-      renderer.render({ scene: mesh });
+      program.current!.uniforms.uTime.value = t * 0.001;
+      renderer.current!.render({ scene: mesh.current });
     }
     animateId = requestAnimationFrame(update);
-    ctn.appendChild(gl.canvas);
+    ctnDom.current!.appendChild(gl.canvas);
 
     function handleMouseMove(e: MouseEvent) {
-      const rect = ctn.getBoundingClientRect();
+      const rect = ctnDom.current!.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width;
       const y = 1.0 - (e.clientY - rect.top) / rect.height;
       mousePos.current = { x, y };
-      program.uniforms.uMouse.value[0] = x;
-      program.uniforms.uMouse.value[1] = y;
+      program.current!.uniforms.uMouse.value[0] = x;
+      program.current!.uniforms.uMouse.value[1] = y;
     }
     if (mouseReact) {
-      ctn.addEventListener("mousemove", handleMouseMove);
+      ctnDom.current!.addEventListener("mousemove", handleMouseMove);
     }
 
     return () => {
       cancelAnimationFrame(animateId);
       window.removeEventListener("resize", resize);
-      if (mouseReact) {
-        ctn.removeEventListener("mousemove", handleMouseMove);
+      if (mouseReact && ctnDom.current) {
+        ctnDom.current.removeEventListener("mousemove", handleMouseMove);
       }
-      ctn.removeChild(gl.canvas);
-      gl.getExtension("WEBGL_lose_context")?.loseContext();
+      if (ctnDom.current) {
+        ctnDom.current.removeChild(gl.canvas);
+      }
+      // gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
   }, [color, speed, amplitude, mouseReact]);
 
