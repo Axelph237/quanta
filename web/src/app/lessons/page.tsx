@@ -27,6 +27,7 @@ import { useViewportSize } from "@/lib/hooks/useViewportSize";
 import confetti from "canvas-confetti";
 import "./offboarding.css";
 import FeedbackLevel from "@/lib/components/games/FeedbackLevel";
+import { getPermissions } from "@/lib/components/providers/AnalyticsProvider";
 
 const COMPLETED_LESSONS_STORAGE_KEY = "completedLessons";
 type CompletedLessons = string[];
@@ -86,12 +87,15 @@ function LessonsPageContent() {
     // Check if onboarding is complete
     (async () => {
       setOnboardingComplete(
-        typeof window !== "undefined" &&
-          localStorage.getItem(ONBOARDING_STORAGE_KEY) === "true",
+        () =>
+          (typeof window !== "undefined" &&
+            localStorage.getItem(ONBOARDING_STORAGE_KEY) === "true") ||
+          getPermissions() !== "true", // Ignore onboarding if user has given usage permission
       );
       setOffboardingComplete(
-        typeof window !== "undefined" &&
-          localStorage.getItem(OFFBOARDING_STORAGE_KEY) === "true",
+        (typeof window !== "undefined" &&
+          localStorage.getItem(OFFBOARDING_STORAGE_KEY) === "true") ||
+          getPermissions() !== "true", // Ignore offboarding if user has given usage permission
       );
     })();
 
@@ -480,8 +484,17 @@ function LessonItem({
 function Onboarding({ onComplete }: { onComplete: () => void }) {
   const [step, setStep] = useState(0);
   const [fadeOutHeader, setFadeOutHeader] = useState(false);
+  const [showQuestions, setShowQuestions] = useState(false);
 
   const [scope, animate] = useAnimate();
+
+  useEffect(() => {
+    if (fadeOutHeader) {
+      setTimeout(() => {
+        setShowQuestions(true);
+      }, 1000);
+    }
+  }, [fadeOutHeader]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -507,102 +520,114 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
 
   return (
     <motion.div
-      className="relative flex flex-col items-center justify-center h-full w-full p-12"
+      className="relative flex flex-col items-center justify-center h-full w-full"
       ref={scope}
     >
-      <motion.h1
-        className={`text-[3rem] lg:text-[5rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: fadeOutHeader ? 0 : 1 }}
-        transition={GENTLE_EASE}
-      >
-        Hey there!{" "}
-        <motion.span
-          initial={{ rotate: 0 }}
-          animate={{ rotate: [0, 15, -15, 15, -15, 15, 0] }}
-          transition={{ duration: 1, ease: "easeInOut" }}
+      {!showQuestions && (
+        <>
+          <motion.h1
+            className={`text-quanta-headline-large md:text-[3rem] lg:text-[5rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: fadeOutHeader ? 0 : 1 }}
+            transition={GENTLE_EASE}
+          >
+            Hey there!{" "}
+            <motion.span
+              initial={{ rotate: 0 }}
+              animate={{ rotate: [0, 15, -15, 15, -15, 15, 0] }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+            >
+              <icons.SchrodingersCat className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 m-4" />
+            </motion.span>
+          </motion.h1>
+          <motion.div
+            className={`text-quanta-headline-small md:text-quanta-headline-medium lg:text-quanta-headline-large gap-4 break-keep flex flex-col items-center justify-center font-bold ${outfit.className}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: step >= 1 && !fadeOutHeader ? 1 : 0 }}
+            transition={GENTLE_EASE}
+          >
+            <h2>What&apos;s your background?</h2>
+            <button
+              onClick={() => setFadeOutHeader(true)}
+              className="flex flex-row gap-2 items-center justify-center button-primary bg-quanta-primary text-quanta-on-surface"
+            >
+              <icons.Click className="icon" /> Start
+            </button>
+          </motion.div>
+        </>
+      )}
+      {showQuestions && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: step >= 2 ? 1 : 0 }}
+          transition={GENTLE_EASE}
+          className="w-full p-6"
         >
-          <icons.SchrodingersCat className="w-20 h-20 m-4" />
-        </motion.span>
-      </motion.h1>
-      <motion.h2
-        className={`text-quanta-headline-large lg:text-[3rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: step >= 1 && !fadeOutHeader ? 1 : 0 }}
-        transition={GENTLE_EASE}
-      >
-        What&apos;s your background?
-      </motion.h2>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: step >= 2 ? 1 : 0 }}
-        transition={GENTLE_EASE}
-        className="w-3/4 p-6"
-      >
-        <GameHandler
-          id="onboarding-quiz"
-          name="A little about you!"
-          hideBg
-          className="h-full w-full border-0!"
-          successMessages={[
-            "Wow!",
-            "That's awesome!",
-            "That's amazing!",
-            "That's incredible!",
-          ]}
-          onGameStart={() => setFadeOutHeader(true)}
-          onGameEnd={onEnd}
-          recordOnly
-          levels={[
-            <QuestionLevel
-              key={1}
-              question={{
-                type: "choice",
-                question: "What's your major?",
-                answers: [
-                  { text: "Physics", correct: true },
-                  { text: "Engineering", correct: true },
-                  { text: "Math", correct: true },
-                  { text: "Chemistry", correct: true },
-                  { text: "Biology", correct: true },
-                  { text: "Computer Science", correct: true },
-                  { text: "Non-STEM", correct: true },
-                  { text: "Other", correct: true },
-                  { text: "Not a student", correct: true },
-                ],
-              }}
-            />,
-            <QuestionLevel
-              key={1}
-              question={{
-                type: "choice",
-                question: "How comfortable are you with physics?",
-                answers: [
-                  { text: "Not at all", correct: true },
-                  { text: "A little", correct: true },
-                  { text: "Comfortable", correct: true },
-                  { text: "Very comfortable", correct: true },
-                  { text: "I've studied modern physics", correct: true },
-                ],
-              }}
-            />,
-            <QuestionLevel
-              key={1}
-              question={{
-                type: "choice",
-                question: "How comfortable are you with math?",
-                answers: [
-                  { text: "Not at all", correct: true },
-                  { text: "A little", correct: true },
-                  { text: "Comfortable", correct: true },
-                  { text: "Very comfortable", correct: true },
-                  { text: "I've studied linear algebra", correct: true },
-                ],
-              }}
-            />,
-          ]}
-        />
-      </motion.div>
+          <GameHandler
+            id="onboarding-quiz"
+            name="A little about you!"
+            hideBg
+            className="h-full w-full border-0!"
+            successMessages={[
+              "Wow!",
+              "That's awesome!",
+              "That's amazing!",
+              "That's incredible!",
+            ]}
+            // onGameStart={() => setFadeOutHeader(true)}
+            onGameEnd={onEnd}
+            recordOnly
+            levels={[
+              <QuestionLevel
+                key={1}
+                question={{
+                  type: "choice",
+                  question: "What's your major?",
+                  answers: [
+                    { text: "Physics", correct: true },
+                    { text: "Engineering", correct: true },
+                    { text: "Math", correct: true },
+                    { text: "Chemistry", correct: true },
+                    { text: "Biology", correct: true },
+                    { text: "Computer Science", correct: true },
+                    { text: "Non-STEM", correct: true },
+                    { text: "Other", correct: true },
+                    { text: "Not a student", correct: true },
+                  ],
+                }}
+              />,
+              <QuestionLevel
+                key={1}
+                question={{
+                  type: "choice",
+                  question: "How comfortable are you with physics?",
+                  answers: [
+                    { text: "Not at all", correct: true },
+                    { text: "A little", correct: true },
+                    { text: "Comfortable", correct: true },
+                    { text: "Very comfortable", correct: true },
+                    { text: "I've studied modern physics", correct: true },
+                  ],
+                }}
+              />,
+              <QuestionLevel
+                key={1}
+                question={{
+                  type: "choice",
+                  question: "How comfortable are you with math?",
+                  answers: [
+                    { text: "Not at all", correct: true },
+                    { text: "A little", correct: true },
+                    { text: "Comfortable", correct: true },
+                    { text: "Very comfortable", correct: true },
+                    { text: "I've studied linear algebra", correct: true },
+                  ],
+                }}
+              />,
+            ]}
+          />
+        </motion.div>
+      )}
     </motion.div>
   );
 }
@@ -677,7 +702,7 @@ function Offboarding({ onComplete }: { onComplete: () => void }) {
       ref={scope}
     >
       <motion.h1
-        className={`text-[3rem] lg:text-[5rem] break-keep flex items-center justify-center font-bold ${outfit.className}`}
+        className={`text-quanta-headline-large md:text-quanta-headline-medium lg:text-quanta-headline-large break-keep flex items-center justify-center font-bold ${outfit.className}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={GENTLE_EASE}
@@ -693,11 +718,11 @@ function Offboarding({ onComplete }: { onComplete: () => void }) {
           }}
           className="cat-icon relative"
         >
-          <icons.SchrodingersCat className="w-20 h-20 ml-4" />
+          <icons.SchrodingersCat className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 m-4" />
         </motion.span>
       </motion.h1>
       <motion.h2
-        className={`heading-text-lg lg:text-[3rem] break-keep flex items-center justify-center ${outfit.className}`}
+        className={`text-quanta-headline-small md:text-quanta-headline-medium lg:text-quanta-headline-large break-keep flex items-center justify-center ${outfit.className}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ ...GENTLE_EASE, delay: 1 }}

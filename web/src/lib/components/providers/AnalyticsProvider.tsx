@@ -27,7 +27,7 @@ export function useAnalytics() {
   return context;
 }
 
-const getPermissions = () => {
+export const getPermissions = () => {
   return localStorage.getItem("usagePermission");
 };
 

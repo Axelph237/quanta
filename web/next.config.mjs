@@ -11,7 +11,7 @@ const nextConfig = {
       protocol: "https",
       hostname: "**"
     }]
-  }
+  },
 };
 
 const rehypeMathdefsPath = fileURLToPath(
@@ -23,7 +23,6 @@ const withMDX = createMDX({
     remarkPlugins: ['remark-math', 'remark-gfm'],
     rehypePlugins: [['rehype-mathjax/chtml', {chtml: {fontURL: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2'}}],
   ],
-    
   },
 });
 

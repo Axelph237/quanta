@@ -167,5 +167,10 @@ export default function Iridescence({
     };
   }, [color, speed, amplitude, mouseReact]);
 
+  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  if (isIOS) {
+    return <div className="w-full h-full" {...rest} />;
+  }
+
   return <div ref={ctnDom} className="w-full h-full" {...rest} />;
 }
