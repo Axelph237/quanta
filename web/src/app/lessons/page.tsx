@@ -249,7 +249,7 @@ function LessonsPageContent() {
                       key={lesson.id}
                       lesson={lesson}
                       parentRef={scope}
-                      unlocked={index <= maxCompletedLesson}
+                      unlocked={true} // Statically true because we decided to undo the unlocking feature
                       unit={lessonIdx === 0 ? UNITS[unitIdx - 1] : false}
                       isOpened={lessonOpened === index}
                       onClick={() => {
