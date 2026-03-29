@@ -1,5 +1,4 @@
 import { StaticImageData } from "next/image";
-import { LevelComponentProps } from "../components/games/GameHandler";
 import { QuizQuestionType } from "../components/games/QuestionLevel";
 
 export interface Unit {
@@ -17,6 +16,6 @@ export interface Lesson {
   tocId: string;
   headerImg: StaticImageData | undefined;
   pageContent: React.ReactNode;
-  preQuestions: (QuizQuestionType | React.ReactElement<LevelComponentProps>)[];
-  postQuestions: (QuizQuestionType | React.ReactElement<LevelComponentProps>)[];
+  preQuestions: QuizQuestionType[];
+  postQuestions: QuizQuestionType[];
 }
