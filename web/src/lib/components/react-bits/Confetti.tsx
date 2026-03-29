@@ -157,7 +157,7 @@ export const fireConfettiCannon = (context: HTMLElement) => {
   });
   confetti({
     startVelocity: 25,
-    particleCount: 20,
+    particleCount: 15,
     shapes: [cat],
     origin: {
       x: x / window.innerWidth,

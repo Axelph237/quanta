@@ -21,3 +21,24 @@ export function getLessonById(id: string): Lesson | undefined {
 export function getUnitById(id: string): Unit | undefined {
   return UNITS.find((unit) => unit.id === id);
 }
+
+globalThis.finishAllLessons = () => {
+  localStorage.setItem(
+    "completedLessons",
+    JSON.stringify(LESSONS.map((l) => l.id)),
+  );
+
+  const quizCompletion: Record<
+    string,
+    { preQuizCompleted: boolean; postQuizCompleted: boolean }
+  > = {};
+  for (const lesson of LESSONS) {
+    quizCompletion[lesson.id] = {
+      preQuizCompleted: true,
+      postQuizCompleted: true,
+    };
+  }
+  localStorage.setItem("quizCompletion", JSON.stringify(quizCompletion));
+
+  console.log("Manually set localStorage completion 😸");
+};

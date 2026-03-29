@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { redirect, RedirectType } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { libreBasker, outfit } from "@/app/fonts";
 import Link from "next/link";
 import BlurText from "@/lib/components/react-bits/BlurText";
@@ -30,6 +30,7 @@ import AboutContent from "./about.mdx";
 import { useViewportSize } from "@/lib/hooks/useViewportSize";
 
 function HomeContent() {
+  const router = useRouter();
   const viewport = useViewportSize();
   const searchParams = useSearchParams();
   const fromLanding = searchParams.get("from") === "landing";
@@ -106,7 +107,7 @@ function HomeContent() {
       GENTLE_EASE,
     );
 
-    redirect("/lessons", RedirectType.push);
+    router.push("/lessons");
   };
 
   return (

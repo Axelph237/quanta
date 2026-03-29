@@ -34,14 +34,11 @@ const lessons: Lesson[] = [
         ],
       },
       {
-        type: "choice",
+        type: "step",
         question: "How comfortable are you with search algorithms?",
-        answers: [
-          { text: "Not at all", correct: true },
-          { text: "Slightly", correct: true },
-          { text: "Moderately", correct: true },
-          { text: "Very", correct: true },
-        ],
+        highLabel: "Very",
+        lowLabel: "Not at all",
+        steps: 4,
       },
     ],
     postQuestions: [

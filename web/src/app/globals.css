@@ -288,11 +288,11 @@ header {
 }
 
 .icon {
-  @apply size-4 md:size-6 lg:size-8;
+  @apply size-4 md:size-5 lg:size-6;
 }
 
 .button-primary {
-  @apply rounded-4xl md:rounded-full py-2 px-4 md:px-6 lg:px-6 cursor-pointer hover:scale-105 transition-all duration-200 text-sm md:text-lg lg:text-xl;
+  @apply rounded-4xl md:rounded-full py-2 px-4 md:px-6 cursor-pointer hover:scale-105 transition-all duration-200 text-sm md:text-lg;
 }
 
 .input-no-border {

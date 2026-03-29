@@ -4,7 +4,7 @@ import GameHandler from "@/lib/components/games/GameHandler";
 import CircuitLevel from "@/lib/components/games/CircuitLevel";
 import Aurora from "@/lib/components/react-bits/Aurora";
 import { DefineTooltips } from "@/lib/components/ui/DefineTooltip";
-import FeedbackLevel from "@/lib/components/games/FeedbackLevel";
+import QuestionLevel from "@/lib/components/games/QuestionLevel";
 
 // const a0 = 5.29177210903e-11;
 
@@ -29,10 +29,12 @@ export default function TestPage() {
         id="test"
         name="Test"
         levels={[
-          <FeedbackLevel
-            key={1}
-            question="How are you doing? :)"
-            levelAPI={undefined}
+          <QuestionLevel
+            key={0}
+            question={{
+              type: "free-response",
+              question: "How confident are you in your answer?",
+            }}
             startTrigger={false}
           />,
           <CircuitLevel
@@ -41,7 +43,6 @@ export default function TestPage() {
             options={["h", "x", "s"]}
             numQubits={2}
             numColumns={4}
-            levelAPI={undefined}
             startTrigger={false}
             targetState={[
               {

@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import NavText from "./NavText";
 import Link from "next/link";
 import Logo from "./Logo";
-import { redirect, RedirectType, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { usePageTransition } from "../providers/PageTransitionProvider";
 import { cssvar, csstopx } from "@/lib/styles";
 
@@ -53,6 +53,7 @@ const routes: Route[] = [
 
 export default function Header() {
   const { pageScope, animatePage } = usePageTransition();
+  const router = useRouter();
 
   /**
    * Logo shift animations
@@ -116,8 +117,7 @@ export default function Header() {
       },
       GENTLE_EASE,
     );
-
-    redirect("/lessons", RedirectType.push);
+    router.push("/lessons");
   };
 
   /**
@@ -142,8 +142,7 @@ export default function Header() {
    */
 
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
-  const [showNav, setShowNav] = useState(false);
+  const [isOpen] = useState(false);
 
   const [page, setPage] = useState<Route>(routes[0]);
 

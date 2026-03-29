@@ -149,15 +149,12 @@ const lessons: Lesson[] = [
         ],
       },
       {
-        type: "choice",
+        type: "step",
         question:
           "How comfortable do you feel working with binary (base-2) numbers?",
-        answers: [
-          { text: "Not at all", correct: true },
-          { text: "Slightly", correct: true },
-          { text: "Moderately", correct: true },
-          { text: "Very", correct: true },
-        ],
+        highLabel: "Very",
+        lowLabel: "Not at all",
+        steps: 4,
       },
     ],
     postQuestions: [
@@ -211,14 +208,11 @@ const lessons: Lesson[] = [
         ],
       },
       {
-        type: "choice",
+        type: "step",
         question: "How comfortable are you with understanding probabilities?",
-        answers: [
-          { text: "Not at all", correct: true },
-          { text: "Slightly", correct: true },
-          { text: "Moderately", correct: true },
-          { text: "Very", correct: true },
-        ],
+        highLabel: "Very",
+        lowLabel: "Not at all",
+        steps: 4,
       },
     ],
     postQuestions: [
@@ -255,14 +249,11 @@ const lessons: Lesson[] = [
         ],
       },
       {
-        type: "choice",
+        type: "step",
         question: "How comfortable would you be explaining superposition?",
-        answers: [
-          { text: "Not at all", correct: true },
-          { text: "Slightly", correct: true },
-          { text: "Moderately", correct: true },
-          { text: "Very", correct: true },
-        ],
+        highLabel: "Very",
+        lowLabel: "Not at all",
+        steps: 4,
       },
     ],
   },

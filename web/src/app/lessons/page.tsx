@@ -12,11 +12,16 @@ import {
 } from "framer-motion";
 import Image from "next/image";
 import { outfit } from "@/app/fonts";
-import { redirect, RedirectType, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Logo from "@/lib/components/ui/Logo";
 import { cssvar, csstopx } from "@/lib/styles";
-import { COLORS, GENTLE_EASE } from "../globals";
-import { LESSONS, UNITS, isLessonCompleted } from "@/lib/lessons";
+import { GENTLE_EASE } from "../globals";
+import {
+  LESSONS,
+  UNITS,
+  getQuizCompletion,
+  isLessonCompleted,
+} from "@/lib/lessons";
 import type { Lesson, Unit } from "@/lib/types/lessons";
 import GradientText from "@/lib/components/react-bits/GradientText";
 import ShinyText from "@/lib/components/react-bits/ShinyText";
@@ -24,11 +29,10 @@ import * as icons from "@/lib/components/ui/Icons";
 import GameHandler from "@/lib/components/games/GameHandler";
 import QuestionLevel from "@/lib/components/games/QuestionLevel";
 import { useViewportSize } from "@/lib/hooks/useViewportSize";
-import confetti from "canvas-confetti";
 import "./offboarding.css";
-import FeedbackLevel from "@/lib/components/games/FeedbackLevel";
 import { getPermissions } from "@/lib/components/providers/AnalyticsProvider";
 import SectionLevel from "@/lib/components/games/SectionLevel";
+import { OFFBOARDING_STORAGE_KEY } from "../feedback/page";
 
 const COMPLETED_LESSONS_STORAGE_KEY = "completedLessons";
 type CompletedLessons = string[];
@@ -54,7 +58,6 @@ function addCompletedLesson(lessonId: string): boolean {
 }
 
 const ONBOARDING_STORAGE_KEY = "onboarded";
-const OFFBOARDING_STORAGE_KEY = "offboarded";
 
 function handleLessonJump(index: number) {
   const lessonItem = document.getElementById(
@@ -67,6 +70,7 @@ function handleLessonJump(index: number) {
 }
 
 function LessonsPageContent() {
+  const router = useRouter();
   const viewport = useViewportSize();
   const searchParams = useSearchParams();
   const selectedLessonId = searchParams.get("selected");
@@ -74,8 +78,7 @@ function LessonsPageContent() {
     (l) => l.id === selectedLessonId,
   );
   const [onboardingComplete, setOnboardingComplete] = useState<boolean>(false);
-  const [offboardingComplete, setOffboardingComplete] =
-    useState<boolean>(false);
+  const [showFeedbackButton, setShowFeedbackButton] = useState<boolean>(false);
 
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [lessonOpened, setLessonOpened] = useState<number | false>(false);
@@ -93,11 +96,18 @@ function LessonsPageContent() {
             localStorage.getItem(ONBOARDING_STORAGE_KEY) === "true") ||
           getPermissions() !== "true", // Ignore onboarding if user has given usage permission
       );
-      setOffboardingComplete(
-        (typeof window !== "undefined" &&
-          localStorage.getItem(OFFBOARDING_STORAGE_KEY) === "true") ||
-          getPermissions() !== "true", // Ignore offboarding if user has given usage permission
-      );
+      setShowFeedbackButton(() => {
+        const complete =
+          (typeof window !== "undefined" &&
+            localStorage.getItem(OFFBOARDING_STORAGE_KEY) === "true") ||
+          getPermissions() !== "true"; // Ignore offboarding if user has given usage permission
+
+        return complete === true
+          ? false
+          : // Show feedback button after viewing three lessons
+            LESSONS.filter((l) => getQuizCompletion(l.id).preQuizCompleted)
+              .length >= 3;
+      });
     })();
 
     // Check if any lessons are completed
@@ -133,24 +143,19 @@ function LessonsPageContent() {
     setRedirecting(true);
     await animate(scope.current!, { left: "100vw", opacity: 0 }, GENTLE_EASE);
 
-    redirect("/home", RedirectType.push);
+    router.push("/home");
   };
 
   const handleLessonClick = (index: number) => {
     setLessonOpened(index);
     setTimeout(() => {
-      redirect(`/lessons/${LESSONS[index].id}`, RedirectType.push);
+      router.push(`/lessons/${LESSONS[index].id}`);
     }, 1000);
   };
 
   const handleOnboardingComplete = () => {
     localStorage.setItem(ONBOARDING_STORAGE_KEY, "true");
     setOnboardingComplete(true);
-  };
-
-  const handleOffboardingComplete = () => {
-    localStorage.setItem(OFFBOARDING_STORAGE_KEY, "true");
-    setOffboardingComplete(true);
   };
 
   useEffect(() => {
@@ -225,78 +230,74 @@ function LessonsPageContent() {
         className={`relative inset-0 h-screen w-screen ${lessonOpened ? "overflow-hidden" : "overflow-y-scroll"} bg-quanta-surface text-quanta-on-surface flex items-center ${lessonOpened ? "" : ""}`}
       >
         {onboardingComplete ? (
-          maxCompletedLesson !== LESSONS.length ||
-          offboardingComplete === true ? (
-            <>
-              {/* Main Container: Fixed and hidden overflow to act as the viewport for the carousel */}
-              {/* Carouse list */}
-              <motion.div
-                id="carousel-list"
-                className="absolute left-0 right-0 flex flex-col gap-18 items-center snap-center"
-                initial={{ top: "100vh" }}
-                animate={{
-                  top: 0,
-                }}
-                transition={GENTLE_EASE}
-              >
-                {/* <div className="shadow-item h-[40vh] w-full"></div> */}
-                {LESSONS.map((lesson, index) => {
-                  const [unitIdx, lessonIdx] = lesson.tocId
-                    .split(".")
-                    .map(Number);
+          <>
+            {/* Main Container: Fixed and hidden overflow to act as the viewport for the carousel */}
+            {/* Carouse list */}
+            <motion.div
+              id="carousel-list"
+              className="absolute left-0 right-0 flex flex-col gap-18 items-center snap-center"
+              initial={{ top: "100vh" }}
+              animate={{
+                top: 0,
+              }}
+              transition={GENTLE_EASE}
+            >
+              {/* <div className="shadow-item h-[40vh] w-full"></div> */}
+              {LESSONS.map((lesson, index) => {
+                const [unitIdx, lessonIdx] = lesson.tocId
+                  .split(".")
+                  .map(Number);
 
-                  return (
-                    <LessonItem
-                      key={lesson.id}
-                      lesson={lesson}
-                      parentRef={scope}
-                      unlocked={true} // Statically true because we decided to undo the unlocking feature
-                      unit={lessonIdx === 0 ? UNITS[unitIdx - 1] : false}
-                      isOpened={lessonOpened === index}
-                      onClick={() => {
-                        if (true) {
-                          handleLessonClick(index);
-                        } else {
-                          handleLessonJump(maxCompletedLesson);
-                        }
-                      }}
-                      onFocus={() => handleLessonFocus(index)}
-                    />
-                  );
-                })}
-                <div className="shadow-item h-screen w-full"></div>
-              </motion.div>
-              {/* Lesson Blobs */}
-              <motion.ol
-                animate={{ translateX: lessonOpened ? "25vw" : 0 }}
-                transition={GENTLE_EASE}
-                className="fixed flex-col items-center top-1/2 right-(--page-padding) -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500 whitespace-nowrap min-w-[20px] "
-              >
-                {LESSONS.map((lesson, index) => (
-                  <motion.li
-                    key={index}
-                    className={`w-full rounded-lg my-2 ${
-                      lesson.tocId.split(".")[1] === "0"
-                        ? "bg-quanta-secondary"
-                        : "bg-quanta-primary"
-                    } cursor-pointer`}
-                    initial={{ opacity: 0 }}
-                    animate={{
-                      opacity: focusedIndex === index ? 1 : 0.8,
-                      height: focusedIndex === index ? "40px" : "20px",
+                return (
+                  <LessonItem
+                    key={lesson.id}
+                    lesson={lesson}
+                    parentRef={scope}
+                    unlocked={true} // Statically true because we decided to undo the unlocking feature
+                    unit={lessonIdx === 0 ? UNITS[unitIdx - 1] : false}
+                    isOpened={lessonOpened === index}
+                    onClick={() => {
+                      if (true) {
+                        handleLessonClick(index);
+                      } else {
+                        handleLessonJump(maxCompletedLesson);
+                      }
                     }}
-                    transition={{ duration: 0.2 }}
-                    onClick={() => handleLessonJump(index)}
-                  ></motion.li>
-                ))}
-              </motion.ol>
-            </>
-          ) : (
-            <Offboarding onComplete={handleOffboardingComplete} />
-          )
+                    onFocus={() => handleLessonFocus(index)}
+                  />
+                );
+              })}
+              <div className="shadow-item h-screen w-full"></div>
+            </motion.div>
+            {/* Lesson Blobs */}
+            <motion.ol
+              animate={{ translateX: lessonOpened ? "25vw" : 0 }}
+              transition={GENTLE_EASE}
+              className="fixed flex-col items-center top-1/2 right-(--page-padding) -translate-y-1/2 opacity-50 hover:opacity-100 transition-opacity duration-500 whitespace-nowrap min-w-[20px] "
+            >
+              {LESSONS.map((lesson, index) => (
+                <motion.li
+                  key={index}
+                  className={`w-full rounded-lg my-2 ${
+                    lesson.tocId.split(".")[1] === "0"
+                      ? "bg-quanta-secondary"
+                      : "bg-quanta-primary"
+                  } cursor-pointer`}
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: focusedIndex === index ? 1 : 0.8,
+                    height: focusedIndex === index ? "40px" : "20px",
+                  }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => handleLessonJump(index)}
+                ></motion.li>
+              ))}
+            </motion.ol>
+          </>
         ) : (
           <Onboarding onComplete={handleOnboardingComplete} />
         )}
+        {showFeedbackButton && <FeedbackButton />}
       </motion.main>
       <motion.div
         id="bottom-fade"
@@ -621,15 +622,12 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
               <QuestionLevel
                 key={1}
                 question={{
-                  type: "choice",
+                  type: "step",
                   question:
                     "Approximately how familiar were you with quantum computing before using this platform?",
-                  answers: [
-                    { text: "Not at all familiar", correct: true },
-                    { text: "Slightly familiar", correct: true },
-                    { text: "Moderately familiar", correct: true },
-                    { text: "Very familiar", correct: true },
-                  ],
+                  highLabel: "Very familiar",
+                  lowLabel: "Not at all familiar",
+                  steps: 4,
                 }}
               />,
               <QuestionLevel
@@ -672,27 +670,21 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
               <QuestionLevel
                 key={1}
                 question={{
-                  type: "choice",
+                  type: "step",
                   question: "How comfortable are you with physics concepts?",
-                  answers: [
-                    { text: "Not at all", correct: true },
-                    { text: "Slightly", correct: true },
-                    { text: "Moderately", correct: true },
-                    { text: "Very", correct: true },
-                  ],
+                  highLabel: "Very",
+                  lowLabel: "Not at all",
+                  steps: 4,
                 }}
               />,
               <QuestionLevel
                 key={1}
                 question={{
-                  type: "choice",
+                  type: "step",
                   question: "How comfortable are you with mathematics?",
-                  answers: [
-                    { text: "Not at all", correct: true },
-                    { text: "Slightly", correct: true },
-                    { text: "Moderately", correct: true },
-                    { text: "Very", correct: true },
-                  ],
+                  highLabel: "Very",
+                  lowLabel: "Not at all",
+                  steps: 4,
                 }}
               />,
 
@@ -716,239 +708,30 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
   );
 }
 
-function Offboarding({ onComplete }: { onComplete: () => void }) {
-  const [scope, animate] = useAnimate();
-  const [showForm, setShowForm] = useState(false);
+function FeedbackButton() {
+  const router = useRouter();
 
-  const fireworks = () => {
-    // const sfx = [
-    //   new Audio("/assets/firework1.mp3"),
-    //   new Audio("/assets/firework2.mp3"),
-    //   new Audio("/assets/firework3.mp3"),
-    //   new Audio("/assets/firework4.mp3"),
-    //   new Audio("/assets/firework5.mp3"),
-    // ];
-
-    const randomInRange = (min: number, max: number) =>
-      Math.random() * (max - min) + min;
-
-    const cat = confetti.shapeFromPath({
-      path: "M45.7336 0C48.8798 0.00221635 53.0832 13.692 53.5413 22.4932L55.8928 21.6162L56.4788 21.3975L56.4817 21.3965L59.0891 20.4238C60.7435 19.807 62.6071 20.348 63.6741 21.7549L65.1868 23.75C66.8053 25.8853 65.9071 28.9773 63.3967 29.9141L61.8772 30.4805V43.9014C61.8771 45.571 60.8389 47.0647 59.2747 47.6484L35.009 56.7002C34.3231 56.956 33.6215 56.9446 32.9993 56.7324C32.3775 56.9442 31.6768 56.9568 30.9915 56.7012L6.72583 47.6494C5.16147 47.0659 4.12361 45.5719 4.12329 43.9023V30.4814L2.60376 29.915C0.0932297 28.9785 -0.804628 25.8864 0.813721 23.751L2.32642 21.7559C3.39342 20.3489 5.25686 19.8078 6.91138 20.4248L9.5188 21.3975L9.52173 21.3984L10.1077 21.6172L11.7932 22.2461C12.3158 13.4376 16.4751 0.000328244 19.592 0C23.2823 0.000323203 24.9742 6.15127 25.3586 9.22656C25.4049 9.21855 29.8092 8.45709 32.6624 8.45703C35.5306 8.45708 39.967 9.22656 39.967 9.22656C40.3515 6.15118 42.0432 0 45.7336 0ZM22.5032 16.915C20.8047 16.915 19.428 18.2918 19.428 19.9902C19.4281 21.6886 20.8048 23.0654 22.5032 23.0654C24.2013 23.0651 25.5782 21.6884 25.5784 19.9902C25.5784 18.2919 24.2014 16.9154 22.5032 16.915ZM42.4924 16.915C40.7941 16.9152 39.4172 18.2919 39.4172 19.9902C39.4174 21.6885 40.7942 23.0652 42.4924 23.0654C44.1907 23.0653 45.5684 21.6885 45.5686 19.9902C45.5686 18.2918 44.1908 16.9152 42.4924 16.915Z",
-    });
-    const defaults = {
-      startVelocity: 30,
-      spread: 360,
-      ticks: 60,
-      zIndex: 0,
-      particleCount: 50,
-      scalar: 1.5,
-      shapes: [cat],
-    };
-    const interval = setInterval(() => {
-      // sfx[Math.floor(Math.random() * sfx.length)].play();
-      if (!document.hasFocus()) return;
-
-      confetti({
-        ...defaults,
-        origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
-      });
-    }, 1500);
-
-    return interval;
-  };
-
-  useEffect(() => {
-    const interval = fireworks();
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleYes = () => {
-    setShowForm(true);
-  };
-
-  const handleNo = () => {
-    const duration = 500;
-    animate("div", {
-      opacity: 0,
-    });
-    setTimeout(() => {
-      onComplete();
-    }, duration);
-  };
-
-  const handleFreedbackComplete = () => {
-    onComplete();
+  const goToFeedback = () => {
+    router.push("/feedback");
   };
 
   return (
-    <motion.div
-      className="relative flex flex-col items-center justify-center h-full w-full p-12"
-      ref={scope}
+    <motion.button
+      animate={{
+        scale: [1, 1.05, 1],
+        rotate: [0, 10, -10, 10, -10, 10, 0],
+        transition: {
+          ease: "easeInOut",
+          duration: 1,
+          repeat: Infinity,
+          delay: 0.5,
+          repeatDelay: 3,
+        },
+      }}
+      onClick={goToFeedback}
+      className="fixed z-90 bottom-(--page-padding) right-(--page-padding) cursor-pointer flex flex-row items-center justify-center p-2 rounded-full bg-quanta-on-surface text-quanta-surface hover:text-quanta-primary transition-colors duration-250"
     >
-      <motion.h1
-        className={`text-quanta-headline-large md:text-quanta-headline-medium lg:text-quanta-headline-large break-keep flex items-center justify-center font-bold ${outfit.className}`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={GENTLE_EASE}
-      >
-        Thank You
-        <motion.span
-          initial={{ rotate: 0 }}
-          animate={{
-            rotate: [0, 15, -15, 15, -15, 15, 0],
-            transition: {
-              rotate: { duration: 1, ease: "easeInOut" },
-            },
-          }}
-          className="cat-icon relative"
-        >
-          <icons.SchrodingersCat className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 m-4" />
-        </motion.span>
-      </motion.h1>
-      <motion.h2
-        className={`text-quanta-headline-small md:text-quanta-headline-medium lg:text-quanta-headline-large break-keep flex items-center justify-center ${outfit.className}`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ ...GENTLE_EASE, delay: 1 }}
-      >
-        <span className="mr-2">for learning with</span>
-        <GradientText
-          colors={[
-            COLORS.primary.hex,
-            COLORS.secondary.hex,
-            COLORS.primary.hex,
-          ]}
-        >
-          Quanta
-        </GradientText>
-        !
-      </motion.h2>
-
-      <motion.h3
-        className={`mt-5 w-full body-text break-keep flex items-center justify-center ${outfit.className}`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ ...GENTLE_EASE, delay: 2.5 }}
-      >
-        My name is Aiden, and I would love your feedback!
-      </motion.h3>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ ...GENTLE_EASE, delay: 4 }}
-        className="flex flex-row gap-4"
-      >
-        <button
-          className="button-primary bg-quanta-primary mt-5"
-          onClick={handleYes}
-        >
-          Absolutely!
-        </button>
-        <button
-          className="button-primary border-2 border-quanta-primary mt-5"
-          onClick={handleNo}
-        >
-          I&apos;m okay, thanks!
-        </button>
-      </motion.div>
-
-      {showForm && (
-        <GameHandler
-          id="feedback-quiz"
-          name="Feedback"
-          hideBg
-          className="h-fit max-w-3/4 border-0!"
-          successMessages={[
-            "Thank you so much!",
-            "I appreciate your feedback!",
-            "Thanks for helping me improve Quanta!",
-          ]}
-          onGameEnd={handleFreedbackComplete}
-          recordOnly
-          levels={[
-            <QuestionLevel
-              key={1}
-              question={{
-                type: "choice",
-                question:
-                  "How accessible was Quanta for someone without a relevant background?",
-                answers: [
-                  { text: "Not at all", correct: true },
-                  { text: "Slightly", correct: true },
-                  { text: "Moderately", correct: true },
-                  { text: "Very", correct: true },
-                ],
-              }}
-            />,
-            <QuestionLevel
-              key={1}
-              question={{
-                type: "choice",
-                question: "How enjoyable were the lessons in Quanta?",
-                answers: [
-                  { text: "Not at all", correct: true },
-                  { text: "Slightly", correct: true },
-                  { text: "Moderately", correct: true },
-                  { text: "Very", correct: true },
-                ],
-              }}
-            />,
-            <QuestionLevel
-              key={1}
-              question={{
-                type: "choice",
-                question: "How much did you learn from using Quanta?",
-                answers: [
-                  { text: "Nothing at all", correct: true },
-                  { text: "A little", correct: true },
-                  { text: "A moderate amount", correct: true },
-                  { text: "A lot", correct: true },
-                ],
-              }}
-            />,
-            <QuestionLevel
-              key={1}
-              question={{
-                type: "choice",
-                question:
-                  "Overall, how much did your understanding of quantum computing improve after using Quanta?",
-                answers: [
-                  { text: "Not at all", correct: true },
-                  { text: "A little", correct: true },
-                  { text: "A moderate amount", correct: true },
-                  { text: "A lot", correct: true },
-                ],
-              }}
-            />,
-            <QuestionLevel
-              key={1}
-              question={{
-                type: "choice",
-                question:
-                  "Approximately how much time did you spend using Quanta?",
-                answers: [
-                  { text: "Less than 10 minutes", correct: true },
-                  { text: "10-30 minutes", correct: true },
-                  { text: "30-60 minutes", correct: true },
-                  { text: "More than 1 hour", correct: true },
-                ],
-              }}
-            />,
-            <FeedbackLevel
-              key={1}
-              question="What were your favorite part(s) of Quanta?"
-            />,
-            <FeedbackLevel
-              key={1}
-              question="What were your least favorite part(s) of Quanta?"
-            />,
-            <FeedbackLevel
-              key={1}
-              question="What is one feature you would like added to Quanta?"
-            />,
-          ]}
-        />
-      )}
-    </motion.div>
+      <icons.PartyHorn className="size-4 md:size-5" />
+    </motion.button>
   );
 }

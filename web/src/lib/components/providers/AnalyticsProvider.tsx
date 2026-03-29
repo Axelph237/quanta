@@ -144,7 +144,7 @@ function ConsentPopup({
     >
       <div
         id="consent-form-container"
-        className="border-2 border-quanta-primary rounded-2xl shadow-2xl shadow-quanta-primary p-12 max-w-2xl max-h-[80vh] bg-quanta-surface overflow-y-scroll flex flex-col items-center gap-4"
+        className="relative border-2 border-quanta-primary rounded-2xl shadow-2xl shadow-quanta-primary p-6 max-w-2xl max-h-[80vh] bg-quanta-surface overflow-y-scroll flex flex-col items-center gap-4"
       >
         <h1
           id="consent-form-title"
@@ -152,38 +152,37 @@ function ConsentPopup({
         >
           Anonymous Usage Analytics Consent
         </h1>
-        <AnimatePresence>
-          {showFullText ? (
-            <motion.div
-              id="consent-form-text"
-              className="overflow-y-auto rounded-lg border-2 border-quanta-on-surface/15 p-4"
-            >
-              <ConsentText />
-            </motion.div>
-          ) : (
-            <motion.div id="consent-form-overview">
-              Hello! This website was built to study the effectiveness of{" "}
-              <b>interactivity</b> on <b>quantum computing education</b>. In
-              order to do this, Quanta collects <i>completely anonymous</i> data
-              about how you use the website. This data includes:
-              <ul>
-                <li>- Pages you visit</li>
-                <li>- How long you spend on each page</li>
-                <li>- What you do on each page</li>
-              </ul>
-              <br />
-              Should you accept, a random ID will be generated and attached to
-              your device. This ID will be used to identify you across sessions,
-              <i>but will not be used to identify you personally</i>. You may
-              withdraw your participation at any time by visiting the About page
-              of quanta.akingstudio.com and unchecking the{" "}
-              <b>
-                &quot;Allow Collection of Usage Analytics for Research&quot;
-              </b>{" "}
-              checkbox. Thanks a bunch! :)
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {showFullText ? (
+          <motion.div
+            id="consent-form-text"
+            className="overflow-y-auto rounded-lg border-2 border-quanta-on-surface/15 p-4"
+          >
+            <ConsentText />
+          </motion.div>
+        ) : (
+          <motion.div
+            id="consent-form-overview"
+            className="overflow-y-auto rounded-lg border-2 border-quanta-on-surface/15 p-4"
+          >
+            Hello! This website was built to study the effectiveness of{" "}
+            <b>interactivity</b> on <b>quantum computing education</b>. In order
+            to do this, Quanta collects <i>completely anonymous</i> data about
+            how you use the website. This data includes:
+            <ul>
+              <li>- Pages you visit</li>
+              <li>- How long you spend on each page</li>
+              <li>- What you do on each page</li>
+            </ul>
+            <br />
+            Should you accept, a random ID will be generated and attached to
+            your device. This ID will be used to identify you across sessions,
+            <i>but will not be used to identify you personally</i>. You may
+            withdraw your participation at any time by visiting the About page
+            of quanta.akingstudio.com and unchecking the{" "}
+            <b>&quot;Allow Collection of Usage Analytics for Research&quot;</b>{" "}
+            checkbox. Thanks a bunch! :)
+          </motion.div>
+        )}
         <button
           className="cursor-pointer text-quanta-on-surface/50 hover:text-quanta-on-surface transition-colors duration-300"
           onClick={() => setShowFullText(!showFullText)}

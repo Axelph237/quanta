@@ -11,7 +11,7 @@ import QuestionLevel, {
 interface QuizProps extends React.ComponentProps<"div"> {
   lessonId: string;
   onEnd: () => void;
-  questions: (QuizQuestionType | React.ReactElement<LevelComponentProps>)[];
+  questions: QuizQuestionType[];
 }
 
 /*
@@ -80,12 +80,9 @@ export function PreQuiz({ lessonId, onEnd, questions, ...rest }: QuizProps) {
       recordOnly
       onGameEnd={thisOnEnd}
       levels={questions.map((question, i) => {
-        if (question.type === "input" || question.type === "choice") {
-          return (
-            <QuestionLevel key={i} question={question as QuizQuestionType} />
-          );
-        }
-        return question as React.ReactElement<LevelComponentProps>;
+        return (
+          <QuestionLevel key={i} question={question as QuizQuestionType} />
+        );
       })}
     />
   );
@@ -107,12 +104,9 @@ export function PostQuiz({ lessonId, onEnd, questions, ...rest }: QuizProps) {
       // recordOnly
       onGameEnd={thisOnEnd}
       levels={questions.map((question, i) => {
-        if (question.type === "input" || question.type === "choice") {
-          return (
-            <QuestionLevel key={i} question={question as QuizQuestionType} />
-          );
-        }
-        return question as React.ReactElement<LevelComponentProps>;
+        return (
+          <QuestionLevel key={i} question={question as QuizQuestionType} />
+        );
       })}
     />
   );

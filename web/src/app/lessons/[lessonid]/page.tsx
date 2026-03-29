@@ -10,7 +10,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { redirect, RedirectType } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { COLORS, GENTLE_EASE } from "@/app/globals";
 import Logo from "@/lib/components/ui/Logo";
 import { DefineTooltips } from "@/lib/components/ui/DefineTooltip";
@@ -26,6 +26,7 @@ export default function LessonPage({
 }: {
   params: Promise<{ lessonid: string }>;
 }) {
+  const router = useRouter();
   const { recordEvent } = useAnalytics();
   const [lesson, setLesson] = useState<Lesson | undefined>(undefined);
   const { scrollYProgress } = useScroll();
@@ -52,9 +53,8 @@ export default function LessonPage({
     if (lessonId) {
       recordEvent({ type: "lesson_closed", lessonId: lessonId });
     }
-    redirect(
-      "/lessons" + (lesson ? "?selected=" + lesson.id : ""),
-      RedirectType.push,
+    router.push(
+      "/lessons" + (lesson ? "?selected=" + lesson.id : "")
     );
   };
 

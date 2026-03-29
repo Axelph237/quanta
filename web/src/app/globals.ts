@@ -1,4 +1,11 @@
+import { LESSONS } from "@/lib/lessons";
 import { Transition } from "framer-motion";
+
+declare global {
+  var finishAllLessons: () => void;
+  var colors: Record<string, { hex: string; rgb: number[] }>;
+  var transitions: Record<string, Transition>;
+}
 
 export const GENTLE_EASE: Transition = {
   type: "tween",
@@ -19,4 +26,10 @@ export const COLORS = {
     hex: "#fb2c36",
     rgb: [251, 44, 54],
   }
+}
+
+// I just found out about globalThis at the end of development 😫 bruh... so these variables aren't used anywhere lol
+globalThis.colors = COLORS;
+globalThis.transitions = {
+  gentleEase: GENTLE_EASE,
 }

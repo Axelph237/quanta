@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
 import { motion, useAnimate } from "framer-motion";
 import { GENTLE_EASE } from "./globals";
-import { redirect, RedirectType } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Logo from "@/lib/components/ui/Logo";
 import ShinyText from "@/lib/components/react-bits/ShinyText";
 import { useViewportSize } from "@/lib/hooks/useViewportSize";
@@ -42,6 +42,7 @@ interface GateBody {
 const MOBILE_BREAKPOINT = 600;
 
 export default function LandingPage() {
+  const router = useRouter();
   const sceneRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<Matter.Engine | null>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
@@ -243,7 +244,7 @@ export default function LandingPage() {
         },
         GENTLE_EASE,
       );
-      redirect("/home?from=landing", RedirectType.push);
+      router.push("/home?from=landing");
     }, 1200); // Wait for text to unblur
   }, [textAreaClear]);
 
