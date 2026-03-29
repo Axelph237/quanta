@@ -31,7 +31,8 @@ const lessons: Lesson[] = [
     preQuestions: [
       {
         type: "choice",
-        question: "Have you heard of the particle wave debate?",
+        question:
+          "Have you heard of the wave-particle duality of light and matter?",
         answers: [
           { text: "Yes", correct: true },
           { text: "No", correct: true },
@@ -41,9 +42,10 @@ const lessons: Lesson[] = [
       {
         type: "choice",
         question: "What does it mean for something to be quantized?",
+        randomize: true,
         answers: [
           {
-            text: "It can only take on certain discrete values",
+            text: "It can only take on specific discrete values",
             correct: true,
           },
           { text: "It can only exist in continuous amounts", correct: false },
@@ -54,6 +56,7 @@ const lessons: Lesson[] = [
       {
         type: "choice",
         question: "What is a wave equation?",
+        randomize: true,
         answers: [
           {
             text: "A mathematical equation that describes the propagation of waves",
@@ -74,9 +77,36 @@ const lessons: Lesson[] = [
     postQuestions: [
       {
         type: "choice",
-        question: "What is the key feature of the Schrödinger equation?",
+        question: "What does wave-particle duality imply?",
+        randomize: true,
         answers: [
-          { text: "It shows that matter waves", correct: true },
+          {
+            text: "Particles can exhibit both wave-like and particle-like behavior",
+            correct: true,
+          },
+          {
+            text: "Particles are sometimes waves and sometimes particles depending on the observer",
+            correct: false,
+          },
+          {
+            text: "Waves and particles are completely unrelated",
+            correct: false,
+          },
+          {
+            text: "Only light exhibits wave behavior",
+            correct: false,
+          },
+        ],
+      },
+      {
+        type: "choice",
+        question: "What is the key feature of the Schrödinger equation?",
+        randomize: true,
+        answers: [
+          {
+            text: "It describes how a quantum state evolves over time",
+            correct: true,
+          },
           {
             text: "It shows that matter is complex due to the value i",
             correct: false,
@@ -91,7 +121,7 @@ const lessons: Lesson[] = [
       {
         type: "choice",
         question:
-          'Do you feel like you have a better understanding of "quantum" particles after this lesson?',
+          "Do you feel like you have a better understanding of quantum particles after this lesson?",
         answers: [
           { text: "Yes", correct: true },
           { text: "No", correct: true },
@@ -120,36 +150,39 @@ const lessons: Lesson[] = [
       },
       {
         type: "choice",
-        question: "How comfortable do you feel working with binary numbers?",
+        question:
+          "How comfortable do you feel working with binary (base-2) numbers?",
         answers: [
           { text: "Not at all", correct: true },
-          { text: "A little", correct: true },
-          { text: "Comfortable", correct: true },
-          { text: "Very comfortable", correct: true },
+          { text: "Slightly", correct: true },
+          { text: "Moderately", correct: true },
+          { text: "Very", correct: true },
         ],
       },
     ],
     postQuestions: [
       {
         type: "choice",
-        question: "What does $|01\\rangle$ mean?",
+        question: "What does a ket (e.g. $|0\\rangle$) represent?",
+        randomize: true,
         answers: [
           {
-            text: "A state where the first qubit is 0 and the second qubit is 1",
+            text: "A quantum state",
             correct: true,
           },
           {
-            text: "A state where the first qubit is 1 and the second qubit is 0",
+            text: "A measurement result only",
             correct: false,
           },
-          { text: "The number 1 in binary", correct: false },
-          { text: "The probability of measuring 0 is 1", correct: false },
+          { text: "A probability value", correct: false },
+          { text: "A mathematical constant", correct: false },
         ],
       },
       {
         type: "choice",
         question:
-          "What is the combined state of $|0\\rangle |1\\rangle$ equal to?",
+          "What does the combined state $|0\\rangle |1\\rangle$ equal to?",
+        randomize: true,
         answers: [
           { text: "$|01\\rangle$", correct: true },
           { text: "$|10\\rangle$", correct: false },
@@ -182,38 +215,53 @@ const lessons: Lesson[] = [
         question: "How comfortable are you with understanding probabilities?",
         answers: [
           { text: "Not at all", correct: true },
-          { text: "A little", correct: true },
-          { text: "Comfortable", correct: true },
-          { text: "Very comfortable", correct: true },
+          { text: "Slightly", correct: true },
+          { text: "Moderately", correct: true },
+          { text: "Very", correct: true },
         ],
       },
     ],
     postQuestions: [
       {
         type: "choice",
-        question: "How comfortable would you be explaining superposition?",
+        question: "What does it mean for a qubit to be in superposition?",
+        randomize: true,
         answers: [
-          { text: "Not at all", correct: true },
-          { text: "A little", correct: true },
-          { text: "Comfortable", correct: true },
-          { text: "Very comfortable", correct: true },
+          {
+            text: "It exists as a combination of multiple states at once until measured",
+            correct: true,
+          },
+          { text: "It rapidly switches between 0 and 1", correct: false },
+          { text: "It is both 0 and 1 only after measurement", correct: false },
+          { text: "It has an unknown but fixed value", correct: false },
         ],
       },
       {
         type: "choice",
         question:
           "What's the difference between classical probability and a probability amplitude?",
+        randomize: true,
         answers: [
           {
-            text: "Probability amplitudes have direction (complex and negative).",
+            text: "Probability amplitudes can be complex and can take negative values",
             correct: true,
           },
           {
-            text: "Probability amplitudes are always positive.",
+            text: "Probability amplitudes are always positive",
             correct: false,
           },
-          { text: "Classical probabilities can be negative.", correct: false },
-          { text: "There is no difference.", correct: false },
+          { text: "Classical probabilities can be negative", correct: false },
+          { text: "There is no difference", correct: false },
+        ],
+      },
+      {
+        type: "choice",
+        question: "How comfortable would you be explaining superposition?",
+        answers: [
+          { text: "Not at all", correct: true },
+          { text: "Slightly", correct: true },
+          { text: "Moderately", correct: true },
+          { text: "Very", correct: true },
         ],
       },
     ],
@@ -229,16 +277,8 @@ const lessons: Lesson[] = [
     preQuestions: [
       {
         type: "choice",
-        question: "Have you ever heard of wave interference?",
-        answers: [
-          { text: "Yes", correct: true },
-          { text: "No", correct: true },
-          { text: "I'm not sure", correct: true },
-        ],
-      },
-      {
-        type: "choice",
-        question: "Have you ever heard of destructive interference?",
+        question:
+          "Have you heard of wave interference (constructive or destructive)?",
         answers: [
           { text: "Yes", correct: true },
           { text: "No", correct: true },
@@ -250,13 +290,14 @@ const lessons: Lesson[] = [
       {
         type: "choice",
         question: "What is constructive interference?",
+        randomize: true,
         answers: [
           {
-            text: "When two waves interfere, increasing the amplitude of the wave",
+            text: "When two waves interfere, increasing the resulting amplitude",
             correct: true,
           },
           {
-            text: "When two waves interfere, decreasing the amplitude of the wave",
+            text: "When two waves interfere, decreasing the resulting amplitude",
             correct: false,
           },
         ],
@@ -264,13 +305,37 @@ const lessons: Lesson[] = [
       {
         type: "choice",
         question: "What is destructive interference?",
+        randomize: true,
         answers: [
           {
-            text: "When two waves interfere, decreasing the amplitude of the wave",
+            text: "When two waves interfere, decreasing the resulting amplitude",
             correct: true,
           },
           {
-            text: "When two waves interfere, increasing the amplitude of the wave",
+            text: "When two waves interfere, increasing the resulting amplitude",
+            correct: false,
+          },
+        ],
+      },
+      {
+        type: "choice",
+        question: "Why can interference occur in quantum systems??",
+        randomize: true,
+        answers: [
+          {
+            text: "Because probability amplitudes can combine and cancel each other",
+            correct: true,
+          },
+          {
+            text: "Because particles collide with each other",
+            correct: false,
+          },
+          {
+            text: "Because probabilities can become negative",
+            correct: false,
+          },
+          {
+            text: "Because measurements change the system randomly",
             correct: false,
           },
         ],
@@ -278,8 +343,12 @@ const lessons: Lesson[] = [
       {
         type: "choice",
         question: "What is special about probability amplitudes?",
+        randomize: true,
         answers: [
-          { text: "They can be negative & complex", correct: true },
+          {
+            text: "They can be complex-valued and may take negative values",
+            correct: true,
+          },
           { text: "They can be negative but not complex", correct: false },
           { text: "They can be complex but not negative", correct: false },
           {
@@ -313,6 +382,7 @@ const lessons: Lesson[] = [
       {
         type: "choice",
         question: "What does it mean for a set of qubits to be entangled?",
+        randomize: true,
         answers: [
           {
             text: "The state of the qubits cannot be described independently of each other",
@@ -329,9 +399,50 @@ const lessons: Lesson[] = [
           },
         ],
       },
-      <DiceLevel key={"dice-1"} numVisDice={2} hidDice={[1, 2]} />,
-      <DiceLevel key={"dice-2"} numVisDice={2} hidDice={[3, 6]} />,
-      <DiceLevel key={"dice-3"} numVisDice={2} hidDice={[5, 5]} />,
+      {
+        type: "choice",
+        question:
+          "Do entangled qubits have definite values before measurement?",
+        randomize: true,
+        answers: [
+          {
+            text: "No, their state is only defined as a combined system",
+            correct: true,
+          },
+          {
+            text: "Yes, but we just don't know them",
+            correct: false,
+          },
+          {
+            text: "Yes, and measurement reveals them without changing anything",
+            correct: false,
+          },
+          {
+            text: "Only one qubit has a definite value",
+            correct: false,
+          },
+        ],
+      },
+      {
+        type: "choice",
+        question: "What is a key feature of entangled systems?",
+        randomize: true,
+        answers: [
+          {
+            text: "Measurement outcomes are correlated between qubits",
+            correct: true,
+          },
+          {
+            text: "Each qubit behaves completely independently",
+            correct: false,
+          },
+          { text: "The system always has identical values", correct: false },
+          {
+            text: "The qubits must be physically connected",
+            correct: false,
+          },
+        ],
+      },
     ],
   },
 ];

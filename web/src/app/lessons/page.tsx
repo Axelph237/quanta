@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  useState,
-  useEffect,
-  Suspense,
-  useRef,
-  RefObject,
-  useMemo,
-} from "react";
+import { useState, useEffect, Suspense, useRef, RefObject } from "react";
 import {
   motion,
   useAnimate,
@@ -35,6 +28,7 @@ import confetti from "canvas-confetti";
 import "./offboarding.css";
 import FeedbackLevel from "@/lib/components/games/FeedbackLevel";
 import { getPermissions } from "@/lib/components/providers/AnalyticsProvider";
+import SectionLevel from "@/lib/components/games/SectionLevel";
 
 const COMPLETED_LESSONS_STORAGE_KEY = "completedLessons";
 type CompletedLessons = string[];
@@ -581,22 +575,94 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
               "That's amazing!",
               "That's incredible!",
             ]}
-            // onGameStart={() => setFadeOutHeader(true)}
             onGameEnd={onEnd}
-            recordOnly
             levels={[
+              // Background questions
               <QuestionLevel
                 key={1}
                 question={{
                   type: "choice",
-                  question: "What's your major?",
+                  question: "What is your highest level of education?",
                   answers: [
+                    { text: "High School or equivalent", correct: true },
+                    { text: "Some college", correct: true },
+                    { text: "Bachelor's degree", correct: true },
+                    { text: "Graduate degree", correct: true },
+                    { text: "Other / Prefer not to say", correct: true },
+                  ],
+                }}
+              />,
+              <QuestionLevel
+                key={1}
+                question={{
+                  type: "choice",
+                  question:
+                    "Have you previously taken a course related to quantum mechanics or quantum computing?",
+                  answers: [
+                    { text: "Yes", correct: true },
+                    { text: "No", correct: true },
+                    { text: "I'm not sure", correct: true },
+                  ],
+                }}
+              />,
+              <QuestionLevel
+                key={1}
+                question={{
+                  type: "choice",
+                  question: "What is your primary field of study or work?",
+                  answers: [
+                    { text: "STEM field", correct: true },
+                    { text: "Non-STEM field", correct: true },
+                    { text: "Not currently a student", correct: true },
+                    { text: "Other / Prefer not to say", correct: true },
+                  ],
+                }}
+              />,
+              <QuestionLevel
+                key={1}
+                question={{
+                  type: "choice",
+                  question:
+                    "Approximately how familiar were you with quantum computing before using this platform?",
+                  answers: [
+                    { text: "Not at all familiar", correct: true },
+                    { text: "Slightly familiar", correct: true },
+                    { text: "Moderately familiar", correct: true },
+                    { text: "Very familiar", correct: true },
+                  ],
+                }}
+              />,
+              <QuestionLevel
+                key={1}
+                question={{
+                  type: "choice",
+                  question:
+                    "Have you previously used interactive or online tools to learn physics or computing concepts?",
+                  answers: [
+                    { text: "Yes", correct: true },
+                    { text: "No", correct: true },
+                  ],
+                }}
+              />,
+              // Onboarding questions (not sure of the difference)
+              <SectionLevel
+                key="onboarding-section"
+                header="Education"
+                subheader="Just a bit more about your education experience!"
+              />,
+              <QuestionLevel
+                key={1}
+                question={{
+                  type: "choice",
+                  question:
+                    "What is your primary field of study or background?",
+                  answers: [
+                    { text: "Computer Science", correct: true },
                     { text: "Physics", correct: true },
+                    { text: "Mathematics", correct: true },
                     { text: "Engineering", correct: true },
-                    { text: "Math", correct: true },
                     { text: "Chemistry", correct: true },
                     { text: "Biology", correct: true },
-                    { text: "Computer Science", correct: true },
                     { text: "Non-STEM", correct: true },
                     { text: "Other", correct: true },
                     { text: "Not a student", correct: true },
@@ -607,13 +673,12 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
                 key={1}
                 question={{
                   type: "choice",
-                  question: "How comfortable are you with physics?",
+                  question: "How comfortable are you with physics concepts?",
                   answers: [
                     { text: "Not at all", correct: true },
-                    { text: "A little", correct: true },
-                    { text: "Comfortable", correct: true },
-                    { text: "Very comfortable", correct: true },
-                    { text: "I've studied modern physics", correct: true },
+                    { text: "Slightly", correct: true },
+                    { text: "Moderately", correct: true },
+                    { text: "Very", correct: true },
                   ],
                 }}
               />,
@@ -621,13 +686,25 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
                 key={1}
                 question={{
                   type: "choice",
-                  question: "How comfortable are you with math?",
+                  question: "How comfortable are you with mathematics?",
                   answers: [
                     { text: "Not at all", correct: true },
-                    { text: "A little", correct: true },
-                    { text: "Comfortable", correct: true },
-                    { text: "Very comfortable", correct: true },
-                    { text: "I've studied linear algebra", correct: true },
+                    { text: "Slightly", correct: true },
+                    { text: "Moderately", correct: true },
+                    { text: "Very", correct: true },
+                  ],
+                }}
+              />,
+
+              <QuestionLevel
+                key={1}
+                question={{
+                  type: "choice",
+                  question: "Have you taken linear algebra?",
+                  answers: [
+                    { text: "Yes", correct: true },
+                    { text: "No", correct: true },
+                    { text: "I'm not sure", correct: true },
                   ],
                 }}
               />,
@@ -796,11 +873,10 @@ function Offboarding({ onComplete }: { onComplete: () => void }) {
                 question:
                   "How accessible was Quanta for someone without a relevant background?",
                 answers: [
-                  { text: "Very accessible", correct: true },
-                  { text: "Somewhat accessible", correct: true },
-                  { text: "Neutral", correct: true },
-                  { text: "Somewhat inaccessible", correct: true },
-                  { text: "Very inaccessible", correct: true },
+                  { text: "Not at all", correct: true },
+                  { text: "Slightly", correct: true },
+                  { text: "Moderately", correct: true },
+                  { text: "Very", correct: true },
                 ],
               }}
             />,
@@ -810,11 +886,10 @@ function Offboarding({ onComplete }: { onComplete: () => void }) {
                 type: "choice",
                 question: "How enjoyable were the lessons in Quanta?",
                 answers: [
-                  { text: "Very unenjoyable", correct: true },
-                  { text: "Somewhat unenjoyable", correct: true },
-                  { text: "Neutral", correct: true },
-                  { text: "Somewhat enjoyable", correct: true },
-                  { text: "Very enjoyable", correct: true },
+                  { text: "Not at all", correct: true },
+                  { text: "Slightly", correct: true },
+                  { text: "Moderately", correct: true },
+                  { text: "Very", correct: true },
                 ],
               }}
             />,
@@ -824,7 +899,7 @@ function Offboarding({ onComplete }: { onComplete: () => void }) {
                 type: "choice",
                 question: "How much did you learn from using Quanta?",
                 answers: [
-                  { text: "Nothing", correct: true },
+                  { text: "Nothing at all", correct: true },
                   { text: "A little", correct: true },
                   { text: "A moderate amount", correct: true },
                   { text: "A lot", correct: true },
@@ -854,8 +929,8 @@ function Offboarding({ onComplete }: { onComplete: () => void }) {
                 answers: [
                   { text: "Less than 10 minutes", correct: true },
                   { text: "10-30 minutes", correct: true },
-                  { text: "30 minutes to an hour", correct: true },
-                  { text: "More than an hour", correct: true },
+                  { text: "30-60 minutes", correct: true },
+                  { text: "More than 1 hour", correct: true },
                 ],
               }}
             />,

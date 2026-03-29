@@ -10,6 +10,7 @@ import { useViewportSize } from "@/lib/hooks/useViewportSize";
 interface ChoiceQuestion {
   type: "choice";
   question: string;
+  randomize?: boolean;
   answers: { text: string; correct: boolean }[];
 }
 
@@ -19,7 +20,16 @@ interface InputQuestion {
   answer?: string;
 }
 
-export type QuizQuestionType = ChoiceQuestion | InputQuestion;
+// Used for qualitative questions usually about user confidence
+interface SliderQuestion {
+  type: "slider";
+  question: string;
+  highLabel: string;
+  lowLabel: string;
+  steps: number;
+}
+
+export type QuizQuestionType = ChoiceQuestion | InputQuestion | SliderQuestion;
 
 export default function QuestionLevel({
   question,
@@ -33,16 +43,16 @@ export default function QuestionLevel({
   const [gridDims, setGridDims] = useState({ cols: 1, rows: 4 });
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
 
-  const [shuffledAnswers, setShuffledAnswers] = useState(
+  const [answers, setAnswers] = useState(
     question.type === "choice" ? [...question.answers] : [],
   );
 
   // Ready on mount
   useEffect(() => {
-    if (question.type === "choice") {
+    if (question.type === "choice" && question.randomize === true) {
       const shuffled = [...question.answers].sort(() => Math.random() - 0.5);
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setShuffledAnswers(() => {
+      setAnswers(() => {
         return shuffled;
       });
     }
@@ -100,7 +110,8 @@ export default function QuestionLevel({
         }}
       >
         {question.type === "choice" ? (
-          shuffledAnswers.map((answer) => (
+          // Choice questions
+          answers.map((answer) => (
             <button
               key={answer.text}
               className="button-primary bg-quanta-primary col-span-1"
@@ -113,7 +124,8 @@ export default function QuestionLevel({
               />
             </button>
           ))
-        ) : (
+        ) : question.type === "input" ? (
+          // Input questions
           <div className="flex flex-row gap-2 items-center justify-center">
             <input
               type="text"
@@ -140,6 +152,9 @@ export default function QuestionLevel({
               <icons.Check className="w-4 h-4" />
             </button>
           </div>
+        ) : (
+          // Slider questions
+          <div>TODO: Slider questions</div>
         )}
       </form>
     </div>
