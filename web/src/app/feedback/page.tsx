@@ -34,7 +34,7 @@ function Offboarding({ onComplete }: { onComplete: () => void }) {
   const [showForm, setShowForm] = useState(false);
 
   const fireworks = () => {
-    const MAX_FIREWORKS = 20;
+    const MAX_FIREWORKS = 5;
     let fireworksLaunched = 0;
 
     const randomInRange = (min: number, max: number) =>
