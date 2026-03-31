@@ -1,7 +1,7 @@
 "use client";
 
 import { COLORS } from "@/app/globals";
-
+import { csstopx, cssvar } from "@/lib/styles";
 import { P5CanvasInstance, P5Canvas, SketchProps } from "@p5-wrapper/react";
 
 interface ProbSketchProps extends SketchProps {
@@ -15,7 +15,7 @@ interface ProbSketchProps extends SketchProps {
 
 function sketch(p: P5CanvasInstance) {
   const MOBILE_BREAKPOINT = 600;
-  const DESKTOP_BREAKPOINT = 1000;
+  const DESKTOP_BREAKPOINT = 1025;
   let textSize = 16;
   let values = [1, 2, 3, 4];
   let displayValues = new Array(values.length).fill(0);
@@ -25,30 +25,35 @@ function sketch(p: P5CanvasInstance) {
 
   p.setup = () => {
     const width = document.documentElement.clientWidth;
-    let margin;
-    if (width > DESKTOP_BREAKPOINT) {
-      textSize = 16;
-      margin = 50;
-    } else if (width > MOBILE_BREAKPOINT) {
-      textSize = 16;
-      margin = 50;
-    } else {
-      textSize = 10;
-      margin = 50;
+    const height = document.documentElement.clientHeight;
+    const padding = csstopx(cssvar("--page-padding", document.body)) || 0;
+
+    const contentWidth = width > DESKTOP_BREAKPOINT ? (width * 2) / 3 : width;
+
+    p.createCanvas(
+      contentWidth - padding * 2,
+      Math.max(height, contentWidth) / 3,
+    );
+
+    if (width < MOBILE_BREAKPOINT) {
+      textSize = 12;
     }
-    p.createCanvas((width * 3) / 4 - margin * 2, width / 3);
 
     p.windowResized = () => {
       const width = document.documentElement.clientWidth;
-      let margin;
-      if (width > MOBILE_BREAKPOINT) {
-        textSize = 16;
-        margin = 100;
-      } else {
-        textSize = 10;
-        margin = 50;
+      const height = document.documentElement.clientHeight;
+      const padding = csstopx(cssvar("--page-padding", document.body)) || 0;
+
+      const contentWidth = width > DESKTOP_BREAKPOINT ? (width * 2) / 3 : width;
+
+      p.resizeCanvas(
+        contentWidth - padding * 2,
+        Math.max(height, contentWidth) / 3,
+      );
+
+      if (width < MOBILE_BREAKPOINT) {
+        textSize = 12;
       }
-      p.resizeCanvas((width * 3) / 4 - margin * 2, width / 3);
     };
   };
 
