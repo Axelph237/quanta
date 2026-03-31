@@ -235,14 +235,14 @@ function StepQuestion({
               initial={{ scale: 0 }}
               animate={{ scale: selected === i ? [0, 1.3, 1] : 0 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="size-3 rounded-full bg-quanta-primary"
+              className="size-4 rounded-full bg-quanta-primary"
             ></motion.div>
             <input
               id={`slider-checkbox-${i}`}
               type="checkbox"
               checked={selected === i}
               key={i}
-              className="appearance-none"
+              className="appearance-none hidden"
               onChange={() => setSelected(i)}
             ></input>
           </label>
