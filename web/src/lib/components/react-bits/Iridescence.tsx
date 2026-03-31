@@ -1,3 +1,4 @@
+import { useDeviceType } from "@/lib/hooks/useDeviceType";
 import { Renderer, Program, Mesh, Color, Triangle } from "ogl";
 import { useEffect, useRef } from "react";
 
@@ -167,8 +168,9 @@ export default function Iridescence({
     };
   }, [color, speed, amplitude, mouseReact]);
 
-  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
-  if (isIOS) {
+  // Return empty div on mobile as mobile devices get iffy with WebGL contexts
+  const deviceType = useDeviceType();
+  if (deviceType === "mobile") {
     return <div className="w-full h-full" {...rest} />;
   }
 

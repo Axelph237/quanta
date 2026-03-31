@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Renderer, Program, Mesh, Color, Triangle } from "ogl";
+import { useDeviceType } from "@/lib/hooks/useDeviceType";
 
 const VERT = `#version 300 es
 in vec2 position;
@@ -149,7 +150,6 @@ export default function Aurora(props: AuroraProps) {
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     gl.canvas.style.backgroundColor = "transparent";
 
-
     const geometry = new Triangle(gl);
     if (geometry.attributes.uv) {
       delete geometry.attributes.uv;
@@ -216,6 +216,12 @@ export default function Aurora(props: AuroraProps) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amplitude]);
+
+  // Return empty div on mobile as mobile devices get iffy with WebGL contexts
+  const deviceType = useDeviceType();
+  if (deviceType === "mobile") {
+    return <div className="w-full h-full" />;
+  }
 
   return <div ref={ctnDom} className="w-full h-full" />;
 }
