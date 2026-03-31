@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Renderer, Program, Mesh, Color, Triangle } from "ogl";
-import { useDeviceType } from "@/lib/hooks/useDeviceType";
+import { getDeviceType } from "@/lib/hooks/getDeviceType";
 
 const VERT = `#version 300 es
 in vec2 position;
@@ -127,9 +127,11 @@ export default function Aurora(props: AuroraProps) {
 
   const ctnDom = useRef<HTMLDivElement>(null);
 
+  const deviceType = getDeviceType();
+
   useEffect(() => {
     const ctn = ctnDom.current;
-    if (!ctn) return;
+    if (!ctn || deviceType === "mobile") return;
 
     let renderer: Renderer;
     try {
@@ -218,7 +220,6 @@ export default function Aurora(props: AuroraProps) {
   }, [amplitude]);
 
   // Return empty div on mobile as mobile devices get iffy with WebGL contexts
-  const deviceType = useDeviceType();
   if (deviceType === "mobile") {
     return <div className="w-full h-full" />;
   }

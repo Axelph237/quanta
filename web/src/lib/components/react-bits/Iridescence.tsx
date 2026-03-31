@@ -1,4 +1,4 @@
-import { useDeviceType } from "@/lib/hooks/useDeviceType";
+import { getDeviceType } from "@/lib/hooks/getDeviceType";
 import { Renderer, Program, Mesh, Color, Triangle } from "ogl";
 import { useEffect, useRef } from "react";
 
@@ -66,11 +66,15 @@ export default function Iridescence({
   const renderer = useRef<Renderer | null>(null);
   const mesh = useRef<Mesh | null>(null);
 
+  const deviceType = getDeviceType();
+
   const isSetup = () => {
     return program.current && mesh.current && renderer.current;
   };
 
   useEffect(() => {
+    console.log(deviceType);
+    if (deviceType === "mobile") return;
     if (!ctnDom.current) return;
     try {
       renderer.current = new Renderer();
@@ -109,7 +113,7 @@ export default function Iridescence({
   }, []);
 
   useEffect(() => {
-    if (!isSetup()) return;
+    if (!isSetup() || deviceType === "mobile") return;
     const gl = renderer.current!.gl;
     if (!gl) return;
 
@@ -169,7 +173,6 @@ export default function Iridescence({
   }, [color, speed, amplitude, mouseReact]);
 
   // Return empty div on mobile as mobile devices get iffy with WebGL contexts
-  const deviceType = useDeviceType();
   if (deviceType === "mobile") {
     return <div className="w-full h-full" {...rest} />;
   }
