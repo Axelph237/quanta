@@ -24,11 +24,15 @@ Would be similarly represented in a quantum system by:
 $$
 \Psi_C = \frac{1}{\sqrt{2}}|0\rangle + \frac{1}{\sqrt{2}}|1\rangle
 $$
-There are *far* more examples I could dive into here, but just know that a probability amplitude is not *directly* correlated to a classical probability. It is a vector (or arrow of sorts) with a magnitude that represents a potential physical outcome ($\frac{1}{\sqrt2}$ in our example above). The likelihood that a specific outcome might be actually *measured* is equal to:
+There are *far* more examples I could dive into here, but just know that a probability amplitude is not *directly* correlated to a classical probability. Unlike a coin, a qubit is not in one hidden state before measurement. It is a vector (or arrow of sorts) with a magnitude that represents a potential physical outcome ($\frac{1}{\sqrt2}$ in our example above). The likelihood that a specific outcome might be actually *measured* is equal to the square of the magnitude of its amplitude:
 $$
 P(\alpha) = \alpha^*\alpha
 $$
-Where $\alpha$ is the probability amplitude of the measured state.
+or
+$$
+P(\alpha) = |\alpha|^2
+$$
+Where $\alpha$ is the probability amplitude of the measured state, and $|\alpha|$ is the amplitude of $\alpha$.
 <Callout title="What's the star?" icon={<SchrodingersCat className="icon" />}>
 We touched on it briefly in the *Bra-Ket* lesson, but the star ($^*$) represents the complex conjugate of a value (swap the sign of the complex part). i.e.:
 $$
@@ -39,6 +43,8 @@ It's that simple! So, if $\alpha$ has no complex part, then $\alpha^*\alpha=\alp
 
 
 ## How Does This Relate?
+*In short, a qubit in superposition exists as a combination of multiple states at once until measured.* 
+
 Using superposition allows us to represent multiple possibilities at once. We don't individually calculate every possibility, instead we can manipulate our computer to represent *all* possibilities, and then coerce the desired outcome to be the state with the highest amplitude, even if we don't know what state that is! That way, once we measure our state (like letting the coin land), we increase the likelihood of observing the correct answer.
 
 <span className="hidden">
