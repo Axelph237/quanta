@@ -11,14 +11,40 @@ For the first time in the history of Quanta (four lessons now), an analogy is ac
 
 A wave in a pond may have an amplitude representing the number of inches up (or below) from the surface of the water that wave can reach, we will call this amplitude $A$. In a classical system, in addition to $A$, a wave may have a phase shift. This means that the peaks of the wave are shifted across the independent axis. When the phase of two wave functions are aligned, they **constructively interfere**. However, when they are unaligned (or opposite each other), they **destructively interfere**. This can be seen in the double slit experiment from the *A Brief History* module.
 
-Quantum mechanical waves are no different, they similarly have **constructive** and **destructive** interference. The primary difference is that the phase of a quantum system has both a *real* and a *complex* part.
+Quantum mechanical waves are no different, they similarly have **constructive** and **destructive** interference. 
+{/* The primary difference is that the phase of a quantum system has both a *real* and a *complex* part. */}
 
-<Callout title="Note" icon={<SchrodingersCat className="icon" />} color="#2b7fff">
+{/* <Callout title="Note" icon={<SchrodingersCat className="icon" />} color="#2b7fff">
 *The phase and amplitude of a wave function is written $Ae^{i\theta}$. Using Euler's formula, this expands to:*
 $$
 Acos(\theta)+Aisin(\theta)
 $$
 *Here you can see that there are both real and imaginary (denoted by the $i$) parts of the phase! This is too big a topic for our sake, but in short, our wave equations have multiple waving properties within their single phase!*
+</Callout> */}
+
+<Callout title="Interference Example" icon={<SchrodingersCat className="icon" />} color="#2b7fff">
+Imagine you had two quantum states, $\Psi_1$ and $\Psi_2$ where:
+$$
+\Psi_1 = \frac{1}{\sqrt{2}}(|0\rangle + |1\rangle)
+$$
+and
+$$
+\Psi_2 = \frac{1}{\sqrt{2}}(|0\rangle - |1\rangle)
+$$
+If we had a combined state of $\Psi_1$ and $|Psi_2$ such as $\Phi = \frac{1}{\sqrt2}(|\Psi_1\rangle + |\Psi_2\rangle)$, this would mean:
+$$
+\Phi = \frac{1}{\sqrt2}(\frac{1}{\sqrt2}(|0\rangle + |1\rangle) + \frac{1}{\sqrt2}(|0\rangle - |1\rangle))
+$$
+$$
+\Phi = \frac{1}{2}(|0\rangle + |1\rangle + |0\rangle - |1\rangle)
+$$
+$$
+\Phi = \frac{1}{2}(2|0\rangle)
+$$
+$$
+\Phi = |0\rangle
+$$
+Since the phases of the $|1\rangle$ state were opposite each other, they cancelled out, leaving only the $|0\rangle$ state!
 </Callout>
 
 ## Please Interfere
