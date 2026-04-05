@@ -4,6 +4,7 @@ import ProbGraph from "@/lib/components/ui/figures/ProbGraph"
 import { Eye, ListItem, SchrodingersCat } from "@/lib/components/ui/Icons"
 import CircuitCanvas from "@/lib/circuit/CircuitCanvas"
 import ShinyText from "@/lib/components/react-bits/ShinyText"
+import Collapse from "@/lib/components/ui/Collapse"
 
 {/* CCZ gate */}
 export const ccz = [
@@ -45,7 +46,7 @@ export const diffuser = [
 ];
 
 # Grover's Algorithm
-One of the most well-known quantum algorithms is Grover's unstructured database algorithm. Essentially, Grover's algorithm uses an *oracle* function to find the solution to a given problem. The way in which we do this is by querying the *oracle* function and *diffusing* the result until the probability of measuring the solution is the highest. We will get more into what each of these terms actually mean later in the lesson.
+One of the most well-known quantum algorithms is Grover's unstructured database algorithm. Essentially, Grover's algorithm finds a marked item in a search problem. The way in which we do this is by querying the *oracle* function and applying a *diffuser* until the probability of measuring the solution is the highest. We will get more into what each of these terms actually mean later in the lesson.
 
 {/* A little alternate display for some transitional diagrams */}
 <Callout title="Fig 3.0.1" icon={<Eye className="icon" />}>
@@ -80,13 +81,11 @@ One of the most well-known quantum algorithms is Grover's unstructured database 
 
 Say you wanted to call a new friend, but this was long before contacts and smart phones. What would you do? Your best guess is to look them up in the phone book. *You know their name, you just want their associated phone number*. We can assume each person has one phone number, and vice-versa. In other words, this is a *1-to-1 database* of names $\rightarrow$ phone numbers. The issue is that if that the entries in this particular phonebook are in no particular order, and there is an entry for every person on the planet. That means it could take you looking through a total of 8 billion entries to find your new friend's number!
 
-Luckily for us, we can use Grover's algorithm to reduce the time this search would take beyond our current means! With one caveat: we must be able to *describe* our set of data in a quantum **oracle**.
+Luckily for us, we can use Grover's algorithm to reduce the time this search would take beyond our current means! Where a classical search algorithm would take linear time, Grover's algorithm only takes $\sqrt N$ steps! There is just one caveat: we must be able to *describe* our set of data in a quantum **oracle**.
 
 ## Asking The Oracle
 
-So what is a quantum oracle? Well, in short, it is a sort of **black box**. The oracle is a specialized gate built for the problem we are trying to solve. The gate represents a set of quantum operations that model the system we are trying to explore. 
-
-Phone books are a bad example: they are a dataset of random entries, the names can be any string of characters, and phone numbers are pretty random as well. Because of this, phone books aren't actually a great unstructured database. A better example might be the structure of an atom, its potential states, or even **the rules and board of a sudoku game**. 
+So what is a quantum oracle? Well, in short, the **oracle** marked the correct solution to a search problem.
 
 <Callout title="Fig 3.0.2" icon={<Eye className="icon" />}>
 <div className="flex flex-col sm:flex-row gap-6 text-quanta-on-surface items-center justify-center">
@@ -107,6 +106,8 @@ Phone books are a bad example: they are a dataset of random entries, the names c
 *The rules of Sudoku can be explained as describing all possible games of sudoku, rather than listing them all out explicitly. This is similar to a database being **unstructured**.*
 </Callout>
 
+<Collapse label="Oracle Details">
+### For anyone interested
 In the case of sudoku, our oracle would essentially mark the "correct" state if it satisfied all the rules. Let's say that a solution to our sudoku puzzle is represented by the state $|100\rangle$, the amplitudes of wave equation would be
 
 <div className="center-page-content">
@@ -118,11 +119,15 @@ In the case of sudoku, our oracle would essentially mark the "correct" state if 
 </div>
 
 After the first iteration. You can see that the marked state has a negative phase (thus negative amplitude). We will see how we can extract this negative amplitude into a positive amplitude in the next step of the algorithm!
+</Collapse>
 
 ## Diffusion
 #### Inversion-About-The-Mean
-Now that our target state has been marked, we need a way to reliably extract that state. If we measured our system right now, every state would have an equal probability (since the phase here does not change the square of the amplitude). To solve this, Lov Grover defines what is called the diffusion operator $D$.
+Now that our target state has been marked, we need a way to reliably extract that state. The diffuser does just that: by reflecting the amplitudes around their average, it increases the probability of the marked state. For anyone interested, below is a deeper dive into the details of how this process works!
 
+<Collapse label="Diffusion Details">
+### For anyone interested
+If we measured our system right now, every state would have an equal probability (since the phase here does not change the square of the amplitude). To solve this, Lov Grover defines what is called the diffusion operator $D$.
 
 The goal of the diffuser is referred to as **inversion-about-the-mean**. In other words, the diffuser takes the average of all states and reflects them about that average.
 
@@ -147,12 +152,16 @@ If we reflect all of these states about that average (or, find the difference be
     yMin="0" />
 </div>
 
-See how the amplitude of the marked state $|100\rangle$ has increased and the others have all decreased? This is *exactly* what we want! If we were to measure this state now, we would have an extremely highly likelyhood of measuring the solution to our problem.
-
+See how the amplitude of the marked state $|100\rangle$ has increased and the others have all decreased? This is *exactly* what we want! If we were to measure this state now, we would have an extremely highly likelihood of measuring the solution to our problem.
+</Collapse>
 ## Could You Repeat Yourself?
 #### $\frac{\pi}{4} \sqrt{N}$ times
 
-There is just one problem, although our amplitude has increased, it still only has a total measurable probability of $\sim 0.88^2 \approx 0.77$. This is better than the probability of $0.125$ we would have had if we measured the initial state, but we can do better! Remember how at the beginning of the lesson we mentioned "repetitions" of $O$ and $D$? Well, it is those repetitions that will ultimately get us a much higher probability of measuring the correct state.
+Even after a single application of the *oracle* and *diffuser*, we still don't have a 100% chance of measuring the correct state. To increase our chances, we can simply repeat the process! For Grover's algorithm, it can be shown that applying the *oracle* and *diffuser* about $\sqrt{N}$ times will result in the highest probability of measuring the correct state, where $N$ is the number of possible states.
+
+<Collapse label="Iteration Details">
+### For anyone interested
+Although our amplitude has increased, it still only has a total measurable probability of $\sim 0.88^2 \approx 0.77$. This is better than the probability of $0.125$ we would have had if we measured the initial state, but we can do better! Remember how at the beginning of the lesson we mentioned "repetitions" of $O$ and $D$? Well, it is those repetitions that will ultimately get us a much higher probability of measuring the correct state.
 
 So how many times do we need to repeat this process? In his original paper, Lov Grover proved that we need $\frac{\pi}{4} \sqrt{N}$ iterations (we will skip the proof for now), where $N$ is the number of possible states. In our case, that's $2^3 = 8$ since we have three qubits in our system. So, $\frac{\pi}{4} \sqrt{8} \approx 2.22$. Since we can't have a fraction of an iteration, we round to the nearest integer, which is 2. 
 
@@ -167,13 +176,17 @@ After applying the oracle $O$ (marking the target state) and the defuser $D$ one
 </div>
 
 With a probability amplitude of $\sim 0.97$, we have a $0.97^2 \approx 0.94$ chance of measuring the correct state! To be sure we know the correct state, we might run the algorithm multiple times, keeping track of our outcome each time. That way we will measure the correct state the majority of the time!
+</Collapse>
 
-## Scratch Paper
+## Advanced
 #### From Algorithm to Implementation
+If you'd like to get a better sense of how Grover's algorithm could be implemented in a quantum circuit, check the drop down below!
 
+<Collapse label="A Look at Grover's Implementation">
+### For anyone interested
 Okay, so we have looked at the steps to this algorithm, but how would we actually implement this on a quantum computer? For this section, let's scratch the paper, and instead look at the actual circuit.
 
-### SP.1 - The Oracle
+### A.1: The Oracle
 The *oracle* is an arbitrary unitary gate that is defined on a per-problem basis. Essentially, this is our "input" where we describe the database and constraints we want to solve for. Like with the sudoku example, this would be our board state and the rules of sudoku described by a matrix.
 
 Earlier, we talked about an oracle that simply marked the $|100\rangle$ state. In this case, the circuit for the oracle looks like:
@@ -196,8 +209,8 @@ Aren't we supposed to be adding a negative phase, not flipping bits? That's true
 
 *(check out <a className="text-quanta-primary hover:underline" href="https://elib.dlr.de/193653/1/Abgabe_weiss22.pdf" target="_blank">this paper</a> to see how Grover's algorithm can be implemented for a game of sudoku!)*
 
-### SP.2 - The Diffuser
-The *diffuser* is standard across all applications of Grover's algorithm. It is defined as:
+### A.2: The Diffuser
+The *diffuser* is standard across all applications of Grover's algorithm. The diffuser is defined as:
 $$
     D = 2|s\rangle\langle s| - I
 $$
@@ -222,7 +235,7 @@ Or, in more plain english, it is the reflection of the states about the average 
       />
 </div>
 
-### SP.3 - The Full Circuit
+### A.3: The Full Circuit
 Now, we can put it all together! Note, we start by putting all qubits in a uniform superposition, then we apply the oracle, then the diffuser, and repeat!
 
 <Callout title="Full Grover's Circuit" icon={<SchrodingersCat className="icon" />}>
@@ -248,6 +261,7 @@ Now, we can put it all together! Note, we start by putting all qubits in a unifo
 
 Take a moment to look through the circuit. See the repetitions? Oracle... Diffuser... Oracle... Diffuser. Two iterations, just as we talked about before!
 
-And even more exitingly... see the probability on measuring each qubit? It's almost certain we'll measure $|100\rangle$! Those probabilities look a lot like our graph from earlier after two iterations of the oracle and diffuser! 
+And even more excitingly... see the probability on measuring each qubit? It's almost certain we'll measure $|100\rangle$! Those probabilities look a lot like our graph from earlier after two iterations of the oracle and diffuser! 
 
 *P.S.: That full circuit is simulated in real time, meaning the circuit are accurately executing the algorithm!*
+</Collapse>

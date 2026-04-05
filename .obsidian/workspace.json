@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "web/src/lib/lessons/unit-2/quant-circ.mdx",
+                "file": "web/src/lib/lessons/unit-3/grovers.mdx",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "quant-circ"
+              "title": "grovers"
             }
           }
         ]
@@ -185,6 +185,8 @@
   },
   "active": "b1f63d0d65964c08",
   "lastOpenFiles": [
+    "web/src/lib/components/ui/Collapse.tsx",
+    "web/src/lib/lessons/unit-2/quant-circ.mdx",
     "web/src/lib/lessons/unit-2/quant-comp.mdx",
     "web/src/lib/lessons/unit-1/interfere.mdx",
     "web/src/lib/lessons/unit-1/superpos.mdx",
@@ -194,8 +196,6 @@
     "web/src/lib/lessons/unit-1/brief-history.mdx",
     "web/public/assets/firework2.mp3",
     "web/public/assets/firework3.mp3",
-    "web/public/assets/firework4.mp3",
-    "web/public/assets/firework5.mp3",
     "web/src/lib/lessons/quiz_questions.md",
     "web/src/lib/lessons/mdx/unit-1/Untitled.md",
     "web/public/assets/hand_pointing_thinned.svg",
