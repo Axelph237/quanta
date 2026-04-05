@@ -7,7 +7,7 @@ import { COLORS } from "@/app/globals";
 
 
 # Common Gates
-As we get ready to take a look at Grover's algorithm, it's important we build a shared language of quantum operations! First, let's talk about the ways a gate is represented, and then we can dive into a few select gates.
+_**Quantum gates are operations that change the state of qubits.**_ So, as we get ready to take a look at Grover's algorithm, it's important we build a shared language of quantum operations! First, let's talk about the ways a gate is represented, and then we can dive into a few select gates.
 
 ## Gate Representations
 ### Matrices
@@ -15,23 +15,17 @@ Quantum gates are often represented as matrices to describe the way they act on 
 $$
 H=\frac{1}{\sqrt{2}} \begin{bmatrix}1&1\\1&-1\end{bmatrix}
 $$
-Remember how from our earlier lesson we had the uniformly superposed single-qubit state:
+If we represent the state of a qubit as a <span className="define-vector">vector</span>, we can see how the gate acts on the state. For instance, if we represent the state of a qubit as:
 $$
-\Psi = |0\rangle
-$$
-Well, we can represent that same state as a <span className="define-vector">vector</span> of all possible states and their amplitudes. For a single qubit, the only possible states are $|0\rangle$ and $|1\rangle$. So, our state could be represented like:
-$$
+\Psi = |0\rangle = 
 \begin{bmatrix}A_0\\ A_1\end{bmatrix} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}
 $$
-Putting it all together, the $X$ gate applied to our wave function $\Psi$ would look like:
+Where $A_n$ is the amplitude of a state $|n\rangle$. 
+Putting it all together, the $H$ gate applied to our wave function $\Psi$ would result in:
 $$
-H |\Psi\rangle = \frac{1}{\sqrt2} \begin{bmatrix}\class{border-t-2 border-l-2 border-r-2 border-quanta-primary p-1 rounded-t-lg}{1}&\class{border-t-2 w-full border-l-2 border-r-2 border-quanta-secondary p-1 rounded-t-lg place-items-end}{1}\\\class{border-b-2 border-l-2 border-r-2 border-quanta-primary p-1 rounded-b-lg}{1}&\class{border-b-2 border-l-2 border-r-2 border-quanta-secondary p-1 rounded-b-lg}{-1}\end{bmatrix} \begin{bmatrix} \class{border-2 border-quanta-primary p-1 rounded-lg}1 \\ \class{border-2 border-quanta-secondary p-1 rounded-lg}0 \end{bmatrix}
+H|\Psi\rangle = \frac1{\sqrt2} \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \class{bg-quanta-primary/10 border-2 border-quanta-primary p-2 rounded-xl}{\frac1{\sqrt2}(|0\rangle + |1\rangle)}
 $$
-Which, when multiplied out (you don't need to do the math yourself, just trust me 😼 ) gives us:
-$$
-\frac1{\sqrt2} \begin{bmatrix} 1 + 0 \\ 1 - 0 \end{bmatrix} = \frac1{\sqrt2} \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \class{bg-quanta-primary/10 border-2 border-quanta-primary p-2 rounded-xl}{\frac1{\sqrt2}(|0\rangle + |1\rangle)}
-$$
-Keep this in mind as you read more about the Hadamard gate below to see why it does this!
+We will skip past the actual matrix multiplication that was done here, but the important thing to take away is that the operation of a quantum gate can be represented as a mathematic matrix.
 ### In Circuits
 We will get more into circuits in the next lesson, but often times a gate is represented as a box labelled by its name. This is to show what gate is applied in a circuit. As you go through this lesson, most gates will also have an example circuit gate!
 
@@ -79,7 +73,7 @@ CNOT=\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&0&1\\0&0&1&0\end{bmatrix}
 $$
 </Callout>
 
-A Controlled Not gate (or CNOT) is an _entangling_ gate that flips the target qubit given that the control qubit was in the $$|1\rangle$$ state. CNOT doesn't always entangle, but its capability of entangling makes it still valid for the Quantum Gate Universality Theorem.
+A Controlled Not gate (or CNOT) flips the target qubit if the control qubit is $|1\rangle$. CNOT has the potential to entangle qubits, making it an essential gate in almost any algorithm.
 
 Here are a couple examples with qubit 1 as the control, and qubit 2 as the target:
 $$
@@ -101,11 +95,13 @@ $$
 </Callout>
 
 The Z-Rotation gate (R<sub>Z</sub>) is a _single-qubit_ gate that applies a phase of $\frac{\theta}{2}$
-to a qubit. For example,
+to a qubit. 
+
+{/* For example,
 
 $$
 R_Z(\frac{\pi}{2})(\alpha|1\rangle + \beta|0\rangle) = \alpha e^{-i\frac{\pi}{4}}|1\rangle + \beta e^{i\frac{\pi}{4}}|0\rangle
-$$
+$$ */}
 
 <span className="flex flex-row gap-8">
 ## S & T
@@ -117,5 +113,9 @@ The **S** gate (seen above) is a special type of R<sub>Z</sub> gate where $\thet
 Similarly, the **T** gate performs a 45 degree rotation around the z-axis. This means that $S = T^2$
 
 <Callout title="Recall" icon={<icons.SchrodingersCat className="icon" />} color="#2b7fff">
-Recall that the phase of a qubit is $Ae^{i\theta}$, where $A$ is the amplitude and $\theta$ is the phase. 
+Recall that the phase of a qubit is $Ae^{i\theta}$, where $A$ is the amplitude and $\theta$ is the phase. For example,
+$$
+\Psi = \frac{1}{\sqrt2}|0\rangle + \frac{1}{\sqrt2}e^{i\frac{\pi}{2}}|1\rangle
+$$
+Represents a quantum state where both $|0\rangle$ and $|1\rangle$ have an amplitude of $\frac{1}{\sqrt2}$ and a phase of $0$ ($e^0 = 1$) and $\frac{\pi}{2}$ respectively.
 </Callout>
