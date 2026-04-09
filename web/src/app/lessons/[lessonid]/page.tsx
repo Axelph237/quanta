@@ -53,9 +53,7 @@ export default function LessonPage({
     if (lessonId) {
       recordEvent({ type: "lesson_closed", lessonId: lessonId });
     }
-    router.push(
-      "/lessons" + (lesson ? "?selected=" + lesson.id : "")
-    );
+    router.push("/lessons" + (lesson ? "?selected=" + lesson.id : ""));
   };
 
   return (
@@ -83,6 +81,17 @@ export default function LessonPage({
           >
             <icons.Click className="icon" />
             Click to return to Lessons
+          </motion.div>
+
+          <motion.div
+            style={{
+              opacity: breadcrumbOpacity,
+            }}
+            transition={GENTLE_EASE}
+            className="fixed bottom-(--page-padding) right-1/2 translate-x-1/2 flex place-self-start text-white body-text gap-2"
+          >
+            <icons.Scroll className="icon" />
+            Scroll
           </motion.div>
         </div>
       </motion.header>
