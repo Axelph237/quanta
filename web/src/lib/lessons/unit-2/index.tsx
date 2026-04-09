@@ -6,6 +6,7 @@ import type { Lesson, Unit } from "@/lib/types/lessons";
 import QuantCompMDX from "./quant-comp.mdx";
 import CommonGatesMDX from "./common-gates.mdx";
 import QuantCircMDX from "./quant-circ.mdx";
+import { likert } from "../Quizzes";
 
 const unit: Unit = {
   id: "computing",
@@ -107,23 +108,7 @@ const lessons: Lesson[] = [
           },
         ],
       },
-      {
-        type: "choice",
-        question:
-          "How well do you feel you could explain the basics of a quantum computer to someone else?",
-        answers: [
-          { text: "I can't explain it at all", correct: true },
-          { text: "Poorly", correct: true },
-          {
-            text: "Decently",
-            correct: true,
-          },
-          {
-            text: "Exceptionally",
-            correct: true,
-          },
-        ],
-      },
+      likert("I feel confident explaining the basics of a quantum computer."),
     ],
   },
   {
@@ -137,20 +122,19 @@ const lessons: Lesson[] = [
     preQuestions: [
       {
         type: "choice",
-        question: "Have you ever studied quantum gates?",
+        question: "What do quantum gates represent?",
+        randomize: true,
         answers: [
-          { text: "Yes", correct: true },
-          { text: "No", correct: true },
-          { text: "I'm not sure", correct: true },
+          {
+            text: "Operations that change the state of qubits",
+            correct: true,
+          },
+          { text: "Measurements of qubits", correct: false },
+          { text: "Storage of quantum information", correct: false },
+          { text: "Physical connections between qubits", correct: false },
         ],
       },
-      {
-        type: "step",
-        question: "How comfortable are you with matrices?",
-        highLabel: "Very",
-        lowLabel: "Not at all",
-        steps: 4,
-      },
+      likert("I feel comfortable working with matrices."),
     ],
     postQuestions: [
       {
@@ -231,11 +215,19 @@ const lessons: Lesson[] = [
     preQuestions: [
       {
         type: "choice",
-        question: "Have you ever heard of quantum circuits?",
+        question: "What does a quantum circuit represent?",
+        randomize: true,
         answers: [
-          { text: "Yes", correct: true },
-          { text: "No", correct: true },
-          { text: "I'm not sure", correct: true },
+          {
+            text: "The operations to be performed on a set of qubits",
+            correct: true,
+          },
+          {
+            text: "The electrical wiring of a quantum computer",
+            correct: false,
+          },
+          { text: "A map of where to place qubits", correct: false },
+          { text: "A blueprint for classical components", correct: false },
         ],
       },
       {

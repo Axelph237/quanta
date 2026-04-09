@@ -294,7 +294,7 @@ export default function GameHandler({
             left: "-100%",
           }}
           transition={{
-            duration: viewport.isMd ? 0.5 : 0.3,
+            duration: viewport.isMd ? 0.4 : 0.2,
             ease: "easeInOut",
           }}
         >

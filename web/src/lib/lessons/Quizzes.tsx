@@ -6,6 +6,7 @@ import GameHandler, {
 } from "../components/games/GameHandler";
 import QuestionLevel, {
   QuizQuestionType,
+  StepQuestion,
 } from "../components/games/QuestionLevel";
 
 interface QuizProps extends React.ComponentProps<"div"> {
@@ -110,4 +111,14 @@ export function PostQuiz({ lessonId, onEnd, questions, ...rest }: QuizProps) {
       })}
     />
   );
+}
+
+export function likert(question: string): StepQuestion {
+  return {
+    type: "step",
+    question,
+    highLabel: "Strongly Agree",
+    lowLabel: "Strongly Disagree",
+    steps: 5,
+  };
 }

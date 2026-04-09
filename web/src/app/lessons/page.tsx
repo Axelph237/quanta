@@ -21,6 +21,7 @@ import {
   UNITS,
   getQuizCompletion,
   isLessonCompleted,
+  likert,
 } from "@/lib/lessons";
 import type { Lesson, Unit } from "@/lib/types/lessons";
 import GradientText from "@/lib/components/react-bits/GradientText";
@@ -94,7 +95,7 @@ function LessonsPageContent() {
         () =>
           (typeof window !== "undefined" &&
             localStorage.getItem(ONBOARDING_STORAGE_KEY) === "true") ||
-          getPermissions() !== "true", // Ignore onboarding if user has given usage permission
+          getPermissions() === "false", // Ignore onboarding if user has explicitly denied usage permission
       );
       setShowFeedbackButton(() => {
         const complete =
@@ -621,14 +622,9 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
               />,
               <QuestionLevel
                 key={1}
-                question={{
-                  type: "step",
-                  question:
-                    "Approximately how familiar were you with quantum computing before using this platform?",
-                  highLabel: "Very familiar",
-                  lowLabel: "Not at all familiar",
-                  steps: 4,
-                }}
+                question={likert(
+                  "I am familiar with quantum computing concepts.",
+                )}
               />,
               <QuestionLevel
                 key={1}
@@ -642,7 +638,7 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
                   ],
                 }}
               />,
-              // Onboarding questions (not sure of the difference)
+              // Education background questions
               <SectionLevel
                 key="onboarding-section"
                 header="Education"
@@ -669,25 +665,12 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
               />,
               <QuestionLevel
                 key={1}
-                question={{
-                  type: "step",
-                  question: "How comfortable are you with physics concepts?",
-                  highLabel: "Very",
-                  lowLabel: "Not at all",
-                  steps: 4,
-                }}
+                question={likert("I feel comfortable with physics concepts.")}
               />,
               <QuestionLevel
                 key={1}
-                question={{
-                  type: "step",
-                  question: "How comfortable are you with mathematics?",
-                  highLabel: "Very",
-                  lowLabel: "Not at all",
-                  steps: 4,
-                }}
+                question={likert("I feel comfortable with mathematics.")}
               />,
-
               <QuestionLevel
                 key={1}
                 question={{
@@ -699,6 +682,22 @@ function Onboarding({ onComplete }: { onComplete: () => void }) {
                     { text: "I'm not sure", correct: true },
                   ],
                 }}
+              />,
+              // Global measures (mirrored in offboarding)
+              <SectionLevel
+                key="global-section"
+                header="Almost done!"
+                subheader="Just a couple more questions."
+              />,
+              <QuestionLevel
+                key={1}
+                question={likert(
+                  "I feel confident explaining basic quantum computing concepts.",
+                )}
+              />,
+              <QuestionLevel
+                key={1}
+                question={likert("Quantum computing seems approachable to me.")}
               />,
             ]}
           />
@@ -716,22 +715,33 @@ function FeedbackButton() {
   };
 
   return (
-    <motion.button
-      animate={{
-        scale: [1, 1.05, 1],
-        rotate: [0, 10, -10, 10, -10, 10, 0],
-        transition: {
-          ease: "easeInOut",
-          duration: 1,
-          repeat: Infinity,
-          delay: 0.5,
-          repeatDelay: 3,
-        },
-      }}
+    <div
+      className="fixed z-90 bottom-(--page-padding) right-(--page-padding) flex flex-col items-center gap-2 cursor-pointer"
       onClick={goToFeedback}
-      className="fixed z-90 bottom-(--page-padding) right-(--page-padding) cursor-pointer flex flex-row items-center justify-center p-2 rounded-full bg-quanta-on-surface text-quanta-surface hover:text-quanta-primary transition-colors duration-250"
     >
-      <icons.PartyHorn className="size-4 md:size-5" />
-    </motion.button>
+      <motion.button
+        animate={{
+          scale: [1, 1.05, 1],
+          rotate: [0, 10, -10, 10, -10, 10, 0],
+          transition: {
+            ease: "easeInOut",
+            duration: 1,
+            repeat: Infinity,
+            delay: 0.5,
+            repeatDelay: 3,
+          },
+        }}
+        className="self-end flex flex-row items-center justify-center py-4 px-6 sm:px-8 rounded-full bg-quanta-on-surface text-quanta-surface hover:text-quanta-primary transition-colors duration-250"
+      >
+        <icons.PartyHorn className="size-4 md:size-5 lg:size-6" />
+      </motion.button>
+      <motion.div
+        transition={GENTLE_EASE}
+        className="flex place-self-start text-white gap-2"
+      >
+        <icons.Click className="icon" />
+        Click to give feedback!
+      </motion.div>
+    </div>
   );
 }

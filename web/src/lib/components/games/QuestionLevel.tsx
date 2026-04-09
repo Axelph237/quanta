@@ -8,7 +8,7 @@ import { renderSnippet } from "@/lib/markdown/render-snippet";
 import { useViewportSize } from "@/lib/hooks/useViewportSize";
 import { motion } from "framer-motion";
 
-interface ChoiceQuestion {
+export interface ChoiceQuestion {
   type: "choice";
   question: string;
   randomize?: boolean;
@@ -16,14 +16,14 @@ interface ChoiceQuestion {
   answers: { text: string; correct: boolean }[];
 }
 
-interface InputQuestion {
+export interface InputQuestion {
   type: "input";
   question: string;
   answer?: string;
 }
 
 // Used for qualitative questions usually about user confidence
-interface StepQuestion {
+export interface StepQuestion {
   type: "step";
   question: string;
   highLabel: string;
@@ -31,7 +31,7 @@ interface StepQuestion {
   steps: number;
 }
 
-interface FreeResponseQuestion {
+export interface FreeResponseQuestion {
   type: "free-response";
   question: string;
 }

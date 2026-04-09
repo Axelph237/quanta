@@ -11,6 +11,7 @@ import { GENTLE_EASE, COLORS } from "../globals";
 import * as icons from "@/lib/components/ui/Icons";
 import "./offboarding.css";
 import { useRouter } from "next/navigation";
+import { likert } from "@/lib/lessons";
 
 export const OFFBOARDING_STORAGE_KEY = "offboarded";
 
@@ -190,47 +191,31 @@ function Offboarding({ onComplete }: { onComplete: () => void }) {
               onGameEnd={exit}
               recordOnly
               levels={[
+                // Global measures (mirrored from onboarding)
                 <QuestionLevel
                   key={1}
-                  question={{
-                    type: "step",
-                    question:
-                      "How accessible was Quanta for someone without a relevant background?",
-                    highLabel: "Very",
-                    lowLabel: "Not at all",
-                    steps: 4,
-                  }}
+                  question={likert("I feel confident explaining basic quantum computing concepts.")}
                 />,
                 <QuestionLevel
                   key={1}
-                  question={{
-                    type: "step",
-                    question: "How enjoyable were the lessons in Quanta?",
-                    highLabel: "Very",
-                    lowLabel: "Not at all",
-                    steps: 4,
-                  }}
+                  question={likert("Quantum computing seems approachable to me.")}
+                />,
+                // Platform feedback
+                <QuestionLevel
+                  key={1}
+                  question={likert("Quanta was accessible for someone without a relevant background.")}
                 />,
                 <QuestionLevel
                   key={1}
-                  question={{
-                    type: "step",
-                    question: "How much did you learn from using Quanta?",
-                    highLabel: "A lot",
-                    lowLabel: "Nothing at all",
-                    steps: 4,
-                  }}
+                  question={likert("I found the lessons in Quanta enjoyable.")}
                 />,
                 <QuestionLevel
                   key={1}
-                  question={{
-                    type: "step",
-                    question:
-                      "Overall, how much did your understanding of quantum computing improve after using Quanta?",
-                    highLabel: "A lot",
-                    lowLabel: "Not at all",
-                    steps: 4,
-                  }}
+                  question={likert("I learned a lot from using Quanta.")}
+                />,
+                <QuestionLevel
+                  key={1}
+                  question={likert("My understanding of quantum computing improved after using Quanta.")}
                 />,
                 <QuestionLevel
                   key={1}

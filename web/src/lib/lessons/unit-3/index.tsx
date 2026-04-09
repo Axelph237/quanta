@@ -4,6 +4,7 @@
 
 import type { Lesson, Unit } from "@/lib/types/lessons";
 import GroversMDX from "./grovers.mdx";
+import { likert } from "../Quizzes";
 
 const unit: Unit = {
   id: "algorithms",
@@ -26,20 +27,19 @@ const lessons: Lesson[] = [
     preQuestions: [
       {
         type: "choice",
-        question: "Have you ever worked with or seached through a database?",
+        question: "What is the goal of Grover's algorithm?",
+        randomize: true,
         answers: [
-          { text: "Yes", correct: true },
-          { text: "No", correct: true },
-          { text: "I'm not sure", correct: true },
+          {
+            text: "To find a marked item in an unstructured database",
+            correct: true,
+          },
+          { text: "To sort a database efficiently", correct: false },
+          { text: "To compress data", correct: false },
+          { text: "To simulate quantum systems", correct: false },
         ],
       },
-      {
-        type: "step",
-        question: "How comfortable are you with search algorithms?",
-        highLabel: "Very",
-        lowLabel: "Not at all",
-        steps: 4,
-      },
+      likert("I feel comfortable with search algorithms."),
     ],
     postQuestions: [
       {
@@ -111,17 +111,7 @@ const lessons: Lesson[] = [
           },
         ],
       },
-      {
-        type: "choice",
-        question:
-          "How well do you feel you could explain Grover's algorithm to someone else?",
-        answers: [
-          { text: "I can't explain it at all", correct: true },
-          { text: "Poorly", correct: true },
-          { text: "Decently", correct: true },
-          { text: "Exceptionally", correct: true },
-        ],
-      },
+      likert("I feel confident explaining Grover's algorithm."),
     ],
   },
 ];

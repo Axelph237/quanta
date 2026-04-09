@@ -3,12 +3,13 @@
  */
 
 import type { Lesson, Unit } from "@/lib/types/lessons";
-import { DiceLevel } from "../../components/games/DiceLevel";
+
 import BriefHistoryMDX from "./brief-history.mdx";
 import BraKetMDX from "./bra-ket.mdx";
 import SuperposMDX from "./superpos.mdx";
 import InterfereMDX from "./interfere.mdx";
 import EntangleMDX from "./entangle.mdx";
+import { likert } from "../Quizzes";
 
 const unit: Unit = {
   id: "mechanics",
@@ -31,12 +32,25 @@ const lessons: Lesson[] = [
     preQuestions: [
       {
         type: "choice",
-        question:
-          "Have you heard of the wave-particle duality of light and matter?",
+        question: "What does wave-particle duality imply?",
+        randomize: true,
         answers: [
-          { text: "Yes", correct: true },
-          { text: "No", correct: true },
-          { text: "I'm not sure", correct: true },
+          {
+            text: "Particles can exhibit both wave-like and particle-like behavior",
+            correct: true,
+          },
+          {
+            text: "Particles are sometimes waves and sometimes particles depending on the observer",
+            correct: false,
+          },
+          {
+            text: "Waves and particles are completely unrelated",
+            correct: false,
+          },
+          {
+            text: "Only light exhibits wave behavior",
+            correct: false,
+          },
         ],
       },
       {
@@ -118,16 +132,7 @@ const lessons: Lesson[] = [
           },
         ],
       },
-      {
-        type: "choice",
-        question:
-          "Do you feel like you have a better understanding of quantum particles after this lesson?",
-        answers: [
-          { text: "Yes", correct: true },
-          { text: "No", correct: true },
-          { text: "I'm not sure", correct: true },
-        ],
-      },
+      likert("I feel confident explaining quantum particles."),
     ],
   },
   {
@@ -141,21 +146,22 @@ const lessons: Lesson[] = [
     preQuestions: [
       {
         type: "choice",
-        question: "Have you ever heard of Bra-Ket notation?",
+        question: "What does a ket (e.g. $|0\\rangle$) represent?",
+        randomize: true,
         answers: [
-          { text: "Yes", correct: true },
-          { text: "No", correct: true },
-          { text: "I'm not sure", correct: true },
+          {
+            text: "A quantum state",
+            correct: true,
+          },
+          {
+            text: "A measurement result only",
+            correct: false,
+          },
+          { text: "A probability value", correct: false },
+          { text: "A mathematical constant", correct: false },
         ],
       },
-      {
-        type: "step",
-        question:
-          "How comfortable do you feel working with binary (base-2) numbers?",
-        highLabel: "Very",
-        lowLabel: "Not at all",
-        steps: 4,
-      },
+      likert("I feel comfortable working with binary (base-2) numbers."),
     ],
     postQuestions: [
       {
@@ -200,20 +206,19 @@ const lessons: Lesson[] = [
     preQuestions: [
       {
         type: "choice",
-        question: "Have you ever heard of superposition?",
+        question: "What does it mean for a qubit to be in superposition?",
+        randomize: true,
         answers: [
-          { text: "Yes", correct: true },
-          { text: "No", correct: true },
-          { text: "I'm not sure", correct: true },
+          {
+            text: "It exists as a combination of multiple states at once until measured",
+            correct: true,
+          },
+          { text: "It rapidly switches between 0 and 1", correct: false },
+          { text: "It is both 0 and 1 only after measurement", correct: false },
+          { text: "It has an unknown but fixed value", correct: false },
         ],
       },
-      {
-        type: "step",
-        question: "How comfortable are you with understanding probabilities?",
-        highLabel: "Very",
-        lowLabel: "Not at all",
-        steps: 4,
-      },
+      likert("I feel comfortable working with probabilities."),
     ],
     postQuestions: [
       {
@@ -248,13 +253,7 @@ const lessons: Lesson[] = [
           { text: "There is no difference", correct: false },
         ],
       },
-      {
-        type: "step",
-        question: "How comfortable would you be explaining superposition?",
-        highLabel: "Very",
-        lowLabel: "Not at all",
-        steps: 4,
-      },
+      likert("I feel comfortable explaining superposition."),
     ],
   },
   {
@@ -268,12 +267,25 @@ const lessons: Lesson[] = [
     preQuestions: [
       {
         type: "choice",
-        question:
-          "Have you heard of wave interference (constructive or destructive)?",
+        question: "What is constructive interference?",
+        randomize: true,
         answers: [
-          { text: "Yes", correct: true },
-          { text: "No", correct: true },
-          { text: "I'm not sure", correct: true },
+          {
+            text: "When two waves interfere, increasing the resulting amplitude",
+            correct: true,
+          },
+          {
+            text: "When two waves interfere, decreasing the resulting amplitude",
+            correct: false,
+          },
+          {
+            text: "When two waves cancel each other out completely",
+            correct: false,
+          },
+          {
+            text: "When waves stop propagating",
+            correct: false,
+          },
         ],
       },
     ],
@@ -361,11 +373,22 @@ const lessons: Lesson[] = [
     preQuestions: [
       {
         type: "choice",
-        question: "Have you ever heard of entanglement?",
+        question: "What does it mean for a set of qubits to be entangled?",
+        randomize: true,
         answers: [
-          { text: "Yes", correct: true },
-          { text: "No", correct: true },
-          { text: "I'm not sure", correct: true },
+          {
+            text: "The state of the qubits cannot be described independently of each other",
+            correct: true,
+          },
+          {
+            text: "They are physically connected by tiny strings",
+            correct: false,
+          },
+          { text: "They can never be separated", correct: false },
+          {
+            text: "They have the identical same value continuously",
+            correct: false,
+          },
         ],
       },
     ],
