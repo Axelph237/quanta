@@ -26,9 +26,7 @@ export function useResponsiveGrid() {
     if (!viewport) return;
 
     let xMargin = 0;
-    if (viewport.isXL) {
-      xMargin = (csstopx(cssvar("--text-2xl")) || 0) * NUM_QBIT_CHARACTERS;
-    } else if (viewport.isLg) {
+    if (viewport.isLg) {
       xMargin = (csstopx(cssvar("--text-2xl")) || 0) * NUM_QBIT_CHARACTERS;
     } else if (viewport.isMd) {
       xMargin = (csstopx(cssvar("--text-xl")) || 0) * NUM_QBIT_CHARACTERS;
