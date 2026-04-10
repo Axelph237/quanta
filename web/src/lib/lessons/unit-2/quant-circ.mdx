@@ -1,6 +1,7 @@
 import { CircuitCanvas, CircuitPalette } from "@/lib/circuit";
 import Callout from "@/lib/components/ui/Callout";
 import * as icons from "@/lib/components/ui/Icons";
+import Link from "next/link";
 
 # Quantum Circuitry
 _**A quantum circuit is a sequence of operations applied to qubits.**_ You could think of a quantum circuit as the code that runs on a quantum computer. 
@@ -21,8 +22,4 @@ Here, $q_0$ is undergoing a <span className="define-cx-gate">Controlled-NOT</spa
 The time-steps are not explicitly labeled as it is typically unimportant for the user to understand them beyond the order of operations. But for now, this diagram will serve as a trivial example.
 
 ## Playground
-Play around with the circuit diagram below. Try adding gates to see how the state changes!
-<div className="flex flex-row gap-8 items-center justify-center">
-<CircuitPalette />
-<CircuitCanvas numQubits={3} numColumns={6} initialGates={[]} compute />
-</div>
+Go check out the <Link className="text-quanta-primary hover:opacity-80 font-bold inline gap-2" href="/playground">playground <icons.Click className="icon inline" /></Link> to play around with a quantum circuit diagram. Try adding gates to see how the state changes!

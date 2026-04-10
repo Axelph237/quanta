@@ -62,7 +62,11 @@ export default function CircuitCanvas({
 
   useEffect(() => {
     setCircuit((prev) => {
-      const newCircuit = clearGates({ ...prev }, "implicit");
+      const newCircuit = {
+        ...clearGates({ ...prev }, "implicit"),
+        qubitCount: numQubits,
+        columnCount: numColumns,
+      };
       for (const gate of initialGates) {
         // We can't just map the gates since the placement depends on the updating circuit state
         // I tried :(
