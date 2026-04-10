@@ -96,6 +96,7 @@ export default function GameHandler({
   );
   const viewport = useViewportSize();
   const { recordEvent } = useAnalytics();
+  const [started, setStarted] = useState<boolean>(false);
   const [bgVisible, setBgVisible] = useState<boolean>(hideBg ? false : true);
   const [activeGame, setActiveGame] = useState<number>(0);
   const [activeState, setActiveState] = useState<GameState | null>(null);
@@ -165,13 +166,14 @@ export default function GameHandler({
 
   // Record analytics events
   useEffect(() => {
-    if (activeState === GameState.PLAYING && activeGame === 0) {
+    if (activeState === GameState.PLAYING && activeGame === 0 && !started) {
       // Record start of game
       recordEvent({
         type: "game_started",
         gameId: id,
       });
       onGameStart?.();
+      setStarted(true); // Prevent double counting
     } else if (activeState === GameState.END && activeGame === levels.length) {
       // Record end of game
       recordEvent({
@@ -180,6 +182,7 @@ export default function GameHandler({
       });
       onGameEnd?.();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     activeState,
     activeGame,
